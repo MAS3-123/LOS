@@ -12,6 +12,6 @@ public class BasicSkill : MonoBehaviour
 
     void Update()
     {
-        
+        transform.position += new Vector3(1.0f, 0f, 0f) * Time.deltaTime;
     }
 }

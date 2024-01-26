@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance;
 
     [SerializeField] SpriteRenderer spr;
     [Space]
@@ -14,6 +16,7 @@ public class Player : MonoBehaviour
     Vector2 moveDir = Vector2.zero;
 
     public GameObject[] skill;
+    public List<GameObject> skillList = new List<GameObject>();
 
     public bool isJump = false;
     public bool isGround = false;
@@ -30,7 +33,14 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -132,7 +142,15 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.G))
             {
                 skill[0] = StartObj.Instance.included_Skill[0];
+                skillList.Add(skill[0]);
                 Debug.Log("basic");
+            }
+
+            if (skill[0] != null)
+            {
+                GameManager.Instance.GetSkill();
+                skill[0] = null;
+                Skillclassification();
             }
         }
 
@@ -142,6 +160,18 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("enemy");
             }
+        }
+    }
+
+    private void Skillclassification() // 스킬 분류 함수
+    {
+        if (skillList[0].layer == 9)
+        {
+            Debug.Log("Active Skill");
+        }
+        if (skillList[0].layer == 10)
+        {
+            Debug.Log("Passive Skill");
         }
     }
 }
