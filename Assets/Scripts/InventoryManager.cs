@@ -43,9 +43,20 @@ public class InventoryManager : MonoBehaviour
     private void InitInventory()
     {
         listInventory.Clear();
-        listInventory.AddRange(
-            activeSlotGrid.transform.GetComponentsInChildren<Transform>(true)
-            );
+        listInventory.AddRange(activeSlotGrid.transform.GetComponentsInChildren<Transform>(true));
+        //if (Player.Instance.skillCF == "Active Skill")
+        //{
+        //    listInventory.AddRange(
+        //    activeSlotGrid.transform.GetComponentsInChildren<Transform>(true)
+        //    );
+        //}
+        //else if(Player.Instance.skillCF == "Passive Skill")
+        //{
+        //    listInventory.AddRange(
+        //    passiveSlotGrid.transform.GetComponentsInChildren<Transform>(true)
+        //    );
+
+        //}
         listInventory.RemoveAt(0);
     }
 

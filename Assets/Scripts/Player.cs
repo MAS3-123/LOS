@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
     public int moveSpeed = 5;
     public int fallingLimit = 10;
 
+    public string skillCF = "";
+
     private void Awake()
     {
         if (Instance == null)
@@ -143,14 +145,13 @@ public class Player : MonoBehaviour
             {
                 skill[0] = StartObj.Instance.included_Skill[0];
                 skillList.Add(skill[0]);
-                Debug.Log("basic");
+                Skillclassification();
             }
 
             if (skill[0] != null)
             {
                 GameManager.Instance.GetSkill();
                 skill[0] = null;
-                Skillclassification();
             }
         }
 
@@ -167,11 +168,11 @@ public class Player : MonoBehaviour
     {
         if (skillList[0].layer == 9)
         {
-            Debug.Log("Active Skill");
+            skillCF = "Active Skill";
         }
-        if (skillList[0].layer == 10)
+        else if (skillList[0].layer == 10)
         {
-            Debug.Log("Passive Skill");
+            skillCF = "Passive Skill";
         }
     }
 }

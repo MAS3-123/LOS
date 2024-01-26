@@ -46,7 +46,7 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             image = GetComponent<Image>();
         }
         image.sprite = _spr;
-        image.SetNativeSize(); //원본과 동일한 사이즈로 변경
+        //image.SetNativeSize(); //원본과 동일한 사이즈로 변경
     }
 
     void Start()
