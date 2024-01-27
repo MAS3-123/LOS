@@ -15,24 +15,4 @@ public class StartObj : MonoBehaviour
             Instance = this;
         }
     }
-
-    private void Update() // ¿Ï¼ºµÈ°Å¾Æ´Ô ¹Ù²ã¾ßÇÔ
-    {
-        if(CheckIncludeSkill() == false)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private bool CheckIncludeSkill()
-    {
-        if(included_Skill != null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 }

@@ -24,8 +24,8 @@ public class SlotButton : MonoBehaviour
 
     private void ClickButton()
     {
-        pasinven_PasButton.onClick.AddListener(() =>{ PassiveButton(); });
-        pasinven_ActButton.onClick.AddListener(() =>{ ActiveButton(); });
+        pasinven_PasButton.onClick.AddListener(() => { PassiveButton(); });
+        pasinven_ActButton.onClick.AddListener(() => { ActiveButton(); });
         actinven_PasButton.onClick.AddListener(() => { PassiveButton(); });
         actinven_ActButton.onClick.AddListener(() => { ActiveButton(); });
     }
@@ -46,13 +46,13 @@ public class SlotButton : MonoBehaviour
 
     private void PassiveButton()
     {
-        Inven.passiveInventory.SetActive(true);
-        Inven.activeInventory.SetActive(false);
+        Inven.passiveBar.SetActive(true);
+        Inven.activeBar.SetActive(false);
     }
 
     private void ActiveButton()
     {
-        Inven.passiveInventory.SetActive(false);
-        Inven.activeInventory.SetActive(true);
+        Inven.passiveBar.SetActive(false);
+        Inven.activeBar.SetActive(true);
     }
 }

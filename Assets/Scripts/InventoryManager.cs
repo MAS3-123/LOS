@@ -11,13 +11,17 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] public GameObject passiveInventory;
     [SerializeField] public GameObject passiveSlotGrid;
     [SerializeField] public GameObject passiveSkillSlot;
+    [SerializeField] public GameObject passiveBar;
     [Space]
     [SerializeField] public GameObject activeInventory;
     [SerializeField] public GameObject activeSlotGrid;
     [SerializeField] public GameObject activeSkillSlot;
+    [SerializeField] public GameObject activeBar;
     [Space]
     [SerializeField] private GameObject objUIItem;
 
+    private List<Transform> listActiveInventory = new List<Transform>();
+    private List<Transform> listPassiveInventory = new List<Transform>();
     private List<Transform> listInventory = new List<Transform>();
 
 
@@ -35,29 +39,24 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
-        activeInventory.SetActive(false);
-        passiveInventory.SetActive(false);
-        InitInventory();
+        activeBar.SetActive(false);
+        passiveBar.SetActive(false);
+        InitActiveInventory();
+        InitPassiveInventory();
     }
 
-    private void InitInventory()
+    private void InitActiveInventory()  // 인벤토리 초기화 함수
     {
-        listInventory.Clear();
-        listInventory.AddRange(activeSlotGrid.transform.GetComponentsInChildren<Transform>(true));
-        //if (Player.Instance.skillCF == "Active Skill")
-        //{
-        //    listInventory.AddRange(
-        //    activeSlotGrid.transform.GetComponentsInChildren<Transform>(true)
-        //    );
-        //}
-        //else if(Player.Instance.skillCF == "Passive Skill")
-        //{
-        //    listInventory.AddRange(
-        //    passiveSlotGrid.transform.GetComponentsInChildren<Transform>(true)
-        //    );
+        listActiveInventory.Clear();
+        listActiveInventory.AddRange(activeSlotGrid.transform.GetComponentsInChildren<Transform>(true));
+        listActiveInventory.RemoveAt(0);
+    }
 
-        //}
-        listInventory.RemoveAt(0);
+    private void InitPassiveInventory()  // 인벤토리 초기화 함수
+    {
+        listPassiveInventory.Clear();
+        listPassiveInventory.AddRange(passiveSlotGrid.transform.GetComponentsInChildren<Transform>(true));
+        listPassiveInventory.RemoveAt(0);
     }
 
     void Update()
@@ -69,13 +68,13 @@ public class InventoryManager : MonoBehaviour
 
     private void InventoryPos()
     {
-        if(activeInventory.activeSelf == false)
+        if(activeBar.activeSelf == false)
         {
-            activeInventory.transform.position = passiveInventory.transform.position;
+            activeBar.transform.position = passiveBar.transform.position;
         }
-        else if(passiveInventory.activeSelf == false)
+        else if(passiveBar.activeSelf == false)
         {
-            passiveInventory.transform.position = activeInventory.transform.position;
+            passiveBar.transform.position = activeBar.transform.position;
         }
     }
 
@@ -83,23 +82,24 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            if (activeInventory.activeSelf == true)
+            if (activeBar.activeSelf == true)
             {
-                activeInventory.SetActive(false);
+                activeBar.SetActive(false);
             }
-            else if (activeInventory.activeSelf == false && passiveInventory.activeSelf == false)
+            else if (activeBar.activeSelf == false && passiveBar.activeSelf == false)
             {
-                activeInventory.SetActive(true);
+                activeBar.SetActive(true);
             }
-            else if(passiveInventory.activeSelf == true)
+            else if(passiveBar.activeSelf == true)
             {
-                passiveInventory.SetActive(false);
+                passiveBar.SetActive(false);
             }
         }
     }
 
     public bool GetItem(Sprite _spr)
     {
+        CheckInventory();
         int slotNum = getEmptyItemSlot();
         if(slotNum == -1)
         {
@@ -117,6 +117,7 @@ public class InventoryManager : MonoBehaviour
 
     private int getEmptyItemSlot()
     {
+        CheckInventory();
         int count = listInventory.Count;
         for(int iNum = 0; iNum < count; iNum++)
         {
@@ -128,5 +129,17 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return -1;
+    }
+
+    private void CheckInventory()
+    {
+        if(Player.Instance.skillCF == "Active Skill")
+        {
+            listInventory = listActiveInventory;
+        }
+        else if(Player.Instance.skillCF == "Passive Skill")
+        {
+            listInventory = listPassiveInventory;
+        }
     }
 }
