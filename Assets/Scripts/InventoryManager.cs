@@ -97,7 +97,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public bool GetItem(Sprite _spr)
+    public bool GetItem(Sprite _spr, LayerMask _layer, string _tag)
     {
         CheckInventory();
         int slotNum = getEmptyItemSlot();
@@ -108,8 +108,10 @@ public class InventoryManager : MonoBehaviour
 
         //인벤토리에 아이템을 생성
         GameObject obj = Instantiate(objUIItem, listInventory[slotNum]);
-        obj.layer = LayerMask.NameToLayer(Player.Instance.skillLayer); // 갖고 있는 스킬 인벤토리 생성시 레이어 동일하게 부여
-        obj.tag = Player.Instance.skillTag; // 태그도 동일하게
+        obj.layer = _layer; // 갖고 있는 스킬 인벤토리 생성시 레이어 동일하게 부여
+        obj.tag = _tag; // 태그도 동일하게
+        //obj.layer = LayerMask.NameToLayer(Player.Instance.skillLayer); // 갖고 있는 스킬 인벤토리 생성시 레이어 동일하게 부여
+        //obj.tag = Player.Instance.skillTag; // 태그도 동일하게
 
         UIItem sc = obj.GetComponent<UIItem>();
         sc.SetItem(_spr);
