@@ -4,22 +4,58 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHandler
 {
+    private Vector2 barPos;
+    private Vector2 mousePos;
+    private Vector2 distancePos;
 
-    public void OnBeginDrag(PointerEventData eventData)
+    private bool onDragCheck = false;
+    private bool barPointerCheck = false;
+
+    public void OnPointerDown(PointerEventData eventData)
     {
-
+        GameObject clickedObject = eventData.pointerCurrentRaycast.gameObject;
+        if(clickedObject.tag == "Bar")
+        {
+            barPointerCheck = true;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        gameObject.transform.position = eventData.position;
+        if(barPointerCheck == false)
+        {
+            return;
+        }
+
+        barPos = gameObject.transform.position;
+        mousePos = eventData.position;
+
+        if(onDragCheck == false)
+        {
+            DragPos();
+        }
+
+        gameObject.transform.position = eventData.position - distancePos;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        gameObject.transform.position = eventData.position;
-        
+        if(barPointerCheck == false)
+        {
+            return;
+        }
+
+        gameObject.transform.position = eventData.position - distancePos;
+
+        onDragCheck = false;
+        barPointerCheck = false;
+    }
+
+    private void DragPos()
+    {
+        distancePos = mousePos - barPos;
+        onDragCheck = true;
     }
 }

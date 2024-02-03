@@ -15,7 +15,7 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        trsBeforeParent = transform.parent;
+        trsBeforeParent = transform.parent ;
 
         transform.SetParent(trsCanvas);
 
@@ -30,10 +30,15 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if(transform.parent == trsCanvas)
+        Transform trs = transform.parent;
+        Debug.Log($" 잡았던 오브젝트 = {LayerMask.LayerToName(gameObject.layer)} ");
+        Debug.Log($" 놓으려 했던 슬롯 = {LayerMask.LayerToName(trs.gameObject.layer)} ");
+
+        if(transform.parent == trsCanvas || LayerMask.LayerToName(gameObject.layer) != LayerMask.LayerToName(trs.gameObject.layer))
         {
             transform.SetParent(trsBeforeParent);
             rect.position = trsBeforeParent.GetComponentInParent<RectTransform>().position;
+            Debug.Log("슬롯 밖에 두었거나 맞는 스킬 슬롯에 넣어주세요");
         }
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;

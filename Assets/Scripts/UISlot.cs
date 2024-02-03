@@ -10,6 +10,8 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     private RectTransform rect;
     private Color defaultColor;
 
+    public string myLayer = "";
+
     public void OnDrop(PointerEventData eventData)
     {
         if(eventData.pointerDrag.active != null)
@@ -17,6 +19,8 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
             eventData.pointerDrag.transform.SetParent(transform);
             RectTransform dragRect = eventData.pointerDrag.GetComponent<RectTransform>();
             dragRect.position = rect.position;
+            Debug.Log($"{gameObject.name} ΩΩ∑‘ø° µ“");
+            Debug.Log($"{eventData.pointerDrag} ¡˝¿∫ æ∆¿Ã≈€");
         }
     }
 
@@ -35,6 +39,7 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
         image  = GetComponent<Image>();
         rect = GetComponent<RectTransform>();
         defaultColor = image.color;
+        myLayer = LayerMask.LayerToName(gameObject.layer);
     }
 
    

@@ -18,16 +18,29 @@ public class Player : MonoBehaviour
     public GameObject[] skill;
     public List<GameObject> skillList = new List<GameObject>();
 
+    [Header("스텟")]
     public float player_Speed = 5.0f;
-    public float player_Hp;
-    public float player_Mp;
-    public float skill_CoolDown;
-    public float skill_Damage;
+    public float CoolDown;
+    public float Damage;
+    public int player_MaxHp = 10;
+    public int player_MaxMp = 10;
+    private int player_Hp;
+    private int player_Mp;
+
+    [Header("HP 연출")]
+    [SerializeField] private PlayerHp playerHp;
+
     [Space]
+    [Header("MP 연출")]
+    [SerializeField] private PlayerMp playerMp;
+
+    [Space]
+    [Header(" -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - ")]
     public bool isJump = false;
     public bool isGround = false;
     public bool basicObj = false;
     public bool enemyObj = false;
+
     [Space]
     public float gravity = 30.0f;
     public float jumpForce = 20.0f;
@@ -36,7 +49,8 @@ public class Player : MonoBehaviour
     
     public int fallingLimit = 10;
 
-    public string skillCF = "";
+    public string skillLayer = string.Empty;
+    public string skillTag = string.Empty;
 
     private void Awake()
     {
@@ -67,6 +81,14 @@ public class Player : MonoBehaviour
     {
         basicObj = false;
         enemyObj = false;
+    }
+
+    private void Start()
+    {
+        player_Hp = player_MaxHp;
+        playerHp.SetPlayerHp(player_Hp, player_MaxHp); //시작시 최대 HP로 초기화
+        player_Mp = player_MaxMp;
+        playerMp.SetPlayerMp(player_Mp, player_MaxMp); //시작시 최대 MP로 초기화
     }
 
     void Update()
@@ -174,11 +196,12 @@ public class Player : MonoBehaviour
     {
         if (skillList[0].layer == LayerMask.NameToLayer("Active Skill"))
         {
-            skillCF = "Active Skill";
+            skillLayer = "Active Skill";
         }
         else if (skillList[0].layer == LayerMask.NameToLayer("Passive Skill"))
         {
-            skillCF = "Passive Skill";
+            skillLayer = "Passive Skill";
         }
+        skillTag = skillList[0].tag;
     }
 }

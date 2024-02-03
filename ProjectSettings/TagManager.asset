@@ -8,6 +8,8 @@ TagManager:
   - Basic Object
   - Enemy Object
   - Enemy
+  - Bar
+  - Slot
   layers:
   - Default
   - TransparentFX

@@ -108,6 +108,9 @@ public class InventoryManager : MonoBehaviour
 
         //인벤토리에 아이템을 생성
         GameObject obj = Instantiate(objUIItem, listInventory[slotNum]);
+        obj.layer = LayerMask.NameToLayer(Player.Instance.skillLayer); // 갖고 있는 스킬 인벤토리 생성시 레이어 동일하게 부여
+        obj.tag = Player.Instance.skillTag; // 태그도 동일하게
+
         UIItem sc = obj.GetComponent<UIItem>();
         sc.SetItem(_spr);
 
@@ -133,11 +136,11 @@ public class InventoryManager : MonoBehaviour
 
     private void CheckInventory()
     {
-        if(Player.Instance.skillCF == "Active Skill")
+        if(Player.Instance.skillLayer == "Active Skill")
         {
             listInventory = listActiveInventory;
         }
-        else if(Player.Instance.skillCF == "Passive Skill")
+        else if(Player.Instance.skillLayer == "Passive Skill")
         {
             listInventory = listPassiveInventory;
         }
