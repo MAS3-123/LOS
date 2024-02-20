@@ -30,8 +30,13 @@ public class GameManager : MonoBehaviour
 
     public void GetSkill()
     {
-        spr = Player.Instance.skillList[0].GetComponent<SpriteRenderer>().sprite;
-        if (InventoryManager.Instance.GetItem(spr))
+        GameObject item = Player.Instance.skillList[0];
+
+        spr = item.GetComponent<SpriteRenderer>().sprite;
+        LayerMask layer = item.layer; 
+        string tag = item.tag;
+
+        if (InventoryManager.Instance.GetItem(spr, layer, tag))
         {
             return;
         }
