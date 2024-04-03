@@ -900,8 +900,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barRect: {fileID: 248330558}
   canvas: {fileID: 290021900}
-  R_or_L: 0
-  U_or_D: 0
+  RL: 0
+  RL_path: 0
+  UD: 0
+  UD_path: 0
+  _Right: 0
+  _Left: 0
+  _Up: 0
+  _Down: 0
 --- !u!1 &290021896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1101,8 +1107,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barRect: {fileID: 323895173}
   canvas: {fileID: 290021900}
-  R_or_L: 0
-  U_or_D: 0
+  RL: 0
+  RL_path: 0
+  UD: 0
+  UD_path: 0
+  _Right: 0
+  _Left: 0
+  _Up: 0
+  _Down: 0
 --- !u!1 &438567499
 GameObject:
   m_ObjectHideFlags: 0

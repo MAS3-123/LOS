@@ -28,8 +28,12 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
     private bool mouseCheck = false;
     private bool mouseCheck2 = false;
     private bool outPos = true;
+    private bool XYcheck = false;
+    private bool XYcheck2 = false;
     public bool RL = false;
+    public bool RL_path = false;
     public bool UD = false;
+    public bool UD_path = false;
     public bool _Right = false;
     public bool _Left = false;
     public bool _Up = false;
@@ -118,20 +122,41 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
 
         if (RL == true || UD == true) // x또는 y축 고정 되었을 때 위에서 구한 값을 적용 할 함수 접근
         {
-            if (RL == true)
+            if ((RL == true) && (UD == true))
             {
+                if (RL_path == false || UD_path == false)
+                {
+                    RL_path = true;
+                    UD_path = true;
+                    XYcheck = false;
+                    Debug.Log("x, y true");
+                }
+                LimitBarPos(RL, UD, new Vector2(RL_Pos, UD_Pos), eventData.position);
+                //Debug.Log("x, y축 접근");
+            }
+            else if (RL == true)
+            {
+                if(RL_path == false || UD_path == true)
+                {
+                    RL_path = true;
+                    UD_path = false;
+                    XYcheck = false;
+                    Debug.Log("x true, y false");
+                }
                 LimitBarPos(RL, UD, new Vector2(RL_Pos, eventData.position.y), eventData.position);
-                Debug.Log("x축 접근");
+                //Debug.Log("x축 접근");
             }
             else if (UD == true)
             {
+                if (UD_path == false || RL_path == true)
+                {
+                    UD_path = true;
+                    RL_path = false;
+                    XYcheck = false;
+                    Debug.Log("x false, y true");
+                }
                 LimitBarPos(RL, UD, new Vector2(eventData.position.x, UD_Pos), eventData.position);
-                Debug.Log("y축 접근");
-            }
-            else if((RL == true) && (UD == true))
-            {
-                LimitBarPos(RL, UD, new Vector2(RL_Pos, UD_Pos), eventData.position);
-                Debug.Log("x, y축 접근");
+                //Debug.Log("y축 접근");
             }
         }
 
@@ -142,8 +167,6 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
             _Left = false; _Right = false; _Down = false; _Up = false;
             RL = false; UD = false;
             mouseCheck = false; mouseCheck2 = false;
-
-            Debug.Log("outpos ture");
         }
         #endregion
     }
@@ -265,31 +288,54 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
     private void LimitBarPos(bool fiexd_X, bool fiexd_Y, Vector2 _LimitPos, Vector2 _vec)
     {
         outPos = false;
-        if (fiexd_X == true && fiexd_Y == true)
-        {
-            mouseCheck = true;
-        }
 
-        if (mouseCheck == false && mouseCheck2 == false) // 접근시 한번만 체크 //2024.04.02 여기 부분이 문제 인듯 싶음 여기부터 해결하고 넘어가야할듯
+        if (XYcheck == false && XYcheck2 == false)
         {
-            Debug.Log("frist check");
-            mouseCheck = true;
-            if (fiexd_X == true) // 좌우 면 x 축 고정
+            XYcheck = true;
+            if (fiexd_X == true && fiexd_Y == true) // x , y축 닿았을 때
+            {
+                Xmouse = _vec.x; // 진입 마우스 위치
+                RL_xPos = _LimitPos.x; // 진입시 포지션 고정위치
+                Ymouse = _vec.y;
+                UD_yPos = _LimitPos.y; // 진입시 포지션 고정위치
+            }
+            else if (fiexd_X == true && fiexd_Y == false) // x 축 닿았을 때
             {
                 Xmouse = _vec.x; // 진입 마우스 위치
                 RL_xPos = _LimitPos.x; // 진입시 포지션 고정위치
             }
-            else if (fiexd_Y == true)// 위 아래면 y 축 고정
+            else if (fiexd_X == false && fiexd_Y == true) // y 축 닿았을 때
             {
                 Ymouse = _vec.y;
                 UD_yPos = _LimitPos.y; // 진입시 포지션 고정위치
             }
         }
 
-        if (mouseCheck == true || mouseCheck2 == true) // 축 하나 고정된 채로 다른 화면 끝에 닿았을 경우
-        {
+        //if (fiexd_X == true && fiexd_Y == true)
+        //{
+        //    mouseCheck2 = true;
+        //}
 
-        }
+        //if (mouseCheck == false && mouseCheck2 == false) // 접근시 한번만 체크 //2024.04.02 여기 부분이 문제 인듯 싶음 여기부터 해결하고 넘어가야할듯
+        //{
+        //    Debug.Log("frist check");
+        //    mouseCheck = true;
+        //    if (fiexd_X == true) // 좌우 면 x 축 고정
+        //    {
+        //        Xmouse = _vec.x; // 진입 마우스 위치
+        //        RL_xPos = _LimitPos.x; // 진입시 포지션 고정위치
+        //    }
+        //    else if (fiexd_Y == true)// 위 아래면 y 축 고정
+        //    {
+        //        Ymouse = _vec.y;
+        //        UD_yPos = _LimitPos.y; // 진입시 포지션 고정위치
+        //    }
+        //}
+
+        //if (mouseCheck == true || mouseCheck2 == true) // 축 하나 고정된 채로 다른 화면 끝에 닿았을 경우
+        //{
+
+        //}
 
         if (fiexd_X == true) // X축이 고정 되었을 때
         {// 중앙으로 복귀할 때 사용 될 부분
@@ -297,7 +343,8 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
             {
                 RL_xPos = _vec.x - distancePos.x; // 처음 드래그 위치와 동일한 포지션
                 outPos = true;
-                Debug.Log("Right / Left");
+                //Debug.Log("Right / Left");
+                return;
             }
             RL_yPos = _vec.y - distancePos.y;
         }
@@ -308,7 +355,8 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
             {
                 UD_yPos = _vec.y - distancePos.y;
                 outPos = true;
-                Debug.Log("UP / Down");
+                //Debug.Log("UP / Down");
+                return;
             }
             UD_xPos = _vec.x - distancePos.x;
         }
@@ -316,17 +364,17 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
         if (fiexd_X == true && fiexd_Y == true)
         {
             barLimmitPos = new Vector2(RL_xPos, UD_yPos);
-            Debug.Log("tt");
+            //Debug.Log("tt"); // 접근 하긴 함 근데 아직 잡 버그 있음
         }
         else if (fiexd_X == true && fiexd_Y == false)
         {
             barLimmitPos = new Vector2(RL_xPos, RL_yPos);
-            Debug.Log("tf");
+            //Debug.Log("tf");
         }
         else if (fiexd_Y == true && fiexd_X == false)
         {
             barLimmitPos = new Vector2(UD_xPos, UD_yPos);
-            Debug.Log("ft");
+            //Debug.Log("ft");
         }
 
         gameObject.transform.position = barLimmitPos;
