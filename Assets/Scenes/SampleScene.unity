@@ -898,9 +898,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838997b5e7103da4c908a17c58468281, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Test: 0
-  objTest: {fileID: 0}
-  barRect: {fileID: 0}
+  barRect: {fileID: 248330558}
+  canvas: {fileID: 290021900}
+  R_or_L: 0
+  U_or_D: 0
 --- !u!1 &290021896
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,9 +1099,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838997b5e7103da4c908a17c58468281, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Test: 0
-  objTest: {fileID: 0}
-  barRect: {fileID: 0}
+  barRect: {fileID: 323895173}
+  canvas: {fileID: 290021900}
+  R_or_L: 0
+  U_or_D: 0
 --- !u!1 &438567499
 GameObject:
   m_ObjectHideFlags: 0
