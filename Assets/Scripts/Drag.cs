@@ -106,7 +106,7 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
         {
             float limitPos;
 
-            if (barVec.y < sHeight / 2) // 화면 절반 기준 위 아래 나눔
+            if (barVec.y < sHeight / 2) //  화면 절반 기준 위 아래 나눔
             {
                 limitPos = barHeight * (barScale.y) * canvasScale.y - 1f;
                 _Down = true;
