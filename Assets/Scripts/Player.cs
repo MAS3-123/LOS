@@ -171,6 +171,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.G))
             {
                 skill[0] = StartObj.Instance.included_Skill[0];
+                StartObj.Instance.included_Skill[0] = null;
                 skillList.Add(skill[0]);
                 Skillclassification();
             }

@@ -42,9 +42,9 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
     float barWidth = 0f;
     float barHeight = 0f;
     float Xmouse = 0f;
-    float Xmouse_path = 0f;
+    public float Xmouse_path = 0f;
     float Ymouse = 0f;
-    float Ymouse_path = 0f;
+    public float Ymouse_path = 0f;
     float RL_Pos = 0f;
     float UD_Pos = 0f;
     float RL_xPos = 0f;
@@ -124,37 +124,39 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
         {
             if ((RL == true) && (UD == true))
             {
-                //if (RL_path == false || UD_path == false)
-                //{
-                //    RL_path = true;
-                //    UD_path = true;
-                //    XYcheck = false;
-                //    Debug.Log("x, y true");
-                //}
+                if (RL_path == false || UD_path == false)
+                {
+                    RL_path = true;
+                    UD_path = true;
+                    XYcheck = false;
+                    Debug.Log("x, y true");
+                }
                 LimitBarPos(RL, UD, new Vector2(RL_Pos, UD_Pos), eventData.position);
                 Debug.Log("x, y축 접근");
             }
             else if (RL == true)
             {
-                //if(RL_path == false || UD_path == true)
-                //{
-                //    RL_path = true;
-                //    UD_path = false;
-                //    XYcheck = false;
-                //    Debug.Log("x true, y false");
-                //}
+                if (RL_path == false || UD_path == true)
+                {
+                    RL_path = true;
+                    UD_path = false;
+                    //XYcheck = false;
+                    Ymouse_path = 0;
+                    Debug.Log("x true, y false");
+                }
                 LimitBarPos(RL, UD, new Vector2(RL_Pos, eventData.position.y), eventData.position);
                 Debug.Log("x축 접근");
             }
             else if (UD == true)
             {
-                //if (UD_path == false || RL_path == true)
-                //{
-                //    UD_path = true;
-                //    RL_path = false;
-                //    XYcheck = false;
-                //    Debug.Log("x false, y true");
-                //}
+                if (UD_path == false || RL_path == true)
+                {
+                    UD_path = true;
+                    RL_path = false;
+                    //XYcheck = false;
+                    Xmouse_path = 0;
+                    Debug.Log("x false, y true");
+                }
                 LimitBarPos(RL, UD, new Vector2(eventData.position.x, UD_Pos), eventData.position);
                 Debug.Log("y축 접근");
             }
@@ -166,6 +168,8 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
 
             _Left = false; _Right = false; _Down = false; _Up = false;
             RL = false; UD = false;
+            Xmouse_path = 0;
+            Ymouse_path = 0;
             XYcheck = false;
         }
         #endregion
@@ -300,23 +304,23 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
                 Ymouse = _vec.y;
                 UD_yPos = _LimitPos.y; // 진입시 포지션 고정위치
 
-                //if (Xmouse_path != 0 && Xmouse_path != Xmouse) // 중앙이 아닌 y축 고정상태에서 x축 고정 좌표까지 접근했을 때
-                //{
-                //    Xmouse = Xmouse_path;
-                //}
-                //else if (Xmouse_path == 0) // 중앙에서 접근했을 때
-                //{
-                //    Xmouse_path = Xmouse;
-                //}
+                if (Xmouse_path != 0 && Xmouse_path != Xmouse) // 중앙이 아닌 y축 고정상태에서 x축 고정 좌표까지 접근했을 때
+                {
+                    Xmouse = Xmouse_path;
+                }
+                else if (Xmouse_path == 0) // 중앙에서 접근했을 때
+                {
+                    Xmouse_path = Xmouse;
+                }
 
-                //if (Ymouse_path != 0 && Ymouse_path != Ymouse)
-                //{
-                //    Ymouse = Ymouse_path;
-                //}
-                //else if (Xmouse_path == 0)
-                //{
-                //    Ymouse_path = Ymouse;
-                //}
+                if (Ymouse_path != 0 && Ymouse_path != Ymouse)
+                {
+                    Ymouse = Ymouse_path;
+                }
+                else if (Xmouse_path == 0)
+                {
+                    Ymouse_path = Ymouse;
+                }
             }
             else if (fiexd_X == true && fiexd_Y == false) // x 축 닿았을 때
             {
