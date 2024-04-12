@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -41,16 +42,18 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
     float sHeight = 0f;
     float barWidth = 0f;
     float barHeight = 0f;
-    float Xmouse = 0f;
+    public float Xmouse = 0f;
     public float Xmouse_path = 0f;
-    float Ymouse = 0f;
+    public float Ymouse = 0f;
     public float Ymouse_path = 0f;
     float RL_Pos = 0f;
     float UD_Pos = 0f;
-    float RL_xPos = 0f;
+    public float RL_xPos = 0f;
     float RL_yPos = 0f;
     float UD_xPos = 0f;
     float UD_yPos = 0f;
+
+    int count = 0;
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -88,7 +91,7 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
         { // bar의 Width값에 중앙으로부터 떨어진 값이라 '/ 2' 하고 부모 스케일에 의해 값이 달라져야함 
             float limitPos;
 
-            if (barVec.x < sWidth / 2) // 오브젝트의 현재 위치가 현재 화면 Width 값의 최대 최소로 부터 오브젝트의 Width / 2 만큼의 값이 떨어져 있는경우 진입하여 현재 화면 Width값의 절반 기준 작다면 왼쪽
+            if (barVec.x < sWidth / 2) // 오브젝트의 현재 위치가 현재 화면 Width 값의 최대 최소로 부터 오브젝트의 'Width / 2' 만큼의 값이 떨어져 있는경우 진입하여 현재 화면 Width값의 절반 기준 작다면 왼쪽
             {
                 limitPos = barWidth * (barScale.x / 2) * canvasScale.x - 1f;
                 _Left = true;
@@ -122,43 +125,45 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
 
         if (RL == true || UD == true) // x또는 y축 고정 되었을 때 위에서 구한 값을 적용 할 함수 접근
         {
-            if ((RL == true) && (UD == true))
+            if ((RL == true) && (UD == true)) // x, y 축 고정었을 때
             {
                 if (RL_path == false || UD_path == false)
                 {
+                    //if(count == 0)
+                    //{
+                    //    XYcheck = false;
+                    //    count++;
+                    //}
+                    XYcheck = false;
                     RL_path = true;
                     UD_path = true;
-                    XYcheck = false;
                     Debug.Log("x, y true");
                 }
-                LimitBarPos(RL, UD, new Vector2(RL_Pos, UD_Pos), eventData.position);
-                Debug.Log("x, y축 접근");
+                LimitBarPos(RL, UD, new Vector2(RL_Pos, UD_Pos), eventData.position - distancePos);
             }
-            else if (RL == true)
+            else if (RL == true) // x축 고정되었을 때
             {
                 if (RL_path == false || UD_path == true)
                 {
-                    RL_path = true;
-                    UD_path = false;
+                    RL_path = true; UD_path = false;
+                    _Down = false; _Up = false;
                     //XYcheck = false;
                     Ymouse_path = 0;
                     Debug.Log("x true, y false");
                 }
-                LimitBarPos(RL, UD, new Vector2(RL_Pos, eventData.position.y), eventData.position);
-                Debug.Log("x축 접근");
+                LimitBarPos(RL, UD, new Vector2(RL_Pos, eventData.position.y), eventData.position - distancePos);
             }
-            else if (UD == true)
+            else if (UD == true) // y축 고정되었을 때
             {
                 if (UD_path == false || RL_path == true)
                 {
-                    UD_path = true;
-                    RL_path = false;
+                    UD_path = true; RL_path = false;
+                    _Left = false; _Right = false;
                     //XYcheck = false;
                     Xmouse_path = 0;
                     Debug.Log("x false, y true");
                 }
-                LimitBarPos(RL, UD, new Vector2(eventData.position.x, UD_Pos), eventData.position);
-                Debug.Log("y축 접근");
+                LimitBarPos(RL, UD, new Vector2(eventData.position.x, UD_Pos), eventData.position - distancePos);
             }
         }
 
@@ -168,9 +173,11 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
 
             _Left = false; _Right = false; _Down = false; _Up = false;
             RL = false; UD = false;
+            RL_path = false; UD_path = false;
             Xmouse_path = 0;
             Ymouse_path = 0;
             XYcheck = false;
+            Debug.Log("중앙");
         }
         #endregion
     }
@@ -214,7 +221,7 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
         onDragCheck = true;
     }
 
-    //private void LimitBarPos_X(bool R_or_L, float _LimitPos, Vector2 _vec) 이전에 구상한 함수임 참고만
+    //private void LimitBarPos_X(bool R_or_L, float _LimitPos, Vector2 _vec) 이전에 만든 함수임 참고만
     //{
     //    Debug.Log(R_or_L);
     //    outPos = false;
@@ -317,7 +324,7 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
                 {
                     Ymouse = Ymouse_path;
                 }
-                else if (Xmouse_path == 0)
+                else if (Ymouse_path == 0)
                 {
                     Ymouse_path = Ymouse;
                 }
@@ -327,54 +334,66 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
                 Xmouse = _vec.x; // 진입 마우스 위치
                 RL_xPos = _LimitPos.x; // 진입시 포지션 고정위치
 
-                //if(Xmouse_path != 0 && Xmouse_path != Xmouse)
-                //{
-                //    Xmouse = Xmouse_path;
-                //    Debug.Log(Xmouse_path);
-                //}
-                //else if(Xmouse_path == 0)
-                //{
-                //    Xmouse_path = Xmouse;
-                //    Debug.Log(Xmouse_path);
-                //}
+                if (Xmouse_path != 0 && Xmouse_path != Xmouse)
+                {
+                    Xmouse = Xmouse_path;
+                }
+                else if (Xmouse_path == 0)
+                {
+                    Xmouse_path = Xmouse;
+                }
             }
             else if (fiexd_X == false && fiexd_Y == true) // y 축 닿았을 때
             {
                 Ymouse = _vec.y;
                 UD_yPos = _LimitPos.y; // 진입시 포지션 고정위치
 
-                //if (Ymouse_path != 0 && Ymouse_path != Ymouse)
-                //{
-                //    Ymouse = Ymouse_path;
-                //}
-                //else if (Xmouse_path == 0)
-                //{
-                //    Ymouse_path = Ymouse;
-                //}
+                if (Ymouse_path != 0 && Ymouse_path != Ymouse)
+                {
+                    Ymouse = Ymouse_path;
+                }
+                else if (Ymouse_path == 0)
+                {
+                    Ymouse_path = Ymouse;
+                }
             }
         }
 
-        if (fiexd_X == true) // X축이 고정 되었을 때
+        if (fiexd_X == true && fiexd_Y == true) // x,y축 고정 > x / y축으로 이동할 때
+        {
+            if ((_Left == true && mousePos.x > Xmouse) || (_Right == true && mousePos.x < Xmouse)) // 모서리에서 y축으로 이동 할 때 (x축 고정위치로 부터 멀어질 때)
+            {
+                RL_xPos = _vec.x - distancePos.x;
+                RL = false;
+            }
+            if ((_Down == true && mousePos.y > Ymouse) || (_Up == true && mousePos.y < Ymouse)) // 모서리에서 x축으로 이동 할 때 (y축 고정위치로 부터 멀어질 때)
+            {
+                UD_yPos = _vec.y - distancePos.y;
+                UD = false;
+            }
+            if(RL == false && UD == false)
+            {
+                outPos = true;
+            }
+        }
+
+        if (fiexd_X == true && fiexd_Y == false) // X축이 고정 되었을 때
         {// 중앙으로 복귀할 때 사용 될 부분
             if ((_Left == true && mousePos.x > Xmouse) || (_Right == true && mousePos.x < Xmouse)) // 진입 마우스 위치보다 현재 마우스 위치가 클 경우 (왼쪽 >> 오른쪽)
             {
                 RL_xPos = _vec.x - distancePos.x; // 처음 드래그 위치와 동일한 포지션
                 outPos = true;
-                Xmouse_path = 0f;
-                //Debug.Log($"RL_xPOS = {RL_xPos}");
                 return;
             }
             RL_yPos = _vec.y - distancePos.y;
         }
 
-        if (fiexd_Y == true) // Y축이 고정 되었을 때
+        if (fiexd_X == false && fiexd_Y == true) // Y축이 고정 되었을 때
         {// 중앙으로 복귀할 때 사용 될 부분
             if ((_Down == true && mousePos.y > Ymouse) || (_Up == true && mousePos.y < Ymouse)) // 진입 마우스 위치보다 현재 마우스 위치가 클 경우 (위 >> 아래)
             {
                 UD_yPos = _vec.y - distancePos.y;
                 outPos = true;
-                Ymouse_path = 0f;
-                //Debug.Log($"UD_YPOS = {UD_yPos}");
                 return;
             }
             UD_xPos = _vec.x - distancePos.x;
@@ -383,17 +402,14 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
         if (fiexd_X == true && fiexd_Y == true)
         {
             barLimmitPos = new Vector2(RL_xPos, UD_yPos);
-            //Debug.Log("tt"); // 접근 하긴 함 근데 아직 잡 버그 있음
         }
         else if (fiexd_X == true && fiexd_Y == false)
         {
             barLimmitPos = new Vector2(RL_xPos, RL_yPos);
-            //Debug.Log("tf");
         }
         else if (fiexd_Y == true && fiexd_X == false)
         {
             barLimmitPos = new Vector2(UD_xPos, UD_yPos);
-            //Debug.Log("ft");
         }
 
         gameObject.transform.position = barLimmitPos;
