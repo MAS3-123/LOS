@@ -12,15 +12,13 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
 
     // [ColorUsage(true, true)] public Color color; Color > HDR 컬러 설정하는 법
 
-    //[SerializeField] bool Test = false;
-    //[SerializeField] GameObject objTest;
     [SerializeField] RectTransform barRect;
     [SerializeField] Canvas canvas;
+    [SerializeField] RectTransform inventoryRect;
 
     private Vector2 barPos;
     private Vector2 mousePos;
     private Vector2 distancePos;
-    private Vector2 barLimmitPos;
 
     private Vector3 canvasScale;
     private Vector3 barScale;
@@ -50,11 +48,12 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
         barScale = gameObject.transform.localScale;
 
         barRect = GetComponent<RectTransform>();
+
         barWidth = barRect.rect.width;
         barHeight = barRect.rect.height;
 
         limitPosX = new Vector2(barWidth * (barScale.x * 0.5f) * canvasScale.x, sWidth - barWidth * (barScale.x * 0.5f) * canvasScale.x); // x축 최대 최소 저장 벡터값
-        limitPosY = new Vector2(barHeight * (barScale.y) * canvasScale.y, sHeight - barHeight * (barScale.y) * canvasScale.y); // y축 최대 최소 저장 벡터값
+        limitPosY = new Vector2((barHeight + 55f) * (barScale.y) * canvasScale.y, sHeight - barHeight * (barScale.y * 0.5f) * canvasScale.y); // y축 최대 최소 저장 벡터값
     }
 
     public void OnPointerDown(PointerEventData eventData)

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] Rigidbody2D rigid;
     [SerializeField] PolygonCollider2D colli;
     [SerializeField] BoxCollider2D colliLeg;
+    [SerializeField] BoxCollider2D collEnemy;
 
     Vector2 moveDir = Vector2.zero;
 
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
     public bool isGround = false;
     public bool basicObj = false;
     public bool enemyObj = false;
+    public bool enemy = false;
 
     [Space]
     public float gravity = 30.0f;
@@ -70,7 +72,6 @@ public class Player : MonoBehaviour
         {
             basicObj = true;
         }
-
         else if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object") && _collision.gameObject.tag == "Enemy Object") // 적 처치시 상호작용 하게 될 오브젝트
         {
             enemyObj = true;
@@ -105,6 +106,8 @@ public class Player : MonoBehaviour
     {
         moveDir.x = Input.GetAxisRaw("Horizontal");
         rigid.velocity = new Vector2(moveDir.x * player_Speed, moveDir.y);
+
+        Debug.Log(rigid.velocity);
 
         if(moveDir.x > 0)
         {
@@ -154,7 +157,6 @@ public class Player : MonoBehaviour
             {
                 isJump = false;
                 verticalVelocity = jumpForce;
-                Debug.Log("점프");
             }
             else
             {
