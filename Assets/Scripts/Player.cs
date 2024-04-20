@@ -7,12 +7,14 @@ public class Player : MonoBehaviour
 {
     public static Player Instance;
 
+    [SerializeField] MovingStoneTrigger movingTri;
+    [SerializeField] SpawnTrigger spawnTri;
+    [SerializeField] StartObj startObject;
+    [Space]
     [SerializeField] SpriteRenderer spr;
     [Space]
-    [SerializeField] Rigidbody2D rigid;
-    [SerializeField] PolygonCollider2D colli;
+    [SerializeField] Rigidbody2D myRigid;
     [SerializeField] BoxCollider2D colliLeg;
-    [SerializeField] BoxCollider2D collEnemy;
 
     Vector2 moveDir = Vector2.zero;
 
@@ -48,11 +50,13 @@ public class Player : MonoBehaviour
     public float jumpForce = 12.0f;
     public float groundRatio = 0.02f;
     private float verticalVelocity = 0f;
+    public float routineF = 0f;
     
-    public int fallingLimit = 20;
+    public int fallingLimit = -20;
 
     public string skillLayer = string.Empty;
     public string skillTag = string.Empty;
+    public string groundTag = string.Empty;
 
     private void Awake()
     {
@@ -75,6 +79,15 @@ public class Player : MonoBehaviour
         else if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object") && _collision.gameObject.tag == "Enemy Object") // 적 처치시 상호작용 하게 될 오브젝트
         {
             enemyObj = true;
+        }
+        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Enmey") && _collision.gameObject.tag == "Enemy")
+        {
+            enemy = true;
+        }
+        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Spawn")
+        {
+            gameObject.transform.position = spawnTri.spawnVec;
+            verticalVelocity = 0f;
         }
     }
 
@@ -105,9 +118,7 @@ public class Player : MonoBehaviour
     private void Moving()
     {
         moveDir.x = Input.GetAxisRaw("Horizontal");
-        rigid.velocity = new Vector2(moveDir.x * player_Speed, moveDir.y);
-
-        Debug.Log(rigid.velocity);
+        myRigid.velocity = new Vector2(moveDir.x * player_Speed, moveDir.y);
 
         if(moveDir.x > 0)
         {
@@ -136,6 +147,11 @@ public class Player : MonoBehaviour
             if (hit)
             {
                 isGround = true;
+                if(hit.transform.tag == "Move Object") // 움직이는 발판에 올라갔을 때 발판 이동방향과 속도에 맞춰 플레이어도 움직임
+                {
+                    routineF = movingTri.routineF;
+                    myRigid.velocity = new Vector2(myRigid.velocity.x + routineF, verticalVelocity);
+                }
             }
         }
 
@@ -164,7 +180,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        rigid.velocity = new Vector2(rigid.velocity.x, verticalVelocity);
+        myRigid.velocity = new Vector2(myRigid.velocity.x, verticalVelocity);
     }
 
     private void InteractionObj() // 상호작용한 오브젝트가 갖고 있는 아이템 및 스킬 획득 함수
@@ -173,8 +189,8 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.G))
             {
-                skill[0] = StartObj.Instance.included_Skill[0];
-                StartObj.Instance.included_Skill[0] = null;
+                skill[0] = startObject.included_Skill[0];
+                startObject.included_Skill[0] = null;
                 skillList.Add(skill[0]);
                 Skillclassification();
             }

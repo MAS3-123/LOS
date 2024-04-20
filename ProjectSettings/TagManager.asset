@@ -10,6 +10,10 @@ TagManager:
   - Enemy
   - Bar
   - Slot
+  - MoveTri
+  - ChangeVecTri
+  - Move Object
+  - Spawn
   layers:
   - Default
   - TransparentFX
@@ -22,7 +26,7 @@ TagManager:
   - Interaction Object
   - Active Skill
   - Passive Skill
-  - 
+  - Trigger
   - 
   - 
   - 
