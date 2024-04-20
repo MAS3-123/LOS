@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Progress;
 
-public class ActiveSkill : MonoBehaviour
+public class ActiveSkillSlot : MonoBehaviour
 {
     [SerializeField] UIItem Q;
     [SerializeField] UIItem W;

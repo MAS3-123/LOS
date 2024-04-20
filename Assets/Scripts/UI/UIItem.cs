@@ -10,7 +10,8 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     private Transform trsBeforeParent;
     private RectTransform rect;
     private CanvasGroup canvasGroup;
-    private SpriteRenderer image;
+    private Image image;
+    private Sprite sprite;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -43,14 +44,15 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         canvasGroup.blocksRaycasts = true;
     }
 
-    public void SetItem(SpriteRenderer _spr)
+    public void SetItem(Sprite _spr)
     {
         if (image == null)
         {
-            image = GetComponent<SpriteRenderer>();
+            image = GetComponent<Image>();
             //image.SetNativeSize(); //원본과 동일한 사이즈로 변경
         }
-        image = _spr;
+        image.sprite = _spr;
+        sprite = _spr;
     }
 
     void Start()

@@ -72,6 +72,10 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
 
     public void OnDrag(PointerEventData eventData)
     {
+        if(barPointerCheck != true)
+        {
+            return;
+        }
         gameObject.transform.position = new Vector3(
             Mathf.Clamp(eventData.position.x - distancePos.x, limitPosX.x, limitPosX.y) , 
             Mathf.Clamp(eventData.position.y - distancePos.y, limitPosY.x, limitPosY.y) ,

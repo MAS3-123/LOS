@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -97,7 +98,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public bool GetItem(SpriteRenderer _spr, LayerMask _layer, string _tag, eItemType _iType, eSkillType _sType)
+    public bool GetItem(Sprite _spr, LayerMask _layer, string _tag, eItemType _iType, eSkillType _sType)
     {
         CheckInventory(_iType, _sType);
 
@@ -120,7 +121,7 @@ public class InventoryManager : MonoBehaviour
 
         //switch (_sType)
         //{
-        //    case eSkillType.ActiveSkill:
+        //    case eSkillType.ActiveSkillSlot:
         //        break;
         //    case eSkillType.PassiveSkill:
         //        break;

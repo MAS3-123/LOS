@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
-    private SpriteRenderer spr;
+    private Sprite spr;
 
     private void Awake()
     {
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject item = Player.Instance.skillList[0];
 
-        spr = item.GetComponent<SpriteRenderer>();
+        spr = item.GetComponent<SpriteRenderer>().sprite;
         LayerMask layer = item.layer; 
         string tag = item.tag;
 

@@ -460,6 +460,7 @@ GameObject:
   - component: {fileID: 116190347}
   - component: {fileID: 116190348}
   - component: {fileID: 116190349}
+  - component: {fileID: 116190350}
   m_Layer: 0
   m_Name: Active Skill Slot
   m_TagString: Untagged
@@ -531,6 +532,24 @@ MonoBehaviour:
   W: {fileID: 1871266474}
   E: {fileID: 1161673948}
   R: {fileID: 1463044677}
+  player: {fileID: 1238141562}
+  playerAim: {fileID: 2125675742}
+--- !u!114 &116190350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116190346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125b4b341f03b95439c52adfeed06898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Q: {fileID: 0}
+  W: {fileID: 0}
+  E: {fileID: 0}
+  R: {fileID: 0}
   player: {fileID: 1238141562}
   playerAim: {fileID: 2125675742}
 --- !u!1 &127742449

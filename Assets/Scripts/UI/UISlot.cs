@@ -21,7 +21,7 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     private Image image;
     private RectTransform rect;
     private Color defaultColor;
-    private ActiveSkill activeSkill;
+    private ActiveSkillSlot activeSkillSlot;
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -30,7 +30,7 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
             if (slot != eQWERSlot.None)
             {
                 UIItem item = eventData.pointerDrag.gameObject.GetComponent<UIItem>();
-                activeSkill.SetUiItem(slot, item);
+                activeSkillSlot.SetUiItem(slot, item);
             }
 
             eventData.pointerDrag.transform.SetParent(transform);
@@ -59,7 +59,7 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
 
         if (slot != eQWERSlot.None)
         {
-            activeSkill = transform.GetComponentInParent<ActiveSkill>();
+            activeSkillSlot = transform.GetComponentInParent<ActiveSkillSlot>();
         }
     }
 
