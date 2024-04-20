@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4975156711525851691}
   m_Layer: 9
   m_Name: ActiveBlueSkill
-  m_TagString: Basic Skill
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colli: {fileID: 4399596727419308766}
-  ground: 0
 --- !u!58 &4399596727419308766
 CircleCollider2D:
   m_ObjectHideFlags: 0

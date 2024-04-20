@@ -3,19 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using static UnityEditor.Progress;
+
+public enum eQWERSlot
+{
+    None,
+    Q,
+    W,
+    E,
+    R
+}
 
 public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    public eQWERSlot slot;
+
     private Image image;
     private RectTransform rect;
     private Color defaultColor;
-
-    public string myLayer = "";
+    private ActiveSkill activeSkill;
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(eventData.pointerDrag.active != null)
+        if (eventData.pointerDrag.gameObject != null)
         {
+            if (slot != eQWERSlot.None)
+            {
+                UIItem item = eventData.pointerDrag.gameObject.GetComponent<UIItem>();
+                activeSkill.SetUiItem(slot, item);
+            }
+
             eventData.pointerDrag.transform.SetParent(transform);
             RectTransform dragRect = eventData.pointerDrag.GetComponent<RectTransform>();
             dragRect.position = rect.position;
@@ -36,11 +53,15 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
 
     void Start()
     {
-        image  = GetComponent<Image>();
+        image = GetComponent<Image>();
         rect = GetComponent<RectTransform>();
         defaultColor = image.color;
-        myLayer = LayerMask.LayerToName(gameObject.layer);
+
+        if (slot != eQWERSlot.None)
+        {
+            activeSkill = transform.GetComponentInParent<ActiveSkill>();
+        }
     }
 
-   
+
 }

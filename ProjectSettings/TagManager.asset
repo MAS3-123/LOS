@@ -4,10 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Basic Skill
-  - Basic Object
-  - Enemy Object
-  - Enemy
   - Bar
   - Slot
   - MoveTri

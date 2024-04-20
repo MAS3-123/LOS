@@ -97,10 +97,12 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public bool GetItem(Sprite _spr, LayerMask _layer, string _tag)
+    public bool GetItem(SpriteRenderer _spr, LayerMask _layer, string _tag, eItemType _iType, eSkillType _sType)
     {
-        CheckInventory();
+        CheckInventory(_iType, _sType);
+
         int slotNum = getEmptyItemSlot();
+
         if(slotNum == -1)
         {
             return false;
@@ -108,10 +110,24 @@ public class InventoryManager : MonoBehaviour
 
         //인벤토리에 아이템을 생성
         GameObject obj = Instantiate(objUIItem, listInventory[slotNum]);
+        switch (_iType)
+        {
+            case eItemType.ThrowItem:
+                obj.AddComponent<ThrowItem>(); break; 
+            case eItemType.CunsumeItem:
+                obj.AddComponent<CunsumeItem>(); break;
+        }
+
+        //switch (_sType)
+        //{
+        //    case eSkillType.ActiveSkill:
+        //        break;
+        //    case eSkillType.PassiveSkill:
+        //        break;
+        //}
+
         obj.layer = _layer; // 갖고 있는 스킬 인벤토리 생성시 레이어 동일하게 부여
         obj.tag = _tag; // 태그도 동일하게
-        //obj.layer = LayerMask.NameToLayer(Player.Instance.skillLayer); // 갖고 있는 스킬 인벤토리 생성시 레이어 동일하게 부여
-        //obj.tag = Player.Instance.skillTag; // 태그도 동일하게
 
         UIItem sc = obj.GetComponent<UIItem>();
         sc.SetItem(_spr);
@@ -122,7 +138,7 @@ public class InventoryManager : MonoBehaviour
 
     private int getEmptyItemSlot()
     {
-        CheckInventory();
+        //CheckInventory();
         int count = listInventory.Count;
         for(int iNum = 0; iNum < count; iNum++)
         {
@@ -136,15 +152,16 @@ public class InventoryManager : MonoBehaviour
         return -1;
     }
 
-    private void CheckInventory()
+    private void CheckInventory(Enum _item, Enum _skill)
     {
-        if(Player.Instance.skillLayer == "Active Skill")
+        switch (_skill)
         {
-            listInventory = listActiveInventory;
-        }
-        else if(Player.Instance.skillLayer == "Passive Skill")
-        {
-            listInventory = listPassiveInventory;
+            case eSkillType.ActiveSkill:
+                listInventory = listActiveInventory;
+                Debug.Log("Active skill"); break;
+            case eSkillType.PassiveSkill:
+                listInventory = listPassiveInventory;
+                Debug.Log("Passive skill"); break;
         }
     }
 }

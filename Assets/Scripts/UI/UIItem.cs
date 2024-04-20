@@ -6,12 +6,11 @@ using UnityEngine.UI;
 
 public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-
     private Transform trsCanvas;
     private Transform trsBeforeParent;
     private RectTransform rect;
     private CanvasGroup canvasGroup;
-    private Image image;
+    private SpriteRenderer image;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -44,14 +43,14 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         canvasGroup.blocksRaycasts = true;
     }
 
-    public void SetItem(Sprite _spr)
+    public void SetItem(SpriteRenderer _spr)
     {
-        if(image == null)
+        if (image == null)
         {
-            image = GetComponent<Image>();
+            image = GetComponent<SpriteRenderer>();
+            //image.SetNativeSize(); //원본과 동일한 사이즈로 변경
         }
-        image.sprite = _spr;
-        //image.SetNativeSize(); //원본과 동일한 사이즈로 변경
+        image = _spr;
     }
 
     void Start()
@@ -61,4 +60,8 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
+    public virtual void UseItem(Vector3 _vec)
+    {
+        
+    }
 }

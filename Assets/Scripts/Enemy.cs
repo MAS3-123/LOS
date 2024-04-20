@@ -33,10 +33,10 @@ public class Enemy : MonoBehaviour
         trigger = false;
         Debug.Log($"trigger Off objectName = {gameObject.name}");
 
+        if (player == null) return;
+
         Vector3 vec = player.transform.position;
         distanceGap = enemyVec.x - vec.x;
-
-        if (player == null) return;
     }
 
     void Update()

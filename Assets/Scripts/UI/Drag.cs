@@ -32,8 +32,8 @@ public class Drag : MonoBehaviour, IDragHandler, IEndDragHandler, IPointerDownHa
 
     RectTransform rect;
 
-    Vector2 limitPosX;
-    Vector2 limitPosY;
+    public Vector2 limitPosX;
+    public Vector2 limitPosY;
 
     private void Awake()
     {

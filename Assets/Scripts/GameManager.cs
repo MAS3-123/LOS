@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
-    private Sprite spr;
+    private SpriteRenderer spr;
 
     private void Awake()
     {
@@ -29,15 +29,15 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void GetSkill()
+    public void GetSkill(eItemType _itemType, eSkillType _skillType)
     {
         GameObject item = Player.Instance.skillList[0];
 
-        spr = item.GetComponent<SpriteRenderer>().sprite;
+        spr = item.GetComponent<SpriteRenderer>();
         LayerMask layer = item.layer; 
         string tag = item.tag;
 
-        if (InventoryManager.Instance.GetItem(spr, layer, tag))
+        if (InventoryManager.Instance.GetItem(spr, layer, tag, _itemType, _skillType))
         {
             return;
         }

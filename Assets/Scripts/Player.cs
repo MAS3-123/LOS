@@ -9,16 +9,18 @@ public class Player : MonoBehaviour
 
     [SerializeField] MovingStoneTrigger movingTri;
     [SerializeField] SpawnTrigger spawnTri;
-    [SerializeField] StartObj startObject;
     [Space]
     [SerializeField] SpriteRenderer spr;
     [Space]
     [SerializeField] Rigidbody2D myRigid;
     [SerializeField] BoxCollider2D colliLeg;
 
+    StartObj startObject;
+
     Vector2 moveDir = Vector2.zero;
 
     public GameObject[] skill;
+    public GameObject obj;
     public List<GameObject> skillList = new List<GameObject>();
 
     [Header("스텟")]
@@ -52,7 +54,7 @@ public class Player : MonoBehaviour
     public int fallingLimit = -15;
     private float verticalVelocity = 0f;
     public float routineF = 0f;
-    
+
 
     public string skillLayer = string.Empty;
     public string skillTag = string.Empty;
@@ -72,13 +74,19 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D _collision)
     {
-        if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object") && _collision.gameObject.tag == "Basic Object") // 처음 상호작용 하게 될 오브젝트
+        if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object"))
         {
-            basicObj = true;
-        }
-        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object") && _collision.gameObject.tag == "Enemy Object") // 적 처치시 상호작용 하게 될 오브젝트
-        {
-            enemyObj = true;
+            obj = _collision.gameObject;
+            startObject = obj.GetComponent<StartObj>();
+
+            eObjectType eOType = startObject.GetComponent<ObjectType>().GetObjectType();
+            switch (eOType) 
+            {
+                case eObjectType.Basic:
+                    basicObj = true;  break;
+                case eObjectType.Enemy:
+                    enemyObj = true; break;
+            }
         }
         else if (_collision.gameObject.layer == LayerMask.NameToLayer("Enmey") && _collision.gameObject.tag == "Enemy")
         {
@@ -95,6 +103,7 @@ public class Player : MonoBehaviour
     {
         basicObj = false;
         enemyObj = false;
+        obj = null;
     }
 
     private void Start()
@@ -120,7 +129,7 @@ public class Player : MonoBehaviour
         moveDir.x = Input.GetAxisRaw("Horizontal");
         myRigid.velocity = new Vector2(moveDir.x * player_Speed, moveDir.y);
 
-        if(moveDir.x > 0)
+        if (moveDir.x > 0)
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
@@ -140,14 +149,14 @@ public class Player : MonoBehaviour
     {
         isGround = false;
 
-        if(verticalVelocity <= 0)
+        if (verticalVelocity <= 0)
         {
             RaycastHit2D hit = Physics2D.BoxCast(colliLeg.bounds.center, colliLeg.bounds.size, 0f, Vector2.down, groundRatio, LayerMask.GetMask("Ground"));
 
             if (hit)
             {
                 isGround = true;
-                if(hit.transform.tag == "Move Object") // 움직이는 발판에 올라갔을 때 발판 이동방향과 속도에 맞춰 플레이어도 움직임
+                if (hit.transform.tag == "Move Object") // 움직이는 발판에 올라갔을 때 발판 이동방향과 속도에 맞춰 플레이어도 움직임
                 {
                     routineF = movingTri.routineF;
                     myRigid.velocity = new Vector2(myRigid.velocity.x + routineF, verticalVelocity);
@@ -159,17 +168,17 @@ public class Player : MonoBehaviour
 
     private void CheckGravity()
     {
-        if(isGround == false)
+        if (isGround == false)
         {
             verticalVelocity -= gravity * Time.deltaTime;
-            if(verticalVelocity < fallingLimit)
+            if (verticalVelocity < fallingLimit)
             {
                 verticalVelocity = fallingLimit;
             }
         }
         else
         {
-            if(isJump == true) 
+            if (isJump == true)
             {
                 isJump = false;
                 verticalVelocity = jumpForce;
@@ -185,43 +194,30 @@ public class Player : MonoBehaviour
 
     private void InteractionObj() // 상호작용한 오브젝트가 갖고 있는 아이템 및 스킬 획득 함수
     {
-        if(basicObj == true)
+        if (basicObj == true)
         {
             if (Input.GetKeyDown(KeyCode.G))
             {
+                eItemType eiType = startObject.GetComponent<itemType>().GetItemType();
+                eSkillType esType = startObject.GetComponent<itemType>().GetSkillType();
                 skill[0] = startObject.included_Skill[0];
                 startObject.included_Skill[0] = null;
                 skillList.Add(skill[0]);
-                Skillclassification();
-            }
 
-            if (skill[0] != null)
-            {
-                GameManager.Instance.GetSkill();
-                skill[0] = null;
+                if (skill[0] != null)
+                {
+                    GameManager.Instance.GetSkill(eiType, esType);
+                    skill[0] = null;
+                }
             }
         }
 
-        else if(enemyObj == true)
+        else if (enemyObj == true)
         {
             if (Input.GetKeyDown(KeyCode.G))
             {
                 Debug.Log("enemy");
             }
         }
-    }
-
-
-    private void Skillclassification() // 스킬 분류 함수
-    {
-        if (skillList[0].layer == LayerMask.NameToLayer("Active Skill"))
-        {
-            skillLayer = "Active Skill";
-        }
-        else if (skillList[0].layer == LayerMask.NameToLayer("Passive Skill"))
-        {
-            skillLayer = "Passive Skill";
-        }
-        skillTag = skillList[0].tag;
     }
 }
