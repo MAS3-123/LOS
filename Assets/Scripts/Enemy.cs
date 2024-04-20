@@ -3,24 +3,21 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] GameObject player;
-    [SerializeField] Rigidbody2D rigid;
+    [SerializeField] Rigidbody2D myRigid;
+
     public GameObject[] included_Skill;
 
     public bool trigger = false;
     //public bool Trigger { set { trigger = value; } }
 
-    Vector3 vec;
+    Vector3 playerVec;
     Vector3 enemyVec;
 
-    private float distanceGap = 0f;
+    public float distanceGap = 0f;
+    private float enemyRotate = 0f;
     public float time = 0f;
 
     public int count = 0;
-
-    private void Awake()
-    {
-        enemyVec = gameObject.transform.position;
-    }
 
     private void OnBecameVisible()
     {
@@ -36,34 +33,47 @@ public class Enemy : MonoBehaviour
         trigger = false;
         Debug.Log($"trigger Off objectName = {gameObject.name}");
 
-        if (player == null) return;
-
-        vec = player.transform.position;
+        Vector3 vec = player.transform.position;
         distanceGap = enemyVec.x - vec.x;
 
-        Debug.Log($"vec = {vec}");
-        Debug.Log($"Gap = {distanceGap}");
+        if (player == null) return;
     }
 
     void Update()
     {
+        enemyVec = gameObject.transform.position;
+        playerVec = player.transform.position;
+
         if (count > 0 && trigger == false)
         {
             time += Time.deltaTime;
         }
 
-        EnemyMoveing();
+        EnemyMoving();
     }
 
-    private void EnemyMoveing()
+    private void EnemyMoving()
     {
+        enemyRotate = playerVec.x - enemyVec.x;
+
         if(time > 2f)
         {
             distanceGap = 0f;
             count = 0;
             Debug.Log("추적 취소");
         }
-        rigid.velocity = new Vector2(rigid.velocity.x - distanceGap * 0.05f, rigid.velocity.y); // 0.05는 움직임 확인하는 임의로 넣은 값 / false 됐을때 time.deltatime 이용해 좀 더 부드럽게 접근 하도록 해야함.
+
+        if (enemyRotate > 0)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        else if (enemyRotate < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        myRigid.velocity = new Vector2(myRigid.velocity.x - 5 * distanceGap * Time.deltaTime, myRigid.velocity.y); // 0.05는 움직임 확인하는 임의로 넣은 값 / false 됐을때 time.deltatime 이용해 좀 더 부드럽게 접근 하도록 해야함.
     }
     // 첫 조우 후 플레이어가 멀어지면 화면 내 범위까지 접근 하지만 특정 시간 내에 접근하지 못하면 이동 정지
     // 조우시 갖고있는 스킬 쿨타임마다 사용

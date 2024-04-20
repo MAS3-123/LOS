@@ -49,10 +49,10 @@ public class Player : MonoBehaviour
     public float gravity = 30.0f;
     public float jumpForce = 12.0f;
     public float groundRatio = 0.02f;
+    public int fallingLimit = -15;
     private float verticalVelocity = 0f;
     public float routineF = 0f;
     
-    public int fallingLimit = -20;
 
     public string skillLayer = string.Empty;
     public string skillTag = string.Empty;
@@ -162,7 +162,7 @@ public class Player : MonoBehaviour
         if(isGround == false)
         {
             verticalVelocity -= gravity * Time.deltaTime;
-            if(verticalVelocity > fallingLimit)
+            if(verticalVelocity < fallingLimit)
             {
                 verticalVelocity = fallingLimit;
             }

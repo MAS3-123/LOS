@@ -237,7 +237,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &19113869
 MonoBehaviour:
@@ -749,7 +749,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 120, y: 15}
+  m_AnchoredPosition: {x: 120, y: 0}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &169454989
@@ -794,7 +794,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &171179435
 MonoBehaviour:
@@ -938,7 +938,7 @@ RectTransform:
   - {fileID: 1367139044}
   - {fileID: 169454988}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2389,11 +2389,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 841601445}
+  - component: {fileID: 841601446}
   - component: {fileID: 841601444}
   - component: {fileID: 841601447}
   - component: {fileID: 841601443}
   - component: {fileID: 841601441}
-  - component: {fileID: 841601446}
   m_Layer: 7
   m_Name: StoneSlim
   m_TagString: Enemy
@@ -2539,7 +2539,7 @@ Transform:
   m_Children:
   - {fileID: 1296350874}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &841601446
 MonoBehaviour:
@@ -2554,9 +2554,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1238141558}
-  rigid: {fileID: 841601443}
+  myRigid: {fileID: 841601443}
   included_Skill: []
   trigger: 0
+  distanceGap: 0
   time: 0
   count: 0
 --- !u!61 &841601447
@@ -3106,7 +3107,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1115811281
 GameObject:
@@ -3721,7 +3722,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 70}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1231216642
@@ -3896,9 +3897,7 @@ MonoBehaviour:
   startObject: {fileID: 1244799439}
   spr: {fileID: 1238141561}
   myRigid: {fileID: 1238141560}
-  colli: {fileID: 0}
   colliLeg: {fileID: 1238141564}
-  collEnemy: {fileID: 0}
   skill:
   - {fileID: 0}
   skillList: []
@@ -3917,8 +3916,8 @@ MonoBehaviour:
   gravity: 30
   jumpForce: 12
   groundRatio: 0.02
+  fallingLimit: -15
   routineF: 0
-  fallingLimit: 20
   skillLayer: 
   skillTag: 
   groundTag: 
@@ -4096,7 +4095,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1244799438
 BoxCollider2D:
@@ -4761,7 +4760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -120, y: 15}
+  m_AnchoredPosition: {x: -120, y: 0}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1367139045
