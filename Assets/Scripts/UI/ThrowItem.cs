@@ -7,8 +7,7 @@ public class ThrowItem : UIItem
 {
     public override void UseItem(Vector3 _vec)
     {
-        GameObject obj = new GameObject();
-        obj.AddComponent<BasicSkill>();
+        GameObject obj = Resources.Load<GameObject>("Prefebs/ActiveBlueSkill");
         Instantiate(obj, _vec, Quaternion.identity);
         Debug.Log("던져지는 기능");
     }
