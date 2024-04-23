@@ -8,7 +8,6 @@ public class BasicSkill : MonoBehaviour
 
     private bool enemy;
     private bool time;
-    private bool isGround;
 
     public float timeF = 0f;
 
@@ -29,11 +28,6 @@ public class BasicSkill : MonoBehaviour
             enemy = true;
             Debug.Log("ÀûÀÌ¶û Á¢ÃË");
         }
-        if (_collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            isGround = true;
-            Debug.Log("º®ÀÌ¶û Á¢ÃË");
-        }
     }
 
     private void DestroyObject()
@@ -45,7 +39,7 @@ public class BasicSkill : MonoBehaviour
             Debug.Log("½Ã°£ ´Ù µÊ");
         }
 
-        if(enemy || time || isGround)
+        if(enemy || time)
         {
             Destroy(gameObject);
         }

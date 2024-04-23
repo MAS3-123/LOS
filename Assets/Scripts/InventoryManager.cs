@@ -100,7 +100,7 @@ public class InventoryManager : MonoBehaviour
 
     public bool GetItem(Sprite _spr, LayerMask _layer, string _tag, eItemType _iType, eSkillType _sType)
     {
-        CheckInventory(_iType, _sType);
+        CheckInventory(_iType, _sType); // activeskill 인지 passiveskill인지 구분하는 함수
 
         int slotNum = getEmptyItemSlot();
 
@@ -118,14 +118,6 @@ public class InventoryManager : MonoBehaviour
             case eItemType.CunsumeItem:
                 obj.AddComponent<CunsumeItem>(); break;
         }
-
-        //switch (_sType)
-        //{
-        //    case eSkillType.ActiveSkillSlot:
-        //        break;
-        //    case eSkillType.PassiveSkill:
-        //        break;
-        //}
 
         obj.layer = _layer; // 갖고 있는 스킬 인벤토리 생성시 레이어 동일하게 부여
         obj.tag = _tag; // 태그도 동일하게

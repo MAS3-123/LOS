@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class StoneSkill : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public float coolTime = 0f;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
+
+    // 점프 후 최고 지점에서 빠르게 하강하여 isGround가 on 일 때 주변에 땅에 닿아 있는 player 및 enmey에게 데미지
 }

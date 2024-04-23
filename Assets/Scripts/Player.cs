@@ -15,13 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField] Rigidbody2D myRigid;
     [SerializeField] BoxCollider2D colliLeg;
 
-    StartObj startObject;
+    public InteractionObject interObj;
 
     Vector2 moveDir = Vector2.zero;
-
-    public GameObject[] skill;
-    public GameObject obj;
-    public List<GameObject> skillList = new List<GameObject>();
 
     [Header("스텟")]
     public float player_Speed = 5.0f;
@@ -72,27 +68,36 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D _collision)
+    private void Start()
     {
-        if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object"))
-        {
-            obj = _collision.gameObject;
-            startObject = obj.GetComponent<StartObj>();
+        player_Hp = player_MaxHp;
+        playerHp.SetPlayerHp(player_Hp, player_MaxHp); //시작시 최대 HP로 초기화
+        player_Mp = player_MaxMp;
+        playerMp.SetPlayerMp(player_Mp, player_MaxMp); //시작시 최대 MP로 초기화
+    }
 
-            eObjectType eOType = startObject.GetComponent<ObjectType>().GetObjectType();
+    private void OnTriggerEnter2D(Collider2D _collision) // 어떤 콜라이더와 접촉했을 때 발동되는 트리거(함수)
+    {
+        if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object")) // 접촉한 콜라이더의 레이어가 interaction object(상호작용 오브젝트)일 경우
+        {
+            GameObject obj;
+            obj = _collision.gameObject; // obj는 접촉한 오브젝트
+            interObj = obj.GetComponent<InteractionObject>(); // stratObject는 접촉한 오브젝트의 startobj를 참조함.(이렇게 한 이유는 startobj를 가진 오브젝트가 2개인데 트리거된 오브젝트로 부터 뭔가 액션을 취하기위해 구분한 것)
+
+            eObjectType eOType = interObj.GetComponent<ObjectType>().GetObjectType(); // 오브젝트 타입은 인스펙터에서 설정한 오브젝트 타입을 따라감.
             switch (eOType) 
             {
                 case eObjectType.Basic:
-                    basicObj = true;  break;
+                    basicObj = true; break;
                 case eObjectType.Enemy:
                     enemyObj = true; break;
             }
         }
-        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Enmey") && _collision.gameObject.tag == "Enemy")
+        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Enmey") && _collision.gameObject.tag == "Enemy") // 적과 접촉했을 때 사용 할 트리거
         {
             enemy = true;
         }
-        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Spawn")
+        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Spawn") // 땅에 떨어졌을 때 사용 할 스폰 트리거
         {
             gameObject.transform.position = spawnTri.spawnVec;
             verticalVelocity = 0f;
@@ -103,15 +108,6 @@ public class Player : MonoBehaviour
     {
         basicObj = false;
         enemyObj = false;
-        obj = null;
-    }
-
-    private void Start()
-    {
-        player_Hp = player_MaxHp;
-        playerHp.SetPlayerHp(player_Hp, player_MaxHp); //시작시 최대 HP로 초기화
-        player_Mp = player_MaxMp;
-        playerMp.SetPlayerMp(player_Mp, player_MaxMp); //시작시 최대 MP로 초기화
     }
 
     void Update()
@@ -126,8 +122,8 @@ public class Player : MonoBehaviour
 
     private void Moving()
     {
-        moveDir.x = Input.GetAxisRaw("Horizontal");
-        myRigid.velocity = new Vector2(moveDir.x * player_Speed, moveDir.y);
+        moveDir.x = Input.GetAxisRaw("Horizontal"); // 가로로 움직이는 키 입력을 받아옴(좌우 에로우키, A, D)
+        myRigid.velocity = new Vector2(moveDir.x * player_Speed, moveDir.y);// addforce는 질량에 의한 움직임으로 관성이 작용한다. velocity는 질량을 무시하고 직접적으로 속도를 변화하여 즉각적인 움직임이 가능하다.
 
         if (moveDir.x > 0)
         {
@@ -168,10 +164,10 @@ public class Player : MonoBehaviour
 
     private void CheckGravity()
     {
-        if (isGround == false)
+        if (isGround == false) // 공중에 떴을 경우(isGround 가 true > false 가 되자마자)
         {
-            verticalVelocity -= gravity * Time.deltaTime;
-            if (verticalVelocity < fallingLimit)
+            verticalVelocity -= gravity * Time.deltaTime; // verticalVelocity는 오브젝트가 y축 - 방형으로 받는 힘의 크기이고 중력값을 임의로 조정하기위해 스크립트로 작성했기에 중력을 받는 것 처럼 보이게 하려면 공중에 떴을 때부터 y축 - 방향으로 계속 힘이 가해져야 한다.
+            if (verticalVelocity < fallingLimit) // 떨어지는 값이 설정한 limit값보다 작아 질 경우(떨어지는 값이 설정한 값보다 커질경우) limit값으로 보정.
             {
                 verticalVelocity = fallingLimit;
             }
@@ -181,7 +177,7 @@ public class Player : MonoBehaviour
             if (isJump == true)
             {
                 isJump = false;
-                verticalVelocity = jumpForce;
+                verticalVelocity = jumpForce; // 스페이스바를 눌렀을 때 y축 방향으로 힘을 가함.
             }
             else
             {
@@ -198,17 +194,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.G))
             {
-                eItemType eiType = startObject.GetComponent<itemType>().GetItemType();
-                eSkillType esType = startObject.GetComponent<itemType>().GetSkillType();
-                skill[0] = startObject.included_Skill[0];
-                startObject.included_Skill[0] = null;
-                skillList.Add(skill[0]);
-
-                if (skill[0] != null)
-                {
-                    GameManager.Instance.GetSkill(eiType, esType);
-                    skill[0] = null;
-                }
+                interObj.trigger = true;
             }
         }
 
