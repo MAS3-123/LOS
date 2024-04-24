@@ -119,8 +119,13 @@ public class InventoryManager : MonoBehaviour
                 obj.AddComponent<CunsumeItem>(); break;
         }
 
-        obj.layer = _layer; // 갖고 있는 스킬 인벤토리 생성시 레이어 동일하게 부여
-        obj.tag = _tag; // 태그도 동일하게
+        switch (_sType)
+        {
+            case eSkillType.ActiveSkill:
+                obj.layer = LayerMask.NameToLayer("Active Skill");  break;
+            case eSkillType.PassiveSkill:
+                obj.layer = LayerMask.NameToLayer("Passive Skill"); break;
+        }
 
         UIItem sc = obj.GetComponent<UIItem>();
         sc.SetItem(_spr);

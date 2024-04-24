@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     [Space]
     [Header(" -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - ")]
     public bool isJump = false;
+    public bool dubleJump = false;
     public bool isGround = false;
     public bool basicObj = false;
     public bool enemyObj = false;
@@ -50,6 +51,8 @@ public class Player : MonoBehaviour
     public int fallingLimit = -15;
     private float verticalVelocity = 0f;
     public float routineF = 0f;
+
+    private int dubleJumpCount = 0;
 
 
     public string skillLayer = string.Empty;
@@ -139,6 +142,11 @@ public class Player : MonoBehaviour
         {
             isJump = true;
         }
+        if (isGround == false && Input.GetKeyDown(KeyCode.Space) == true && dubleJumpCount == 0)
+        {
+            dubleJump = true;
+            dubleJumpCount++;
+        }
     }
 
     private void CheckGround()
@@ -171,6 +179,11 @@ public class Player : MonoBehaviour
             {
                 verticalVelocity = fallingLimit;
             }
+            if (dubleJump == true)
+            {
+                dubleJump = false;
+                verticalVelocity = jumpForce; // 스페이스바를 눌렀을 때 y축 방향으로 힘을 가함.
+            }
         }
         else
         {
@@ -182,6 +195,7 @@ public class Player : MonoBehaviour
             else
             {
                 verticalVelocity = 0;
+                dubleJumpCount = 0;
             }
         }
 

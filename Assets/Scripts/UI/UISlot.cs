@@ -6,18 +6,19 @@ using UnityEngine.EventSystems;
 using static UnityEditor.Progress;
 using System;
 
-public enum eQWERSlot
+public enum eQWERPSlot
 {
     None,
     Q,
     W,
     E,
-    R
+    R,
+    P,
 }
 
 public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public eQWERSlot slot;
+    public eQWERPSlot slot;
 
     private Image image;
     private RectTransform rect;
@@ -32,7 +33,7 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
         rect = GetComponent<RectTransform>(); // rect 함수는 이 스크립트를 갖고 있는 오브젝트의 rectTrasform이다.
         defaultColor = image.color; // defaultColor는 이 오브젝트의 color이다.
 
-        if (slot != eQWERSlot.None)
+        if (slot != eQWERPSlot.None)
         {
             activeSkillSlot = transform.GetComponentInParent<ActiveSkillSlot>();
         }
@@ -42,35 +43,43 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     {
         if (eventData.pointerDrag.gameObject != null) // 아이템이 없지 않으면
         {
+            Transform temTrs = OnDropPos(eventData);
+            GameObject obj = transform.GetChild(0).gameObject;
+            eQWERPSlot beforeSlot = temTrs.GetComponent<UISlot>().slot;
 
-            if (slot != eQWERSlot.None) // QWER슬롯이라면(active skill slot에 놓았다면)
+            if (slot != eQWERPSlot.None) // QWER슬롯이라면(active skill slot에 놓았다면)
             {
                 UIItem item = eventData.pointerDrag.gameObject.GetComponent<UIItem>(); // item 은 내가 드래그한 오브젝트의 UIItem 컴포넌트를 참조한다.
                 activeSkillSlot.SetUiItem(slot, item); // activeSkillSlot의 SetUiItem 함수를 사용함.
+
+                if (transform.childCount > 1 && beforeSlot != eQWERPSlot.None) //qwer 슬롯 > qwer슬롯
+                {
+                    Debug.Log("qwer 슬롯 > qwer슬롯");
+                    UIItem beforeItem = obj.GetComponent<UIItem>();
+                    ReturnObject(temTrs, obj);
+                    activeSkillSlot.SetUiItem(beforeSlot, beforeItem);
+                }
+                else if (transform.childCount > 1 && beforeSlot == eQWERPSlot.None)// 인벤토리 슬롯 > qwer 슬롯
+                {
+                    Debug.Log("인벤토리 슬롯 > qwer슬롯");
+                    ReturnObject(temTrs, obj);
+                }
             }
-
-            UIItem tem = eventData.pointerDrag.gameObject.GetComponent<UIItem>();
-            Transform temTrs = tem.trsBeforeParent;
-
-            eventData.pointerDrag.transform.SetParent(transform); // 내가 드래그한 오브젝트의 부모를 끌어다 놓은 슬롯으로 한다.(내가 끌어다 놓은 슬롯의 자식으로 드래그한 오브젝트를 넣는다.)
-            RectTransform dragRect = eventData.pointerDrag.GetComponent<RectTransform>(); // dragRect 는 움직이는 오브젝트의 RectTransform을 참조한다.
-            dragRect.position = rect.position; // dragRect.position 은 UIslot(즉 놓으려는 슬롯)의 rect 포지션을 참조한다.
-
-            Debug.Log($"{gameObject.name} 슬롯에 둠");
-            Debug.Log($"{eventData.pointerDrag} 집은 아이템");
-
-            if (transform.childCount > 1)
+            else // 인벤토리 슬롯이라면
             {
-                Debug.Log($"슬롯 과부하");
-                GameObject obj = transform.GetChild(0).gameObject;
-                obj.transform.SetParent(temTrs);
-                obj.transform.position = temTrs.position;
-                //if (slot != eQWERSlot.None) // QWER슬롯이라면(active skill slot에 놓았다면)
-                //{
-                //    Debug.Log(obj.transform.parent.name);// = 이전거 뜸
-                //    UIItem beforeSlot = obj.gameObject.GetComponent<UIItem>(); // item 은 내가 드래그한 오브젝트의 UIItem 컴포넌트를 참조한다.
-                //    activeSkillSlot.SetUiItem(slot, beforeSlot); // activeSkillSlot의 SetUiItem 함수를 사용함.
-                //}
+                if (transform.childCount > 1 && beforeSlot == eQWERPSlot.None) // 인벤토리 슬롯 > 인벤토리 슬롯
+                {
+                    Debug.Log("인벤토리 슬롯 > 인벤토리 슬롯");
+                    ReturnObject(temTrs, obj);
+                }
+                else if(transform.childCount > 1 && beforeSlot != eQWERPSlot.None) // qwer 슬롯 > 인벤토리 슬롯
+                {
+                    Debug.Log("qwer 슬롯 > 인벤토리 슬롯");
+                    UIItem beforeItem = obj.GetComponent<UIItem>();
+                    Debug.Log(beforeItem.gameObject.name);
+                    ReturnObject(temTrs, obj);
+                    activeSkillSlot.SetUiItem(beforeSlot, beforeItem); // 문제 발생
+                }
             }
         }
     }
@@ -85,5 +94,23 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
         image.color = defaultColor; // 커서를 빼면 이미지를 기본 색으로 바꾼다.
     }
 
+
+    private Transform OnDropPos(PointerEventData eventData) // 드래그한 오브젝트의 포지션 정해주는 함수
+    {
+        UIItem tem = eventData.pointerDrag.gameObject.GetComponent<UIItem>();
+        Transform temTrs = tem.trsBeforeParent; // 드래그한 오브젝트의 이전 부모트랜스폼.
+
+        eventData.pointerDrag.transform.SetParent(transform); // 내가 드래그한 오브젝트의 부모를 끌어다 놓은 슬롯으로 한다.(내가 끌어다 놓은 슬롯의 자식으로 드래그한 오브젝트를 넣는다.)
+        RectTransform dragRect = eventData.pointerDrag.GetComponent<RectTransform>(); // dragRect 는 움직이는 오브젝트의 RectTransform을 참조한다.
+        dragRect.position = rect.position; // dragRect.position 은 UIslot(즉 놓으려는 슬롯)의 rect 포지션을 참조한다.
+
+        return temTrs;
+    }
+
+    private void ReturnObject(Transform _trs, GameObject _obj)
+    {
+        _obj.transform.SetParent(_trs);
+        _obj.transform.position = _trs.position;
+    }
 
 }

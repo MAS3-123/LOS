@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SlotButton : MonoBehaviour
 {
@@ -30,29 +31,19 @@ public class SlotButton : MonoBehaviour
         actinven_ActButton.onClick.AddListener(() => { ActiveButton(); });
     }
 
-    private void ActivateButton()
-    {
-        if (Inven.activeInventory.activeSelf == false && Inven.passiveInventory.activeSelf == true)
-        {
-            pasinven_ActButton.interactable = false;
-            pasinven_PasButton.interactable = true;
-        }
-        else if(Inven.passiveInventory.activeSelf == false && Inven.activeInventory.activeSelf == true)
-        {
-            actinven_ActButton.interactable = true;
-            actinven_PasButton.interactable = false;
-        }
-    }
-
     private void PassiveButton()
     {
         Inven.passiveBar.SetActive(true);
         Inven.activeBar.SetActive(false);
+        TextMeshProUGUI text = actinven_PasButton.GetComponentInChildren<TextMeshProUGUI>();
+        text.color = Color.black;
     }
 
     private void ActiveButton()
     {
         Inven.passiveBar.SetActive(false);
         Inven.activeBar.SetActive(true);
+        TextMeshProUGUI text = pasinven_ActButton.GetComponentInChildren<TextMeshProUGUI>();
+        text.color = Color.black;
     }
 }

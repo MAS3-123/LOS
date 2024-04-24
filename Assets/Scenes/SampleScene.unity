@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 2253474}
   - component: {fileID: 2253475}
   - component: {fileID: 2253476}
+  - component: {fileID: 2253477}
   m_Layer: 0
   m_Name: Passive Skill Slot
   m_TagString: Untagged
@@ -187,6 +188,18 @@ MonoBehaviour:
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &2253476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2253473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c96fc72e0878e0419901597a32cff87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2253477
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -320,6 +333,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &34166448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,6 +425,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &72395358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,6 +601,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &127742452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1189,6 +1208,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &438567502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1622,6 +1643,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &691740797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2198,6 +2221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &736723619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2288,6 +2313,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &759554068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2378,6 +2405,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &825424297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2711,6 +2740,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &857256423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2885,6 +2916,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &895718740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3215,6 +3248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1115811284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3427,6 +3462,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1132631435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3517,6 +3554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1136221940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3607,6 +3646,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 3
+  count: 0
+  trsSlot: []
 --- !u!114 &1161673951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3776,7 +3817,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 66.399994}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 359.3014, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1231216642
@@ -3960,6 +4001,7 @@ MonoBehaviour:
   playerHp: {fileID: 1367139045}
   playerMp: {fileID: 169454989}
   isJump: 0
+  dubleJump: 0
   isGround: 0
   basicObj: 0
   enemyObj: 0
@@ -4592,6 +4634,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1317206240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4776,7 +4820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ItemType: 1
-  skillType: 0
+  skillType: 1
 --- !u!114 &1320416208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4895,6 +4939,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 1
+  count: 0
+  trsSlot: []
 --- !u!1 &1340838466
 GameObject:
   m_ObjectHideFlags: 0
@@ -17007,6 +17053,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!1 &1456653143
 GameObject:
   m_ObjectHideFlags: 0
@@ -17059,6 +17107,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1456653146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17149,6 +17199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 4
+  count: 0
+  trsSlot: []
 --- !u!114 &1463044680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17239,6 +17291,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1473009338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17443,6 +17497,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!1 &1518105434
 GameObject:
   m_ObjectHideFlags: 0
@@ -17630,6 +17686,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1541409986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17720,6 +17778,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1612565409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17894,6 +17954,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1634499718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18626,6 +18688,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1756096948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18716,6 +18780,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &1785518472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19021,6 +19087,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 2
+  count: 0
+  trsSlot: []
 --- !u!114 &1871266477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19233,6 +19301,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &2043051286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19458,6 +19528,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
+  count: 0
+  trsSlot: []
 --- !u!114 &2089843843
 MonoBehaviour:
   m_ObjectHideFlags: 0
