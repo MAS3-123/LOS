@@ -122,9 +122,11 @@ public class InventoryManager : MonoBehaviour
         switch (_sType)
         {
             case eSkillType.ActiveSkill:
-                obj.layer = LayerMask.NameToLayer("Active Skill");  break;
+                UIItem objItem = obj.GetComponent<UIItem>();
+                objItem.itemSkillType = eItemSkillType.Active; break;
             case eSkillType.PassiveSkill:
-                obj.layer = LayerMask.NameToLayer("Passive Skill"); break;
+                UIItem objitem = obj.GetComponent<UIItem>();
+                objitem.itemSkillType = eItemSkillType.Pssive; break;
         }
 
         UIItem sc = obj.GetComponent<UIItem>();
