@@ -32,10 +32,18 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     {
         trsBeforeParent = transform.parent ;// 이전으로 돌아갈 transform 값을 이 오브젝트의 부모 transform으로 설정.
         UISlot beforeSlot = trsBeforeParent.GetComponent<UISlot>();
-        if(beforeSlot.slot != eQWERSlot.None)
+        if (beforeSlot.slot != eQWERPSlot.None)
         {
-            ActiveSkillSlot activeSkillSlot = transform.GetComponentInParent<ActiveSkillSlot>();
-            activeSkillSlot.RemoveUiItem(beforeSlot.slot);
+            if(trsBeforeParent.GetComponent<UISlot_A>() != null)
+            {
+                ActiveSkillSlot activeSkillSlot = transform.GetComponentInParent<ActiveSkillSlot>();
+                activeSkillSlot.RemoveUiItem(beforeSlot.slot);
+            }
+            else if (trsBeforeParent.GetComponent<UISlot_P>() != null)
+            {
+                PassiveSkillSlot passiveSkillSlot = transform.GetComponentInParent<PassiveSkillSlot>();
+                passiveSkillSlot.RemoveUiItem(beforeSlot.slot);
+            }
         }
         transform.SetParent(trsCanvas); // 옮기는 순간 부모는 UIcanvs로 바뀜
 
@@ -54,11 +62,11 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         Debug.Log($" 잡았던 오브젝트 = {LayerMask.LayerToName(gameObject.layer)} ");
         Debug.Log($" 놓으려 했던 슬롯 = {LayerMask.LayerToName(trs.gameObject.layer)} ");
 
-        if(transform.parent == trsCanvas || LayerMask.LayerToName(gameObject.layer) != LayerMask.LayerToName(trs.gameObject.layer)) // 오브젝트를 놓은 후 제자리로 돌아가는 부분
+        if(transform.parent == trsCanvas) // 오브젝트를 놓은 후 제자리로 돌아가는 부분
         {
             transform.SetParent(trsBeforeParent); // OnBeginDrag 에서 설정했던 슬롯의 transform으로 되돌아감.
             rect.position = trsBeforeParent.GetComponentInParent<RectTransform>().position; // 슬롯의 중앙에 위치해야 하니 그 슬롯의 rectTrasform 을 가져와서 사용.
-            Debug.Log("슬롯 밖에 두었거나 맞는 스킬 슬롯에 넣어주세요");
+            Debug.Log("슬롯 밖에 두었습니다.");
         }
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;

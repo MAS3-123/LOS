@@ -335,7 +335,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &34166448
 MonoBehaviour:
@@ -427,7 +426,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &72395358
 MonoBehaviour:
@@ -603,7 +601,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &127742452
 MonoBehaviour:
@@ -802,7 +799,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 120, y: 0}
+  m_AnchoredPosition: {x: 120, y: 11.6015625}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &169454989
@@ -1210,7 +1207,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &438567502
 MonoBehaviour:
@@ -1645,7 +1641,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &691740797
 MonoBehaviour:
@@ -2223,7 +2218,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &736723619
 MonoBehaviour:
@@ -2315,7 +2309,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &759554068
 MonoBehaviour:
@@ -2407,7 +2400,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &825424297
 MonoBehaviour:
@@ -2742,7 +2734,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &857256423
 MonoBehaviour:
@@ -2918,7 +2909,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &895718740
 MonoBehaviour:
@@ -3250,7 +3240,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1115811284
 MonoBehaviour:
@@ -3464,7 +3453,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1132631435
 MonoBehaviour:
@@ -3556,7 +3544,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1136221940
 MonoBehaviour:
@@ -3607,7 +3594,7 @@ GameObject:
   - component: {fileID: 1161673949}
   - component: {fileID: 1161673952}
   - component: {fileID: 1161673951}
-  - component: {fileID: 1161673950}
+  - component: {fileID: 1161673953}
   m_Layer: 9
   m_Name: E
   m_TagString: Slot
@@ -3635,21 +3622,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1161673950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1161673948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9934c067f78dd9946ba0c626eaed1d97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slot: 3
-  pSlot: 0
-  trsSlot: []
 --- !u!114 &1161673951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3688,6 +3660,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161673948}
   m_CullTransparentMesh: 1
+--- !u!114 &1161673953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161673948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0fee056940977a41b3e36a0ede18fd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slot: 3
+  trsSlot: []
 --- !u!1 &1203382405
 GameObject:
   m_ObjectHideFlags: 0
@@ -3819,7 +3805,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 63.101562}
   m_SizeDelta: {x: 359.3014, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1231216642
@@ -4637,7 +4623,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1317206240
 MonoBehaviour:
@@ -4939,11 +4924,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1322318638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9934c067f78dd9946ba0c626eaed1d97, type: 3}
+  m_Script: {fileID: 11500000, guid: d0fee056940977a41b3e36a0ede18fd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 1
-  pSlot: 0
   trsSlot: []
 --- !u!1 &1340838466
 GameObject:
@@ -5066,7 +5050,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -120, y: 0}
+  m_AnchoredPosition: {x: -120, y: 11.6015625}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1367139045
@@ -17053,11 +17037,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1444925645}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9934c067f78dd9946ba0c626eaed1d97, type: 3}
+  m_Script: {fileID: 11500000, guid: 54db7b5eaa232044aa2c9998cc9d339e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slot: 0
-  pSlot: 1
+  slot: 5
   trsSlot: []
 --- !u!1 &1456653143
 GameObject:
@@ -17111,7 +17094,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1456653146
 MonoBehaviour:
@@ -17162,7 +17144,7 @@ GameObject:
   - component: {fileID: 1463044678}
   - component: {fileID: 1463044681}
   - component: {fileID: 1463044680}
-  - component: {fileID: 1463044679}
+  - component: {fileID: 1463044682}
   m_Layer: 9
   m_Name: R
   m_TagString: Slot
@@ -17190,21 +17172,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1463044679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1463044677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9934c067f78dd9946ba0c626eaed1d97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slot: 4
-  pSlot: 0
-  trsSlot: []
 --- !u!114 &1463044680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17243,6 +17210,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1463044677}
   m_CullTransparentMesh: 1
+--- !u!114 &1463044682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463044677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0fee056940977a41b3e36a0ede18fd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slot: 5
+  trsSlot: []
 --- !u!1 &1473009335
 GameObject:
   m_ObjectHideFlags: 0
@@ -17295,7 +17276,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1473009338
 MonoBehaviour:
@@ -17501,7 +17481,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!1 &1518105434
 GameObject:
@@ -17690,7 +17669,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1541409986
 MonoBehaviour:
@@ -17782,7 +17760,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1612565409
 MonoBehaviour:
@@ -17958,7 +17935,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1634499718
 MonoBehaviour:
@@ -18692,7 +18668,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1756096948
 MonoBehaviour:
@@ -18784,7 +18759,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &1785518472
 MonoBehaviour:
@@ -19050,7 +19024,7 @@ GameObject:
   - component: {fileID: 1871266475}
   - component: {fileID: 1871266478}
   - component: {fileID: 1871266477}
-  - component: {fileID: 1871266476}
+  - component: {fileID: 1871266479}
   m_Layer: 9
   m_Name: W
   m_TagString: Slot
@@ -19078,21 +19052,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1871266476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1871266474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9934c067f78dd9946ba0c626eaed1d97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slot: 2
-  pSlot: 0
-  trsSlot: []
 --- !u!114 &1871266477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19131,6 +19090,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1871266474}
   m_CullTransparentMesh: 1
+--- !u!114 &1871266479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871266474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0fee056940977a41b3e36a0ede18fd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slot: 2
+  trsSlot: []
 --- !u!1 &1985313590
 GameObject:
   m_ObjectHideFlags: 0
@@ -19305,7 +19278,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &2043051286
 MonoBehaviour:
@@ -19532,7 +19504,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: 0
-  pSlot: 0
   trsSlot: []
 --- !u!114 &2089843843
 MonoBehaviour:

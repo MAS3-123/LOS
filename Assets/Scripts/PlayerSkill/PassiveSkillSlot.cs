@@ -18,11 +18,18 @@ public class PassiveSkillSlot : MonoBehaviour
 
     }
 
-    public void SetUiItem(ePSlot slot, UIItem _Item)
+    public void SetUiItem(eQWERPSlot slot, UIItem _Item)
     {
         switch (slot)
         {
-            case ePSlot.P: P = _Item; break;
+            case eQWERPSlot.P: P = _Item; break;
+        }
+    }
+    public void RemoveUiItem(eQWERPSlot _value)
+    {
+        switch (_value)
+        {
+            case eQWERPSlot.P: P = null; break;
         }
     }
 }

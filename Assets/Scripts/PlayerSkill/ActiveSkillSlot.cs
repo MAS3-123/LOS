@@ -39,25 +39,25 @@ public class ActiveSkillSlot : MonoBehaviour
         }
     }
 
-    public void SetUiItem(eQWERSlot _value, UIItem _item)
+    public void SetUiItem(eQWERPSlot _value, UIItem _item)
     {
         switch (_value)
         {
-            case eQWERSlot.Q: Q = _item; break;
-            case eQWERSlot.W: W = _item; break;
-            case eQWERSlot.E: E = _item; break;
-            case eQWERSlot.R: R = _item; break;
+            case eQWERPSlot.Q: Q = _item; break;
+            case eQWERPSlot.W: W = _item; break;
+            case eQWERPSlot.E: E = _item; break;
+            case eQWERPSlot.R: R = _item; break;
         }
     }
 
-    public void RemoveUiItem(eQWERSlot _value)
+    public void RemoveUiItem(eQWERPSlot _value)
     {
         switch (_value)
         {
-            case eQWERSlot.Q: Q = null; break;
-            case eQWERSlot.W: W = null; break;
-            case eQWERSlot.E: E = null; break;
-            case eQWERSlot.R: R = null; break;
+            case eQWERPSlot.Q: Q = null; break;
+            case eQWERPSlot.W: W = null; break;
+            case eQWERPSlot.E: E = null; break;
+            case eQWERPSlot.R: R = null; break;
         }
     }
 }
