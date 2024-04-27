@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
     public float jumpForce = 12.0f;
     public float groundRatio = 0.02f;
     public int fallingLimit = -15;
-    private float verticalVelocity = 0f;
+    public float verticalVelocity = 0f;
     public float routineF = 0f;
 
     private int dubleJumpCount = 0;
@@ -83,8 +83,7 @@ public class Player : MonoBehaviour
     {
         if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object")) // 접촉한 콜라이더의 레이어가 interaction object(상호작용 오브젝트)일 경우
         {
-            GameObject obj;
-            obj = _collision.gameObject; // obj는 접촉한 오브젝트
+            GameObject obj = _collision.gameObject; ;// obj는 접촉한 오브젝트
             interObj = obj.GetComponent<InteractionObject>(); // stratObject는 접촉한 오브젝트의 startobj를 참조함.(이렇게 한 이유는 startobj를 가진 오브젝트가 2개인데 트리거된 오브젝트로 부터 뭔가 액션을 취하기위해 구분한 것)
 
             eObjectType eOType = interObj.GetComponent<ObjectType>().GetObjectType(); // 오브젝트 타입은 인스펙터에서 설정한 오브젝트 타입을 따라감.
@@ -142,11 +141,11 @@ public class Player : MonoBehaviour
         {
             isJump = true;
         }
-        if (isGround == false && Input.GetKeyDown(KeyCode.Space) == true && dubleJumpCount == 0)
-        {
-            dubleJump = true;
-            dubleJumpCount++;
-        }
+        //if (isGround == false && Input.GetKeyDown(KeyCode.Space) == true && dubleJumpCount == 0)
+        //{
+        //    dubleJump = true;
+        //    dubleJumpCount++;
+        //}
     }
 
     private void CheckGround()
@@ -179,11 +178,11 @@ public class Player : MonoBehaviour
             {
                 verticalVelocity = fallingLimit;
             }
-            if (dubleJump == true)
-            {
-                dubleJump = false;
-                verticalVelocity = jumpForce; // 스페이스바를 눌렀을 때 y축 방향으로 힘을 가함.
-            }
+            //if (dubleJump == true)
+            //{
+            //    dubleJump = false;
+            //    verticalVelocity = jumpForce; // 스페이스바를 눌렀을 때 y축 방향으로 힘을 가함.
+            //}
         }
         else
         {
@@ -195,7 +194,7 @@ public class Player : MonoBehaviour
             else
             {
                 verticalVelocity = 0;
-                dubleJumpCount = 0;
+                //dubleJumpCount = 0;
             }
         }
 

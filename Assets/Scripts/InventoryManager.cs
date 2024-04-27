@@ -98,9 +98,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public bool GetItem(Sprite _spr, LayerMask _layer, string _tag, eItemType _iType, eSkillType _sType)
+    public bool GetItem(Sprite _spr, eSkillType _sType, string _objName)
     {
-        CheckInventory(_iType, _sType); // activeskill 인지 passiveskill인지 구분하는 함수
+        CheckInventory(_sType); // activeskill 인지 passiveskill인지 구분하는 함수
 
         int slotNum = getEmptyItemSlot();
 
@@ -111,20 +111,16 @@ public class InventoryManager : MonoBehaviour
 
         //인벤토리에 아이템을 생성
         GameObject obj = Instantiate(objUIItem, listInventory[slotNum]);
-        switch (_iType)
-        {
-            case eItemType.ThrowItem:
-                obj.AddComponent<ThrowItem>(); break; 
-            case eItemType.CunsumeItem:
-                obj.AddComponent<CunsumeItem>(); break;
-        }
+        obj.name = _objName;
 
         switch (_sType)
         {
             case eSkillType.ActiveSkill:
+                obj.AddComponent<ActiveSkill>();
                 UIItem objItem = obj.GetComponent<UIItem>();
                 objItem.itemSkillType = eItemSkillType.Active; break;
             case eSkillType.PassiveSkill:
+                obj.AddComponent<PassiveSkill>();
                 UIItem objitem = obj.GetComponent<UIItem>();
                 objitem.itemSkillType = eItemSkillType.Passive; break;
         }
@@ -134,6 +130,24 @@ public class InventoryManager : MonoBehaviour
 
         return true;
 
+    }
+
+    public Transform ReturnItem(GameObject _obj)
+    {
+        if(_obj.GetComponent<UIItem>().itemSkillType == eItemSkillType.Active)
+        {
+            listInventory = listActiveInventory;
+        }
+        else if(_obj.GetComponent<UIItem>().itemSkillType == eItemSkillType.Passive)
+        {
+            listInventory = listPassiveInventory;
+        }
+        int slotNum = getEmptyItemSlot();
+        _obj.transform.SetParent(listInventory[slotNum]);
+        Transform trs = _obj.transform;
+        trs = listInventory[slotNum];
+
+        return trs;
     }
 
     private int getEmptyItemSlot()
@@ -152,7 +166,7 @@ public class InventoryManager : MonoBehaviour
         return -1;
     }
 
-    private void CheckInventory(Enum _item, Enum _skill)
+    private void CheckInventory(Enum _skill)
     {
         switch (_skill)
         {

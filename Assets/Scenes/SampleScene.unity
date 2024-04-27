@@ -534,7 +534,6 @@ MonoBehaviour:
   W: {fileID: 1871266474}
   E: {fileID: 1161673948}
   R: {fileID: 1463044677}
-  player: {fileID: 1238141562}
   playerAim: {fileID: 2125675742}
 --- !u!1 &127742449
 GameObject:
@@ -2435,12 +2434,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 841601445}
-  - component: {fileID: 841601446}
+  - component: {fileID: 841601449}
   - component: {fileID: 841601448}
   - component: {fileID: 841601444}
+  - component: {fileID: 841601441}
   - component: {fileID: 841601447}
   - component: {fileID: 841601443}
-  - component: {fileID: 841601441}
   m_Layer: 7
   m_Name: StoneSlim
   m_TagString: Untagged
@@ -2477,7 +2476,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.0025119781, y: -0.27165985}
@@ -2580,7 +2579,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 841601440}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 57.307, y: -23.588, z: 0}
+  m_LocalPosition: {x: 57.307, y: -23.229, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2588,29 +2587,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &841601446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 841601440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02e4342ed8ef0ea4382fecfbb219c616, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1238141558}
-  myRigid: {fileID: 841601443}
-  included_Skill: []
-  trigger: 0
-  distanceGap: 0
-  time: 0
-  gravity: 30
-  jumpForce: 12
-  groundRatio: 0.02
-  fallingLimit: -15
-  count: 0
 --- !u!61 &841601447
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2669,6 +2645,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 1
+--- !u!114 &841601449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841601440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc02599c5b04ab749b76382846683512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1238141558}
+  myRigid: {fileID: 841601443}
+  colliLeg: {fileID: 841601441}
+  included_Skill: []
+  trigger: 0
+  isGround: 0
+  isJump: 0
+  playerVec: {x: 0, y: 0, z: 0}
+  distanceGap: 0
+  enemyRotate: 0
+  time: 0
+  gravity: 30
+  jumpForce: 12
+  groundRatio: 0.02
+  fallingLimit: -15
+  verticalVelocity: 0
+  count: 0
+  coolTime: 0
 --- !u!1 &857256420
 GameObject:
   m_ObjectHideFlags: 0
@@ -3878,7 +3884,7 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!212 &1238141561
@@ -3941,7 +3947,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1238141558}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.66, y: -19.39, z: 0}
+  m_LocalPosition: {x: 41.25, y: -22.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3985,6 +3991,7 @@ MonoBehaviour:
   jumpForce: 12
   groundRatio: 0.02
   fallingLimit: -15
+  verticalVelocity: 0
   routineF: 0
   skillLayer: 
   skillTag: 
@@ -4094,7 +4101,7 @@ GameObject:
   - component: {fileID: 1244799440}
   - component: {fileID: 1244799441}
   m_Layer: 8
-  m_Name: TestObj
+  m_Name: Active Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4224,7 +4231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e37c6b8c60a165428c07fcdf383c2ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemType: 0
   skillType: 0
 --- !u!114 &1244799441
 MonoBehaviour:
@@ -4254,7 +4260,7 @@ MonoBehaviour:
   included_Skill:
   - {fileID: 4804631165652253352, guid: 8fda31cf89d81c34fb0fc987a9c2e7fd, type: 3}
   trigger: 0
-  destroy: 0
+  destroy: 1
 --- !u!1 &1294294888
 GameObject:
   m_ObjectHideFlags: 0
@@ -4664,7 +4670,7 @@ GameObject:
   - component: {fileID: 1320416207}
   - component: {fileID: 1320416208}
   m_Layer: 8
-  m_Name: TestObj1
+  m_Name: Passive Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4794,8 +4800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e37c6b8c60a165428c07fcdf383c2ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemType: 1
-  skillType: 0
+  skillType: 1
 --- !u!114 &1320416208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4822,9 +4827,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   included_Skill:
-  - {fileID: 4804631165652253352, guid: 8fda31cf89d81c34fb0fc987a9c2e7fd, type: 3}
+  - {fileID: 4804631165652253352, guid: 6af69be5672dfe44da181afba38bd5d2, type: 3}
   trigger: 0
-  destroy: 0
+  destroy: 1
 --- !u!1 &1322318638
 GameObject:
   m_ObjectHideFlags: 0
@@ -19304,6 +19309,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2043051283}
   m_CullTransparentMesh: 1
+--- !u!1 &2045747907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2045747908}
+  m_Layer: 0
+  m_Name: PassiveObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2045747908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045747907}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 56.85441, y: -22.460123, z: -0.025990644}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2083696152
 GameObject:
   m_ObjectHideFlags: 0

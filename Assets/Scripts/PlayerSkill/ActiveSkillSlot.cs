@@ -10,7 +10,6 @@ public class ActiveSkillSlot : MonoBehaviour
     [SerializeField] UIItem E;
     [SerializeField] UIItem R;
     [Space]
-    [SerializeField] Transform player;
     [SerializeField] Transform playerAim;
 
     void Update()
@@ -23,19 +22,19 @@ public class ActiveSkillSlot : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Q.UseItem(playerAim.position);
+            Q.UseSkill(playerAim.position);
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            W.UseItem(playerAim.position);
+            W.UseSkill(playerAim.position);
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            E.UseItem(playerAim.position);
+            E.UseSkill(playerAim.position);
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
-            R.UseItem(playerAim.position);
+            R.UseSkill(playerAim.position);
         }
     }
 

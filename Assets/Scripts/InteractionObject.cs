@@ -13,9 +13,8 @@ public class InteractionObject : MonoBehaviour // 모든 상호작용 오브젝트에 들어�
         if (trigger)// 플레이어에 의해 트리거 true
         {
             trigger = false;
-            eItemType eiType = gameObject.GetComponent<itemType>().GetItemType(); // 미리 지정해둔 아이템 타입과
             eSkillType esType = gameObject.GetComponent<itemType>().GetSkillType(); // 스킬 타입을
-            GameManager.Instance.GetSkill(eiType, esType); // 게임매니져함수에 보냄
+            GameManager.Instance.GetSkill(esType); // 게임매니져함수에 보냄
             if(destroy) Destroy(gameObject); //보낸 후 삭제
         }
     }

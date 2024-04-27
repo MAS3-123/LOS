@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassiveSkill : MonoBehaviour
+public class PassiveSkill : UIItem
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    GameObject obj2;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        obj2 = GameObject.Find("PassiveObject");
+    }
+    public override void UseSkill(Vector3 _vec)
+    {
+        GameObject obj = Resources.Load<GameObject>($"Prefebs/{gameObject.name}");
+        Instantiate(obj, _vec, Quaternion.identity, obj2.transform);
     }
 }

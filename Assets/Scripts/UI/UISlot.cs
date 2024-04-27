@@ -69,10 +69,6 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
             {
                 eventData.pointerDrag.transform.SetParent(transform); // 내가 드래그한 오브젝트의 부모를 끌어다 놓은 슬롯으로 한다.(내가 끌어다 놓은 슬롯의 자식으로 드래그한 오브젝트를 넣는다.)
                 dragRect.position = rect.position; // dragRect.position 은 UIslot(놓으려는 슬롯)의 rect 포지션을 참조한다.
-                if(temTrs.GetComponent<UISlot>().slot == eQWERPSlot.None)
-                {
-                    //인벤토리에서 스킬 슬롯으로 오브젝트 옮겼을 때 스킬슬롯에 생성은 되나 인벤토리 슬롯에도 그대로 두기
-                }
 
                 if (transform.childCount > 1) // 오브젝트가 있는 슬롯에 올려 놨을 때
                 {

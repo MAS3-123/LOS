@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ThrowItem : UIItem
+public class ActiveSkill : UIItem
 {
     GameObject obj2;
 
@@ -11,10 +10,9 @@ public class ThrowItem : UIItem
     {
         obj2 = GameObject.Find("DynamicObject");
     }
-    public override void UseItem(Vector3 _vec)
+    public override void UseSkill(Vector3 _vec)
     {
-        GameObject obj = Resources.Load<GameObject>("Prefebs/ActiveBlueSkill");
+        GameObject obj = Resources.Load<GameObject>($"Prefebs/{gameObject.name}");
         Instantiate(obj, _vec, Quaternion.identity, obj2.transform);
-        Debug.Log("던져지는 기능");
     }
 }
