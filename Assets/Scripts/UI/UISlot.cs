@@ -16,21 +16,30 @@ public enum eQWERPSlot
     P
 }
 
+public enum eSlotType 
+{
+    Inven,
+    Active,
+    Passive
+}
+
+
 public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public eQWERPSlot slot;
+    public eSlotType slotType;
 
     private Image image;
     private RectTransform rect;
     private Color defaultColor;
-    public List<Transform> trsSlot = new List<Transform>();
     private bool shutoff = false;
+    private bool skip = false;
 
     void Start()
     {
-        image = GetComponent<Image>(); // image 는 이 스크립트를 갖고 있는 오브젝트의 Image 컴포넌트를 참조한다.
-        rect = GetComponent<RectTransform>(); // rect 함수는 이 스크립트를 갖고 있는 오브젝트의 rectTrasform이다.
-        defaultColor = image.color; // defaultColor는 이 오브젝트의 color이다.
+        image = GetComponent<Image>(); 
+        rect = GetComponent<RectTransform>(); 
+        defaultColor = image.color; 
     }
 
     public void OnDrop(PointerEventData eventData) // 아이템의 OnEndDrag 보다 먼저 호출 됨 / 아이템을 슬롯에 놨을 때 호출
@@ -42,46 +51,78 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
             RectTransform dragRect = eventData.pointerDrag.GetComponent<RectTransform>(); // dragRect 는 움직이는 오브젝트의 RectTransform을 참조한다.
             eQWERPSlot beforeSlot = temTrs.GetComponent<UISlot>().slot; // 드래그한 오브젝트의 qwer슬롯
 
-            if(beforeSlot != eQWERPSlot.None && slot == eQWERPSlot.None) // QWERP 슬롯에서 인벤토리 Slot으로 옮겼을경우 return
+            if(beforeSlot != eQWERPSlot.None && slot == eQWERPSlot.None) // QWERP 슬롯에서 인벤토리 Slot으로 옮겼을경우 
             {
                 Debug.Log("스킬 슬롯에서 인벤토리 슬롯으로 아이템을 옮길 수 없습니다.");
-                return;
+                skip = true;
             }
-            else if(beforeSlot != eQWERPSlot.None && slot != eQWERPSlot.None)
+            else if(beforeSlot != eQWERPSlot.None && slot != eQWERPSlot.None) // QWERP 슬롯간 이동이 있었을 때
             {
-                shutoff = ShutOffMove(temTrs);
+                shutoff = ShutOffMove(temTrs); //QWER<> P 슬롯간 이동을 하려 했을 경우
                 if (shutoff)
                 {
-                    return;
+                    skip = true;
                 }
             }
 
-            eventData.pointerDrag.transform.SetParent(transform); // 내가 드래그한 오브젝트의 부모를 끌어다 놓은 슬롯으로 한다.(내가 끌어다 놓은 슬롯의 자식으로 드래그한 오브젝트를 넣는다.)
-            dragRect.position = rect.position; // dragRect.position 은 UIslot(놓으려는 슬롯)의 rect 포지션을 참조한다.
-
-            if (transform.childCount > 1) // 오브젝트가 있는 슬롯에 올려 놨을 때
+            if(skip != true)
             {
-                GameObject obj = transform.GetChild(0).gameObject; // 그 슬롯의 오브젝트
-                UIItem beforeItem = obj.GetComponent<UIItem>(); // 그 슬롯의 오브젝트 uiitem sc
+                eventData.pointerDrag.transform.SetParent(transform); // 내가 드래그한 오브젝트의 부모를 끌어다 놓은 슬롯으로 한다.(내가 끌어다 놓은 슬롯의 자식으로 드래그한 오브젝트를 넣는다.)
+                dragRect.position = rect.position; // dragRect.position 은 UIslot(놓으려는 슬롯)의 rect 포지션을 참조한다.
+                if(temTrs.GetComponent<UISlot>().slot == eQWERPSlot.None)
+                {
+                    //인벤토리에서 스킬 슬롯으로 오브젝트 옮겼을 때 스킬슬롯에 생성은 되나 인벤토리 슬롯에도 그대로 두기
+                }
 
+                if (transform.childCount > 1) // 오브젝트가 있는 슬롯에 올려 놨을 때
+                {
+                    GameObject obj = transform.GetChild(0).gameObject; // 그 슬롯의 오브젝트
+                    UIItem beforeItem = obj.GetComponent<UIItem>(); // 그 슬롯의 오브젝트 uiitem sc
+                    obj.transform.SetParent(temTrs);
+                    obj.transform.position = temTrs.position;
+
+                    if (beforeSlot != eQWERPSlot.None)
+                    {
+                        MoveItem(beforeSlot, beforeItem);
+                    }
+                }
+
+                SkillSlot(slot, tem); // actvie / passive 슬롯에 오브젝트 옮길 때
+            }
+            else 
+            {
+                Debug.Log("오브젝트 제자리로");
+                GameObject obj = eventData.pointerDrag.gameObject;
                 obj.transform.SetParent(temTrs);
                 obj.transform.position = temTrs.position;
 
-                MoveItem(beforeSlot, beforeItem); // P 슬롯은 하나라 A슬롯만
+                if(temTrs.GetComponent<UISlot_A>() != null)
+                {
+                    ActiveSkillSlot aSlot = temTrs.GetComponentInParent<ActiveSkillSlot>();
+                    aSlot.SetUiItem(beforeSlot, tem);
+                }
+                else if(temTrs.GetComponent<UISlot_P>() != null)
+                {
+                    PassiveSkillSlot pSlot = temTrs.GetComponentInParent<PassiveSkillSlot>();
+                    pSlot.SetUiItem(beforeSlot, tem);
+                }
+                else // QWER < > P간 오브젝트 이동일 때
+                {
+                    ReturnObj(temTrs, tem);
+                }
+                skip = false;
             }
-
-            SkillSlot(slot, tem); // actvie / passive 슬롯에 오브젝트 옮길 때
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        image.color = Color.white; // 커서를 올리면 이미지를 하얀색으로 한다.
+        image.color = Color.white;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        image.color = defaultColor; // 커서를 빼면 이미지를 기본 색으로 바꾼다.
+        image.color = defaultColor;
     }
 
     public virtual void SkillSlot(eQWERPSlot _slot, UIItem _item) // Slot > QWERP슬롯으로 아이템 옮길 때 쓸 함수
@@ -92,8 +133,12 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     {
 
     }
-    public virtual bool ShutOffMove(Transform _temTrs) // QWER <  > P 서로 오브젝트 이동 차단 함수
+    public virtual bool ShutOffMove(Transform _temTrs) // QWER <  > P 서로 오브젝트 이동 차단 트리거
     {
         return false;
+    }
+    public virtual void ReturnObj(Transform _temTrs, UIItem _item) // 트리거 됐을 때 오브젝트 제자리로 가는 함수
+    {
+
     }
 }

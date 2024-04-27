@@ -29,4 +29,10 @@ public class UISlot_A : UISlot
         }
         return false;
     }
+    public override void ReturnObj(Transform _temTrs, UIItem _item)
+    {
+        PassiveSkillSlot pSlot = _temTrs.GetComponentInParent<PassiveSkillSlot>();
+        eQWERPSlot beforeSlot = _temTrs.GetComponent<UISlot>().slot;
+        pSlot.SetUiItem(beforeSlot, _item);
+    }
 }

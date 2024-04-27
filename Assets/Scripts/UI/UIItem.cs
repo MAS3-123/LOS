@@ -8,7 +8,7 @@ public enum eItemSkillType
 {
     None,
     Active,
-    Pssive,
+    Passive,
 }
 
 public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -59,15 +59,26 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public void OnEndDrag(PointerEventData eventData) // 되돌아가는 함수
     {
         Transform trs = transform.parent;
-        Debug.Log($" 잡았던 오브젝트 = {LayerMask.LayerToName(gameObject.layer)} ");
-        Debug.Log($" 놓으려 했던 슬롯 = {LayerMask.LayerToName(trs.gameObject.layer)} ");
+        //Debug.Log($" 잡았던 오브젝트 = {LayerMask.LayerToName(gameObject.layer)} ");
+        //Debug.Log($" 놓으려 했던 슬롯 = {LayerMask.LayerToName(trs.gameObject.layer)} ");
+        //Debug.Log($" 현재 놓으려는 슬롯의 타입 = {trs.GetComponent<UISlot>().slotType}, 지금 올려놓은 오브젝트의 스킬 타입 = {gameObject.GetComponent<UIItem>().itemSkillType} ");
 
-        if(transform.parent == trsCanvas) // 오브젝트를 놓은 후 제자리로 돌아가는 부분
+        if (transform.parent == trsCanvas) // 오브젝트를 놓은 후 제자리로 돌아가는 부분 / trs.GetComponent<UISlot>().slotType.ToString() != gameObject.GetComponent<UIItem>().itemSkillType.ToString()
         {
             transform.SetParent(trsBeforeParent); // OnBeginDrag 에서 설정했던 슬롯의 transform으로 되돌아감.
             rect.position = trsBeforeParent.GetComponentInParent<RectTransform>().position; // 슬롯의 중앙에 위치해야 하니 그 슬롯의 rectTrasform 을 가져와서 사용.
-            Debug.Log("슬롯 밖에 두었습니다.");
+            Debug.Log("슬롯 밖에 두거나 맞는 스킬슬롯에 두지 않았습니다.");
+            if (trsBeforeParent.GetComponent<UISlot>().slotType != eSlotType.Inven)
+            {
+                Debug.Log("스킬 슬롯에서 밖으로 두었습니다.");
+                Destroy(gameObject);
+            }
         }
+        //else if(trs.GetComponent<UISlot>().slotType == eSlotType.Inven && trsBeforeParent.GetComponent<UISlot>().slotType != eSlotType.Inven)
+        //{
+        //    transform.SetParent(trsBeforeParent); // OnBeginDrag 에서 설정했던 슬롯의 transform으로 되돌아감.
+        //    rect.position = trsBeforeParent.GetComponentInParent<RectTransform>().position; // 슬롯의 중앙에 위치해야 하니 그 슬롯의 rectTrasform 을 가져와서 사용.
+        //}
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
     }

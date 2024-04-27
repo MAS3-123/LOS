@@ -126,7 +126,7 @@ public class InventoryManager : MonoBehaviour
                 objItem.itemSkillType = eItemSkillType.Active; break;
             case eSkillType.PassiveSkill:
                 UIItem objitem = obj.GetComponent<UIItem>();
-                objitem.itemSkillType = eItemSkillType.Pssive; break;
+                objitem.itemSkillType = eItemSkillType.Passive; break;
         }
 
         UIItem sc = obj.GetComponent<UIItem>();
