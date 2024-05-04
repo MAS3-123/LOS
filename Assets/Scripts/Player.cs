@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +8,14 @@ public class Player : MonoBehaviour
 {
     public static Player Instance;
 
+    [SerializeField] private Animator myAnimator;
+    [SerializeField] private ParticleSystem ps;
     [SerializeField] MovingStoneTrigger movingTri;
     [SerializeField] SpawnTrigger spawnTri;
     [Space]
     [SerializeField] SpriteRenderer spr;
     [Space]
-    [SerializeField] Rigidbody2D myRigid;
+    [SerializeField] public Rigidbody2D myRigid;
     [SerializeField] BoxCollider2D colliLeg;
 
     public InteractionObject interObj;
@@ -25,15 +28,15 @@ public class Player : MonoBehaviour
     public float Damage;
     public int player_MaxHp = 10;
     public int player_MaxMp = 10;
-    private int player_Hp;
-    private int player_Mp;
+    public int player_Hp;
+    public int player_Mp;
 
     [Header("HP 연출")]
-    [SerializeField] private PlayerHp playerHp;
+    [SerializeField] public PlayerHp playerHp;
 
     [Space]
     [Header("MP 연출")]
-    [SerializeField] private PlayerMp playerMp;
+    [SerializeField] public PlayerMp playerMp;
 
     [Space]
     [Header(" -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - ")]
@@ -42,7 +45,7 @@ public class Player : MonoBehaviour
     public bool isGround = false;
     public bool basicObj = false;
     public bool enemyObj = false;
-    public bool enemy = false;
+    public bool damageOn = false;
 
     [Space]
     public float gravity = 30.0f;
@@ -51,6 +54,7 @@ public class Player : MonoBehaviour
     public int fallingLimit = -15;
     public float verticalVelocity = 0f;
     public float routineF = 0f;
+    private float damageTime = 0f;
 
     private int dubleJumpCount = 0;
 
@@ -83,6 +87,7 @@ public class Player : MonoBehaviour
     {
         if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object")) // 접촉한 콜라이더의 레이어가 interaction object(상호작용 오브젝트)일 경우
         {
+            Debug.Log("상호작용 오브젝트 접촉");
             GameObject obj = _collision.gameObject; ;// obj는 접촉한 오브젝트
             interObj = obj.GetComponent<InteractionObject>(); // stratObject는 접촉한 오브젝트의 startobj를 참조함.(이렇게 한 이유는 startobj를 가진 오브젝트가 2개인데 트리거된 오브젝트로 부터 뭔가 액션을 취하기위해 구분한 것)
 
@@ -95,12 +100,9 @@ public class Player : MonoBehaviour
                     enemyObj = true; break;
             }
         }
-        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Enmey") && _collision.gameObject.tag == "Enemy") // 적과 접촉했을 때 사용 할 트리거
-        {
-            enemy = true;
-        }
         else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Spawn") // 땅에 떨어졌을 때 사용 할 스폰 트리거
         {
+            Debug.Log("스폰 트리거");
             gameObject.transform.position = spawnTri.spawnVec;
             verticalVelocity = 0f;
         }
@@ -114,12 +116,15 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Moving();
-
+        if(damageOn != true)
+        {
+            Moving();
+        }
         CheckGround();
         CheckGravity();
 
         InteractionObj();
+        DeadPlayer();
     }
 
     private void Moving()
@@ -141,11 +146,6 @@ public class Player : MonoBehaviour
         {
             isJump = true;
         }
-        //if (isGround == false && Input.GetKeyDown(KeyCode.Space) == true && dubleJumpCount == 0)
-        //{
-        //    dubleJump = true;
-        //    dubleJumpCount++;
-        //}
     }
 
     private void CheckGround()
@@ -190,14 +190,17 @@ public class Player : MonoBehaviour
             {
                 isJump = false;
                 verticalVelocity = jumpForce; // 스페이스바를 눌렀을 때 y축 방향으로 힘을 가함.
+                myAnimator.SetBool("Jump", true);
             }
             else
             {
                 verticalVelocity = 0;
                 //dubleJumpCount = 0;
+                damageOn = false;
+                myAnimator.SetBool("Jump", false);
+                myAnimator.SetBool("StandByJump", true);
             }
         }
-
         myRigid.velocity = new Vector2(myRigid.velocity.x, verticalVelocity);
     }
 
@@ -217,6 +220,15 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("enemy");
             }
+        }
+    }
+
+    private void DeadPlayer()
+    {
+        if(player_Hp <= 0)
+        {
+            transform.GetChild(0).SetParent(default);
+            Destroy(gameObject);
         }
     }
 }

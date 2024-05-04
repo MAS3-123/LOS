@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHp : MonoBehaviour
+public class EnemyHp : MonoBehaviour
 {
     private Image HpBack;
     private Image HpFront;
@@ -16,17 +16,17 @@ public class PlayerHp : MonoBehaviour
 
     void Update()
     {
-        checkPlayerHp();
+        checkEnemyHp();
     }
 
 
-    private void checkPlayerHp()
+    private void checkEnemyHp()
     {
 
         if (HpFront.fillAmount < HpBack.fillAmount) //hp감소
         {
             HpBack.fillAmount -= Time.deltaTime * 0.2f;
-            if(HpBack.fillAmount <= HpFront.fillAmount)
+            if (HpBack.fillAmount <= HpFront.fillAmount)
             {
                 HpBack.fillAmount = HpFront.fillAmount;
             }
@@ -37,9 +37,8 @@ public class PlayerHp : MonoBehaviour
         }
     }
 
-    public void SetPlayerHp(int _curHp, int _maxHp)
+    public void SetEnemyHp(int _curHp, int _maxHp)
     {
         HpFront.fillAmount = (float)_curHp / _maxHp;
-        Debug.Log("체력 조정");
     }
 }
