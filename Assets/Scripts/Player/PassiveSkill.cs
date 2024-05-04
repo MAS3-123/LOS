@@ -8,7 +8,7 @@ public class PassiveSkill : UIItem
 
     private void Awake()
     {
-        obj2 = GameObject.Find("PassiveObject");
+        obj2 = GameManager.Instance.playerObj;
     }
     public override void UseSkill(Vector3 _vec)
     {

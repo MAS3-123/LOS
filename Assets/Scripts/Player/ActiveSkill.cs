@@ -8,7 +8,7 @@ public class ActiveSkill : UIItem
 
     private void Awake()
     {
-        obj2 = GameObject.Find("DynamicObject");
+        obj2 = GameManager.Instance.dynamicObj;
     }
     public override void UseSkill(Vector3 _vec)
     {

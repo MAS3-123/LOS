@@ -10,6 +10,7 @@ TagManager:
   - ChangeVecTri
   - Move Object
   - Spawn
+  - Enemy Spawn
   layers:
   - Default
   - TransparentFX

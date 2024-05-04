@@ -6,8 +6,13 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager Instance;
+
+    [SerializeField] public GameObject enemyHpBarObj;
+    [SerializeField] public GameObject dynamicObj;
+    [SerializeField] public GameObject interactionObj;
+    [SerializeField] public GameObject playerObj;
+
     private Sprite spr;
 
     private void Awake()

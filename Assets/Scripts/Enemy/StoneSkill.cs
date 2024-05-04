@@ -5,12 +5,17 @@ using UnityEngine.UIElements;
 
 public class StoneSkill : Enemy
 {
-    [SerializeField] ParticleSystem ps;
+    ParticleSystem ps;
 
     public bool stemp = false;
 
     public float curTime = 0;
     private float coolTime = 4f;
+
+    private void Awake()
+    {
+        ps = gameObject.GetComponentInChildren<ParticleSystem>();
+    }
 
     public override void SkillOn()
     {

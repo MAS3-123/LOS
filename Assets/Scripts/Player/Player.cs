@@ -54,10 +54,6 @@ public class Player : MonoBehaviour
     public int fallingLimit = -15;
     public float verticalVelocity = 0f;
     public float routineF = 0f;
-    private float damageTime = 0f;
-
-    private int dubleJumpCount = 0;
-
 
     public string skillLayer = string.Empty;
     public string skillTag = string.Empty;
@@ -105,6 +101,11 @@ public class Player : MonoBehaviour
             Debug.Log("스폰 트리거");
             gameObject.transform.position = spawnTri.spawnVec;
             verticalVelocity = 0f;
+        }
+        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Enemy Spawn") // 땅에 떨어졌을 때 사용 할 스폰 트리거
+        {
+            EnemySpawnTrigger eSpawnTri = _collision.gameObject.GetComponent<EnemySpawnTrigger>();
+            eSpawnTri.SpwanEnemy();
         }
     }
 
@@ -178,11 +179,6 @@ public class Player : MonoBehaviour
             {
                 verticalVelocity = fallingLimit;
             }
-            //if (dubleJump == true)
-            //{
-            //    dubleJump = false;
-            //    verticalVelocity = jumpForce; // 스페이스바를 눌렀을 때 y축 방향으로 힘을 가함.
-            //}
         }
         else
         {
@@ -213,12 +209,12 @@ public class Player : MonoBehaviour
                 interObj.trigger = true;
             }
         }
-
         else if (enemyObj == true)
         {
             if (Input.GetKeyDown(KeyCode.G))
             {
                 Debug.Log("enemy");
+                interObj.trigger = true;
             }
         }
     }
