@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class InteractionObject : MonoBehaviour // 모든 상호작용 오브젝트에 들어갈 스크립트
 {
+    public Animator myAnimator;
     Rigidbody2D myRigid;
     BoxCollider2D colliLeg;
     public Type myType;
 
-    public GameObject[] included_Skill; // 상호작용 오브젝트는 각각 스킬 오브젝트를 갖고있음
+    public GameObject[] included_Skill; // 상호작용 오브젝트는 각각 스킬 오브젝트를 갖고있음 
 
     public bool trigger = false;
     public bool destroy = false;
@@ -27,6 +28,7 @@ public class InteractionObject : MonoBehaviour // 모든 상호작용 오브젝트에 들어�
         {
             myRigid = GetComponent<Rigidbody2D>();
             colliLeg = GetComponent<BoxCollider2D>();
+            myAnimator = GetComponent<Animator>();
         }
     }
 

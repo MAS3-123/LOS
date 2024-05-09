@@ -5,13 +5,19 @@ using UnityEngine;
 public class StonePassiveSkill : PassiveSkill
 {
     public float coolTime = 5f;
-    public int count = 0;
 
     IEnumerator RecoveryHp()
     {
         while (true)
         {
-            yield return new WaitForSeconds(coolTime);
+            yield return new WaitForSeconds(coolTime); // coolTime 마다
+            eQWERPSlot slot = gameObject.transform.parent.GetComponent<UISlot>().slot; // 아이템 슬롯 확인
+            if (slot == eQWERPSlot.None) // P > None 됐을경우를 확인하기 위해 넣음
+            {
+                StopAllCoroutines();
+                Debug.Log("회복 종료");
+            }
+
             player.player_Hp++;
             Debug.Log("체력이 회복됩니다");
             if(player.player_Hp >= 5)
@@ -26,8 +32,6 @@ public class StonePassiveSkill : PassiveSkill
     {
         if(passiveCount == 0 && player.player_Hp < 5)
         {
-            //GameObject obj = Resources.Load<GameObject>($"Prefebs/EnemySkill/{gameObject.name}");
-            //Instantiate(obj, _vec, Quaternion.identity, obj2.transform);
             passiveCount++;
             StartCoroutine(RecoveryHp());
         }

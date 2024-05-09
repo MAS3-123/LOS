@@ -96,6 +96,8 @@ public class Player : MonoBehaviour
                 case eObjectType.Enemy:
                     enemyObj = true; break;
             }
+
+            interObj.myAnimator.SetBool("Interection Player", true);
         }
         else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Spawn") // 땅에 떨어졌을 때 사용 할 스폰 트리거
         {
@@ -114,6 +116,7 @@ public class Player : MonoBehaviour
     {
         basicObj = false;
         enemyObj = false;
+        interObj.myAnimator.SetBool("Interection Player", false);
     }
 
     void Update()
