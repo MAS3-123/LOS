@@ -19,7 +19,6 @@ public class PassiveSkillSlot : MonoBehaviour
         if(P != null && objCount == 1)
         {
             P.UseSkill(player.position);
-            objCount--;
         }
     }
 
@@ -35,7 +34,9 @@ public class PassiveSkillSlot : MonoBehaviour
     {
         switch (_value)
         {
-            case eQWERPSlot.P: P = null; break;
+            case eQWERPSlot.P: 
+                P = null;
+                objCount--; break;
         }
     }
 }

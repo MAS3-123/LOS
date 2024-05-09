@@ -1,3 +1,4 @@
+using OpenCover.Framework.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -96,9 +97,17 @@ public class InventoryManager : MonoBehaviour
                 passiveBar.SetActive(false);
             }
         }
+        else if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(activeBar.activeSelf == true || passiveBar.activeSelf == true)
+            {
+                activeBar.SetActive(false);
+                passiveBar.SetActive(false);
+            }
+        }
     }
 
-    public bool GetItem(Sprite _spr, eSkillType _sType, string _objName)
+    public bool GetItem(Sprite _spr, eSkillType _sType, string _objName, Type _componentType)
     {
         CheckInventory(_sType); // activeskill 인지 passiveskill인지 구분하는 함수
 
@@ -120,7 +129,7 @@ public class InventoryManager : MonoBehaviour
                 UIItem objItem = obj.GetComponent<UIItem>();
                 objItem.itemSkillType = eItemSkillType.Active; break;
             case eSkillType.PassiveSkill:
-                obj.AddComponent<PassiveSkill>();
+                obj.AddComponent(_componentType);
                 UIItem objitem = obj.GetComponent<UIItem>();
                 objitem.itemSkillType = eItemSkillType.Passive; break;
         }

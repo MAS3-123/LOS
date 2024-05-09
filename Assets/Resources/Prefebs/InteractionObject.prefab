@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   included_Skill:
-  - {fileID: 4804631165652253352, guid: 8fda31cf89d81c34fb0fc987a9c2e7fd, type: 3}
+  - {fileID: 0}
   trigger: 0
   destroy: 1
   isGround: 0
@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e37c6b8c60a165428c07fcdf383c2ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillType: 0
+  skillType: 1
 --- !u!114 &305726645139708035
 MonoBehaviour:
   m_ObjectHideFlags: 0

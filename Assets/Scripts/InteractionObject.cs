@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ public class InteractionObject : MonoBehaviour // ¸ðµç »óÈ£ÀÛ¿ë ¿ÀºêÁ§Æ®¿¡ µé¾î°
 {
     Rigidbody2D myRigid;
     BoxCollider2D colliLeg;
+    public Type myType;
 
     public GameObject[] included_Skill; // »óÈ£ÀÛ¿ë ¿ÀºêÁ§Æ®´Â °¢°¢ ½ºÅ³ ¿ÀºêÁ§Æ®¸¦ °®°íÀÖÀ½
 
@@ -20,8 +22,12 @@ public class InteractionObject : MonoBehaviour // ¸ðµç »óÈ£ÀÛ¿ë ¿ÀºêÁ§Æ®¿¡ µé¾î°
 
     private void Awake()
     {
-        myRigid = GetComponent<Rigidbody2D>();
-        colliLeg = GetComponent<BoxCollider2D>(); 
+        ObjectType type = gameObject.GetComponent<ObjectType>();
+        if(type.objectType == eObjectType.Enemy)
+        {
+            myRigid = GetComponent<Rigidbody2D>();
+            colliLeg = GetComponent<BoxCollider2D>();
+        }
     }
 
     private void Update()
@@ -30,10 +36,10 @@ public class InteractionObject : MonoBehaviour // ¸ðµç »óÈ£ÀÛ¿ë ¿ÀºêÁ§Æ®¿¡ µé¾î°
         {
             trigger = false;
             eSkillType esType = gameObject.GetComponent<itemType>().GetSkillType(); // ½ºÅ³ Å¸ÀÔÀ»
-            GameManager.Instance.GetSkill(esType); // °ÔÀÓ¸Å´ÏÁ®ÇÔ¼ö¿¡ º¸³¿
+            GameManager.Instance.GetSkill(esType, myType); // °ÔÀÓ¸Å´ÏÁ®ÇÔ¼ö¿¡ º¸³¿
             if (destroy) Destroy(gameObject); //º¸³½ ÈÄ »èÁ¦
         }
-        if(isGround == false)
+        if(isGround == false && gameObject.GetComponent<ObjectType>().objectType == eObjectType.Enemy)
         {
             Spawn();
             CheckGravitiy();

@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     public int player_MaxHp = 10;
     public int player_MaxMp = 10;
     public int player_Hp;
+    public int PATH_player_Hp;
     public int player_Mp;
 
     [Header("HP 연출")]
@@ -102,7 +103,7 @@ public class Player : MonoBehaviour
             gameObject.transform.position = spawnTri.spawnVec;
             verticalVelocity = 0f;
         }
-        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Enemy Spawn") // 땅에 떨어졌을 때 사용 할 스폰 트리거
+        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Enemy Spawn")
         {
             EnemySpawnTrigger eSpawnTri = _collision.gameObject.GetComponent<EnemySpawnTrigger>();
             eSpawnTri.SpwanEnemy();
@@ -126,6 +127,13 @@ public class Player : MonoBehaviour
 
         InteractionObj();
         DeadPlayer();
+
+        if(player_Hp != PATH_player_Hp)
+        {
+            playerHp.SetPlayerHp(player_Hp, player_MaxHp);
+            PATH_player_Hp = player_Hp;
+            Debug.Log("체력에 변화가 생김");
+        }
     }
 
     private void Moving()

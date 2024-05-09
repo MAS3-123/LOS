@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,17 +6,12 @@ using UnityEngine.UIElements;
 
 public class StoneSkill : Enemy
 {
-    ParticleSystem ps;
+    [SerializeField] ParticleSystem ps;
 
     public bool stemp = false;
 
     public float curTime = 0;
     private float coolTime = 4f;
-
-    private void Awake()
-    {
-        ps = gameObject.GetComponentInChildren<ParticleSystem>();
-    }
 
     public override void SkillOn()
     {
@@ -71,6 +67,12 @@ public class StoneSkill : Enemy
                 }
             }
         }
+    }
+
+    public override void SkillComponentType(GameObject _obj, InteractionObject _interObj)
+    {
+        _obj.name = "InterectionObject_Stone Slim";
+        _interObj.myType = Type.GetType("StonePassiveSkill");
     }
     // 점프 했을 때만 이동하고 이동방향 및 거리는 플레이어 위치로
     // 점프 후 최고 지점에서 빠르게 하강하여 isGround가 on 일 때 주변에 땅에 닿아 있는 player 및 enmey에게 데미지

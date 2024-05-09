@@ -1,3 +1,8 @@
+using Palmmedia.ReportGenerator.Core.Parser.Analysis;
+using System;
+using System.Collections;
+using UnityEditor.Build;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -5,8 +10,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected Rigidbody2D myRigid;
     [SerializeField] private BoxCollider2D colliLeg;
     [SerializeField] protected Animator myAnimator;
+    [SerializeField] private SpriteRenderer deadSprite;
+
+    protected eSkillType mySkillType;
 
     protected Player playerSc;
+    EnemyHp sc;
 
     private GameObject hpBarSpawnObj;
     private GameObject myHpBar;
@@ -34,7 +43,11 @@ public class Enemy : MonoBehaviour
     public int enemy_Hp;
     public int enemy_MaxHp = 1;
 
-    EnemyHp sc;
+    IEnumerator HitAnimation()
+    {
+        yield return new WaitForSeconds(0.3f);
+        myAnimator.SetBool("Hit", false);
+    }
 
     private void OnBecameVisible()//이벤트함수
     {
@@ -48,6 +61,7 @@ public class Enemy : MonoBehaviour
         count++;
 
     }
+
     private void OnBecameInvisible()
     {
         trigger = false;
@@ -106,8 +120,12 @@ public class Enemy : MonoBehaviour
         {
             enemy_Hp--;
             sc.SetEnemyHp(enemy_Hp, enemy_MaxHp);
+            myAnimator.SetBool("Hit", true);
+            StartCoroutine(HitAnimation());
         }
     }
+
+    
 
     private void EnemyHpBarPos()
     {
@@ -115,7 +133,7 @@ public class Enemy : MonoBehaviour
         fixedPos.z = 0;
 
         fixedPos = Camera.main.WorldToScreenPoint(fixedPos);
-        fixedPos.y -= 25f;
+        fixedPos.y -= 50f;
         sc.transform.position = fixedPos;
     }
 
@@ -125,8 +143,15 @@ public class Enemy : MonoBehaviour
         {
             GameObject obj = Instantiate(GameManager.Instance.interactionObj, transform.position + new Vector3(0, 1, 0),
                                          Quaternion.identity, GameManager.Instance.dynamicObj.transform);
+            InteractionObject interObj = obj.GetComponent<InteractionObject>();
             SpriteRenderer spr = obj.GetComponent<SpriteRenderer>();
-            spr.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+            itemType type = obj.GetComponent<itemType>();
+            SkillComponentType(obj, interObj);
+            string skillName = obj.name.Substring(obj.name.IndexOf('_') + 1) + " Skill";
+            Debug.Log(skillName);
+            interObj.included_Skill[0] = Resources.Load<GameObject>($"Prefebs/EnemySkill/{skillName}");
+            spr.sprite = deadSprite.sprite;
+
             Destroy(gameObject);
             Destroy(myHpBar);
         }
@@ -198,6 +223,11 @@ public class Enemy : MonoBehaviour
     }
 
     public virtual void SkillOn()
+    {
+
+    }
+
+    public virtual void SkillComponentType(GameObject _obj, InteractionObject _interObj)
     {
 
     }

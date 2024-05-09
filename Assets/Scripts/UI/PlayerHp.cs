@@ -40,6 +40,5 @@ public class PlayerHp : MonoBehaviour
     public void SetPlayerHp(int _curHp, int _maxHp)
     {
         HpFront.fillAmount = (float)_curHp / _maxHp;
-        Debug.Log("체력 조정");
     }
 }

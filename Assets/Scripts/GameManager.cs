@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,14 +28,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GetSkill(eSkillType _skillType)
+    public void GetSkill(eSkillType _skillType, Type _componentType)
     {
         InteractionObject interobj = Player.Instance.interObj; //플레이어가 상호작용한 오브젝트가 무엇인지 알기위해 플레이어를 통해 받아옴.
         GameObject item = interobj.included_Skill[0]; // 상호작용한 오브젝트가 갖고 있는 스킬 오브젝트
         
         spr = item.GetComponent<SpriteRenderer>().sprite;
 
-        if (InventoryManager.Instance.GetItem(spr, _skillType, item.name))
+        if (InventoryManager.Instance.GetItem(spr, _skillType, item.name, _componentType))
         {
             return;
         }

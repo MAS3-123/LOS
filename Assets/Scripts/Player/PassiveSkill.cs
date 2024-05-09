@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class PassiveSkill : UIItem
 {
-    GameObject obj2;
+    protected GameObject obj2;
+    protected Player player;
+    public int passiveCount;
 
     private void Awake()
     {
         obj2 = GameManager.Instance.playerObj;
+        player = obj2.GetComponent<Player>();
     }
-    public override void UseSkill(Vector3 _vec)
-    {
-        GameObject obj = Resources.Load<GameObject>($"Prefebs/{gameObject.name}");
-        Instantiate(obj, _vec, Quaternion.identity, obj2.transform);
-    }
+
 }
