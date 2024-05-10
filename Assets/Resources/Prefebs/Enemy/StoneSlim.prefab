@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 302627809616571750}
   - component: {fileID: 1832397440023328604}
   m_Layer: 7
-  m_Name: Stone Slim
+  m_Name: StoneSlim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

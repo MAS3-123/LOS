@@ -32,6 +32,7 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     private Image image;
     private RectTransform rect;
     private Color defaultColor;
+    public GameObject TMIobj;
     private bool shutoff = false;
     private bool skip = false;
 
@@ -114,11 +115,25 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
     public void OnPointerEnter(PointerEventData eventData)
     {
         image.color = Color.white;
+        if(gameObject.transform.childCount > 0 )
+        {
+            GameObject obj = InventoryManager.Instance.TMI_Object;
+            TMI tmi = obj.GetComponent<TMI>();
+            TMIobj = Instantiate(obj, gameObject.transform.position + new Vector3(-130f, 0f, 0f), Quaternion.identity, gameObject.transform);
+            tmi.image.sprite = gameObject.transform.GetChild(0).GetComponent<Image>().sprite;
+            tmi.slimName.text = gameObject.transform.GetChild(0).name.Substring(0, gameObject.transform.GetChild(0).name.Length - 6);
+            tmi.tmi.text = eventData.pointerEnter.gameObject.GetComponent<UIItem>().tmi;
+
+            //spr.sprite = gameObject.transform.GetChild(0).GetComponent<Image>().sprite;
+
+            Debug.Log("오브젝트 존재");
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         image.color = defaultColor;
+        Destroy(TMIobj);
     }
 
     public virtual void SkillSlot(eQWERPSlot _slot, UIItem _item) // Slot > QWERP슬롯으로 아이템 옮길 때 쓸 함수

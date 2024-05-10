@@ -21,6 +21,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] public GameObject activeBar;
     [Space]
     [SerializeField] private GameObject objUIItem;
+    [SerializeField] public GameObject TMI_Object;
 
     private List<Transform> listActiveInventory = new List<Transform>();
     private List<Transform> listPassiveInventory = new List<Transform>();
@@ -107,7 +108,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public bool GetItem(Sprite _spr, eSkillType _sType, string _objName, Type _componentType)
+    public bool GetItem(Sprite _spr, eSkillType _sType, string _objName, string _tmi, Type _componentType)
     {
         CheckInventory(_sType); // activeskill 인지 passiveskill인지 구분하는 함수
 
@@ -127,10 +128,12 @@ public class InventoryManager : MonoBehaviour
             case eSkillType.ActiveSkill:
                 obj.AddComponent<ActiveSkill>();
                 UIItem objItem = obj.GetComponent<UIItem>();
+                objItem.tmi = _tmi;
                 objItem.itemSkillType = eItemSkillType.Active; break;
             case eSkillType.PassiveSkill:
                 obj.AddComponent(_componentType);
                 UIItem objitem = obj.GetComponent<UIItem>();
+                objitem.tmi = _tmi;
                 objitem.itemSkillType = eItemSkillType.Passive; break;
         }
 

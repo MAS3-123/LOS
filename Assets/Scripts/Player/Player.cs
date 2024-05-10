@@ -116,7 +116,10 @@ public class Player : MonoBehaviour
     {
         basicObj = false;
         enemyObj = false;
-        interObj.myAnimator.SetBool("Interection Player", false);
+        if(interObj != null)
+        {
+            interObj.myAnimator.SetBool("Interection Player", false);
+        }
     }
 
     void Update()

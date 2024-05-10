@@ -21,6 +21,8 @@ public class InteractionObject : MonoBehaviour // 모든 상호작용 오브젝트에 들어�
     private float gravity = 10f;
     protected int fallingLimit = -15;
 
+    public string skillTmi;
+
     private void Awake()
     {
         ObjectType type = gameObject.GetComponent<ObjectType>();

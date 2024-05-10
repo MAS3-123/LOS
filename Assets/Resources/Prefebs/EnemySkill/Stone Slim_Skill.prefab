@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4975156711525851691}
   - component: {fileID: -6572887279972656939}
   m_Layer: 10
-  m_Name: Stone Slim Skill
+  m_Name: Stone Slim_Skill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

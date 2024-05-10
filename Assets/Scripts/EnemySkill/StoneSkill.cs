@@ -73,6 +73,7 @@ public class StoneSkill : Enemy
     {
         _obj.name = "InterectionObject_Stone Slim";
         _interObj.myType = Type.GetType("StonePassiveSkill");
+        _interObj.skillTmi = "체력이 2초마다 회복됩니다!!";
     }
     // 점프 했을 때만 이동하고 이동방향 및 거리는 플레이어 위치로
     // 점프 후 최고 지점에서 빠르게 하강하여 isGround가 on 일 때 주변에 땅에 닿아 있는 player 및 enmey에게 데미지

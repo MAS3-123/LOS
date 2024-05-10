@@ -19,6 +19,7 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     private Image image;
     public Transform trsBeforeParent;
     public eItemSkillType itemSkillType;
+    public string tmi;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     {
         trsBeforeParent = transform.parent ;// 이전으로 돌아갈 transform 값을 이 오브젝트의 부모 transform으로 설정.
         UISlot beforeSlot = trsBeforeParent.GetComponent<UISlot>();
+        Destroy(beforeSlot.TMIobj);
         if (trsBeforeParent.GetComponent<UISlot_A>() != null)
         {
             ActiveSkillSlot activeSkillSlot = transform.GetComponentInParent<ActiveSkillSlot>();

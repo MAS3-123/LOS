@@ -145,9 +145,8 @@ public class Enemy : MonoBehaviour
                                          Quaternion.identity, GameManager.Instance.dynamicObj.transform);
             InteractionObject interObj = obj.GetComponent<InteractionObject>();
             SpriteRenderer spr = obj.GetComponent<SpriteRenderer>();
-            itemType type = obj.GetComponent<itemType>();
             SkillComponentType(obj, interObj);
-            string skillName = obj.name.Substring(obj.name.IndexOf('_') + 1) + " Skill";
+            string skillName = obj.name.Substring(obj.name.IndexOf('_') + 1) + "_Skill";
             Debug.Log(skillName);
             interObj.included_Skill[0] = Resources.Load<GameObject>($"Prefebs/EnemySkill/{skillName}");
             spr.sprite = deadSprite.sprite;
