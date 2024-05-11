@@ -119,7 +119,7 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
         {
             GameObject obj = InventoryManager.Instance.TMI_Object;
             TMI tmi = obj.GetComponent<TMI>();
-            TMIobj = Instantiate(obj, gameObject.transform.position + new Vector3(-130f, 0f, 0f), Quaternion.identity, gameObject.transform);
+            TMIobj = Instantiate(obj, gameObject.transform.position + new Vector3(-110f, 0f, 0f), Quaternion.identity, GameObject.Find("UI Canvas").gameObject.transform);
             tmi.image.sprite = gameObject.transform.GetChild(0).GetComponent<Image>().sprite;
             tmi.slimName.text = gameObject.transform.GetChild(0).name.Substring(0, gameObject.transform.GetChild(0).name.Length - 6);
             tmi.tmi.text = eventData.pointerEnter.gameObject.GetComponent<UIItem>().tmi;
