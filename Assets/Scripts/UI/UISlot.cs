@@ -93,12 +93,12 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
                 obj.transform.SetParent(temTrs);
                 obj.transform.position = temTrs.position;
 
-                if(temTrs.GetComponent<UISlot_A>() != null)
+                if(temTrs.GetComponent<UISlot_A>() != null) // 이전 슬롯이 Active 슬롯일 때
                 {
                     ActiveSkillSlot aSlot = temTrs.GetComponentInParent<ActiveSkillSlot>();
                     aSlot.SetUiItem(beforeSlot, tem);
                 }
-                else if(temTrs.GetComponent<UISlot_P>() != null)
+                else if(temTrs.GetComponent<UISlot_P>() != null) // 이전 슬롯이 Passive 슬롯일 때
                 {
                     PassiveSkillSlot pSlot = temTrs.GetComponentInParent<PassiveSkillSlot>();
                     pSlot.SetUiItem(beforeSlot, tem);
@@ -117,16 +117,23 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
         image.color = Color.white;
         if(gameObject.transform.childCount > 0 )
         {
+            Transform skillObj = gameObject.transform.GetChild(0);
             GameObject obj = InventoryManager.Instance.TMI_Object;
             TMI tmi = obj.GetComponent<TMI>();
+
+            tmi.image.sprite = skillObj.GetComponent<Image>().sprite;
+            tmi.slimName.text = skillObj.name.Substring(0, skillObj.name.Length - 6);
+
+            if (eventData.pointerEnter.gameObject != null )
+            {
+                GameObject objPointEnter = eventData.pointerEnter.gameObject;
+                UIItem sc = objPointEnter.GetComponent<UIItem>();
+                if (sc != null)
+                {
+                    tmi.tmi.text = sc.tmi;
+                }
+            }
             TMIobj = Instantiate(obj, gameObject.transform.position + new Vector3(-110f, 0f, 0f), Quaternion.identity, GameObject.Find("UI Canvas").gameObject.transform);
-            tmi.image.sprite = gameObject.transform.GetChild(0).GetComponent<Image>().sprite;
-            tmi.slimName.text = gameObject.transform.GetChild(0).name.Substring(0, gameObject.transform.GetChild(0).name.Length - 6);
-            tmi.tmi.text = eventData.pointerEnter.gameObject.GetComponent<UIItem>().tmi;
-
-            //spr.sprite = gameObject.transform.GetChild(0).GetComponent<Image>().sprite;
-
-            Debug.Log("오브젝트 존재");
         }
     }
 

@@ -31,22 +31,14 @@ public class StoneSkill : Enemy
                 stemp = false;
                 if (playerSc.isGround == true && Mathf.Abs(EPVecX) < 2f && Mathf.Abs(EPVecY) < 0.5f) // 둘다 땅에 닿아 있고 거리가 2보다 작고 높이 차이가 0.5보다 작을 때
                 {
-                    PlayerKnockBackDamage();
-                    playerSc.player_Hp--;
-                    playerSc.playerHp.SetPlayerHp(playerSc.player_Hp, playerSc.player_MaxHp);
+                    playerSc.PlayerVecX_Pro = gameObject.transform.position.x;
+                    playerSc.playerHp_Pro = -2;
+                    playerSc.playerHp.SetPlayerHp(playerSc.playerHp_Pro, playerSc.player_MaxHp);
                 }
                 ps.gameObject.transform.position = transform.position - new Vector3(0, 0.1f, 0) ;
                 ps.Play();
             }
         }
-        //else if (isJump)
-        //{
-        //    if (Player.Instance.isGround == false && Mathf.Abs(EPVecX) < 1f && verticalVelocity <= 0f) // 둘다 점프중이고 거리가 1보다 작을 때 하강중이면
-        //    {
-        //        Debug.Log("공중에서 밟힘");
-        //        PlayerKnockBackDamage();
-        //    }
-        //}
 
         if (trigger) // 화면 내로 접근 했을 때
         {
@@ -69,12 +61,12 @@ public class StoneSkill : Enemy
         }
     }
 
-    public override void SkillComponentType(GameObject _obj, InteractionObject _interObj)
+    public override void PlayerSkillType(GameObject _obj, InteractionObject _interObj) // 넘겨줄 정보
     {
         _obj.name = "InterectionObject_Stone Slim";
         _interObj.myType = Type.GetType("StonePassiveSkill");
-        _interObj.skillTmi = "체력이 2초마다 회복됩니다!!";
+        _interObj.GetComponent<itemType>().skillType = eSkillType.PassiveSkill;
+        _interObj.GetComponent<ObjectType>().objectType = eObjectType.Enemy;
+        _interObj.skillTmi = "체력이 (10)이하 일 때 (2)초 마다 (1) 씩 회복됩니다!";
     }
-    // 점프 했을 때만 이동하고 이동방향 및 거리는 플레이어 위치로
-    // 점프 후 최고 지점에서 빠르게 하강하여 isGround가 on 일 때 주변에 땅에 닿아 있는 player 및 enmey에게 데미지
 }

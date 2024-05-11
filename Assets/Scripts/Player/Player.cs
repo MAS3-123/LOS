@@ -32,6 +32,12 @@ public class Player : MonoBehaviour
     public int PATH_player_Hp;
     public int player_Mp;
 
+    public int playerHp_Pro
+    {
+        get { return player_Hp; }
+        set { player_Hp += value; }
+    }
+
     [Header("HP 연출")]
     [SerializeField] public PlayerHp playerHp;
 
@@ -56,6 +62,19 @@ public class Player : MonoBehaviour
     public float verticalVelocity = 0f;
     public float routineF = 0f;
 
+    private float EPVecX;
+
+    public float PlayerVecX_Pro
+    {
+        get { return EPVecX; }
+        set 
+        { 
+            EPVecX = gameObject.transform.position.x - value; 
+            damageOn = true;
+            PlayerKnockBack();
+        } 
+    }
+
     public string skillLayer = string.Empty;
     public string skillTag = string.Empty;
     public string groundTag = string.Empty;
@@ -78,6 +97,26 @@ public class Player : MonoBehaviour
         playerHp.SetPlayerHp(player_Hp, player_MaxHp); //시작시 최대 HP로 초기화
         player_Mp = player_MaxMp;
         playerMp.SetPlayerMp(player_Mp, player_MaxMp); //시작시 최대 MP로 초기화
+    }
+
+    void Update()
+    {
+        if (damageOn != true)
+        {
+            Moving();
+        }
+        CheckGround();
+        CheckGravity();
+
+        InteractionObj();
+        DeadPlayer();
+
+        if (player_Hp != PATH_player_Hp)
+        {
+            playerHp.SetPlayerHp(player_Hp, player_MaxHp);
+            PATH_player_Hp = player_Hp;
+            Debug.Log("체력에 변화가 생김");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D _collision) // 어떤 콜라이더와 접촉했을 때 발동되는 트리거(함수)
@@ -119,26 +158,6 @@ public class Player : MonoBehaviour
         if(interObj != null)
         {
             interObj.myAnimator.SetBool("Interection Player", false);
-        }
-    }
-
-    void Update()
-    {
-        if(damageOn != true)
-        {
-            Moving();
-        }
-        CheckGround();
-        CheckGravity();
-
-        InteractionObj();
-        DeadPlayer();
-
-        if(player_Hp != PATH_player_Hp)
-        {
-            playerHp.SetPlayerHp(player_Hp, player_MaxHp);
-            PATH_player_Hp = player_Hp;
-            Debug.Log("체력에 변화가 생김");
         }
     }
 
@@ -205,7 +224,6 @@ public class Player : MonoBehaviour
             else
             {
                 verticalVelocity = 0;
-                //dubleJumpCount = 0;
                 damageOn = false;
                 myAnimator.SetBool("Jump", false);
                 myAnimator.SetBool("StandByJump", true);
@@ -239,6 +257,26 @@ public class Player : MonoBehaviour
         {
             transform.GetChild(0).SetParent(default);
             Destroy(gameObject);
+        }
+    }
+
+    public void PlayerKnockBack()
+    {
+        if (damageOn == true)
+        {
+            if (EPVecX > 0 && EPVecX < 0.5)
+            {
+                EPVecX = 0.5f;
+            }
+            else if (EPVecX < 0 && EPVecX > -0.5)
+            {
+                EPVecX = -0.5f;
+            }
+
+            Debug.Log("적에게 데미지를 입어 넉백 됨");
+            verticalVelocity = (4f / Mathf.Abs(EPVecX)); //EPVecX는 적과 내 거리 차이
+            myRigid.velocity = Vector3.zero;
+            myRigid.AddForce(new Vector2((1 / EPVecX) * 2f, 0), ForceMode2D.Impulse);
         }
     }
 }

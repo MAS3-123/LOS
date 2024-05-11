@@ -125,8 +125,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    
-
     private void EnemyHpBarPos()
     {
         Vector3 fixedPos = transform.position;
@@ -145,10 +143,9 @@ public class Enemy : MonoBehaviour
                                          Quaternion.identity, GameManager.Instance.dynamicObj.transform);
             InteractionObject interObj = obj.GetComponent<InteractionObject>();
             SpriteRenderer spr = obj.GetComponent<SpriteRenderer>();
-            SkillComponentType(obj, interObj);
+            PlayerSkillType(obj, interObj);
             string skillName = obj.name.Substring(obj.name.IndexOf('_') + 1) + "_Skill";
-            Debug.Log(skillName);
-            interObj.included_Skill[0] = Resources.Load<GameObject>($"Prefebs/EnemySkill/{skillName}");
+            interObj.included_Skill[0] = Resources.Load<GameObject>($"Prefebs/GetEnemySkill/{skillName}");
             spr.sprite = deadSprite.sprite;
 
             Destroy(gameObject);
@@ -226,29 +223,9 @@ public class Enemy : MonoBehaviour
 
     }
 
-    public virtual void SkillComponentType(GameObject _obj, InteractionObject _interObj)
+    public virtual void PlayerSkillType(GameObject _obj, InteractionObject _interObj)
     {
 
-    }
-
-    public void PlayerKnockBackDamage()
-    {
-        if (playerSc.damageOn != true)
-        {
-            if (EPVecX > 0 && EPVecX < 0.5)
-            {
-                EPVecX = 0.5f;
-            }
-            else if (EPVecX < 0 && EPVecX > -0.5)
-            {
-                EPVecX = -0.5f;
-            }
-            Debug.Log("플레이어가 근처에 있음");
-            playerSc.verticalVelocity = (4f / Mathf.Abs(EPVecX));
-            playerSc.myRigid.velocity = Vector3.zero;
-            playerSc.myRigid.AddForce(new Vector2(100f * (1 / EPVecX), 0), ForceMode2D.Force);
-            playerSc.damageOn = true;
-        }
     }
     // 첫 조우 후 플레이어가 멀어지면 화면 내 범위까지 접근 하지만 특정 시간 내에 접근하지 못하면 이동 정지
     // 조우시 갖고있는 스킬 쿨타임마다 사용

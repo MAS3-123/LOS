@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ActiveSkill : UIItem
 {
-    GameObject obj2;
+    protected GameObject obj2;
 
     private void Awake()
     {
@@ -12,7 +12,7 @@ public class ActiveSkill : UIItem
     }
     public override void UseSkill(Vector3 _vec)
     {
-        GameObject obj = Resources.Load<GameObject>($"Prefebs/{gameObject.name}");
-        Instantiate(obj, _vec, Quaternion.identity, obj2.transform);
+        //GameObject obj = Resources.Load<GameObject>($"Prefebs/{gameObject.name}");
+        //Instantiate(obj, _vec, Quaternion.identity, obj2.transform);
     }
 }

@@ -30,7 +30,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -71,11 +71,11 @@ public class InventoryManager : MonoBehaviour
 
     private void InventoryPos()
     {
-        if(activeBar.activeSelf == false)
+        if (activeBar.activeSelf == false)
         {
             activeBar.transform.position = passiveBar.transform.position;
         }
-        else if(passiveBar.activeSelf == false)
+        else if (passiveBar.activeSelf == false)
         {
             passiveBar.transform.position = activeBar.transform.position;
         }
@@ -93,14 +93,14 @@ public class InventoryManager : MonoBehaviour
             {
                 activeBar.SetActive(true);
             }
-            else if(passiveBar.activeSelf == true)
+            else if (passiveBar.activeSelf == true)
             {
                 passiveBar.SetActive(false);
             }
         }
-        else if(Input.GetKeyDown(KeyCode.Escape))
+        else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(activeBar.activeSelf == true || passiveBar.activeSelf == true)
+            if (activeBar.activeSelf == true || passiveBar.activeSelf == true)
             {
                 activeBar.SetActive(false);
                 passiveBar.SetActive(false);
@@ -114,7 +114,7 @@ public class InventoryManager : MonoBehaviour
 
         int slotNum = getEmptyItemSlot();
 
-        if(slotNum == -1)
+        if (slotNum == -1)
         {
             return false;
         }
@@ -122,20 +122,21 @@ public class InventoryManager : MonoBehaviour
         //인벤토리에 아이템을 생성
         GameObject obj = Instantiate(objUIItem, listInventory[slotNum]);
         obj.name = _objName;
+        UIItem objItem = null;
+        obj.AddComponent(_componentType);
+        //switch (_sType)
+        //{
+        //    case eSkillType.ActiveSkill:
+        //        obj.AddComponent(_componentType);
+        //        break;
+        //    case eSkillType.PassiveSkill:
+        //        obj.AddComponent(_componentType);
+        //        break;
+        //}
 
-        switch (_sType)
-        {
-            case eSkillType.ActiveSkill:
-                obj.AddComponent<ActiveSkill>();
-                UIItem objItem = obj.GetComponent<UIItem>();
-                objItem.tmi = _tmi;
-                objItem.itemSkillType = eItemSkillType.Active; break;
-            case eSkillType.PassiveSkill:
-                obj.AddComponent(_componentType);
-                UIItem objitem = obj.GetComponent<UIItem>();
-                objitem.tmi = _tmi;
-                objitem.itemSkillType = eItemSkillType.Passive; break;
-        }
+        objItem = obj.GetComponent<UIItem>();
+        objItem.tmi = _tmi;
+        objItem.itemSkillType = _sType == eSkillType.ActiveSkill ? eItemSkillType.Active : eItemSkillType.Passive;
 
         UIItem sc = obj.GetComponent<UIItem>();
         sc.SetItem(_spr);
@@ -146,11 +147,11 @@ public class InventoryManager : MonoBehaviour
 
     public Transform ReturnItem(GameObject _obj)
     {
-        if(_obj.GetComponent<UIItem>().itemSkillType == eItemSkillType.Active)
+        if (_obj.GetComponent<UIItem>().itemSkillType == eItemSkillType.Active)
         {
             listInventory = listActiveInventory;
         }
-        else if(_obj.GetComponent<UIItem>().itemSkillType == eItemSkillType.Passive)
+        else if (_obj.GetComponent<UIItem>().itemSkillType == eItemSkillType.Passive)
         {
             listInventory = listPassiveInventory;
         }
@@ -166,10 +167,10 @@ public class InventoryManager : MonoBehaviour
     {
         //CheckInventory();
         int count = listInventory.Count;
-        for(int iNum = 0; iNum < count; iNum++)
+        for (int iNum = 0; iNum < count; iNum++)
         {
             Transform trsSlot = listInventory[iNum];
-            if(trsSlot.childCount == 0)
+            if (trsSlot.childCount == 0)
             {
                 Debug.Log(iNum);
                 return iNum;
