@@ -8,63 +8,83 @@ public class Player : MonoBehaviour
 {
     public static Player Instance;
 
-    [SerializeField] private Animator myAnimator;
     [SerializeField] private ParticleSystem ps;
-    [SerializeField] MovingStoneTrigger movingTri;
-    [SerializeField] SpawnTrigger spawnTri;
+    [SerializeField] private MovingStoneTrigger movingTri;
+    [SerializeField] private SpawnTrigger spawnTri;
     [Space]
-    [SerializeField] SpriteRenderer spr;
-    [Space]
-    [SerializeField] public Rigidbody2D myRigid;
-    [SerializeField] BoxCollider2D colliLeg;
+    [SerializeField] private SpriteRenderer spr;
+    [SerializeField] private Animator myAnimator;
+    [SerializeField] private Rigidbody2D myRigid;
+    [SerializeField] private BoxCollider2D colliLeg;
 
     public InteractionObject interObj;
 
-    Vector2 moveDir = Vector2.zero;
+    private Vector2 moveDir = Vector2.zero;
 
     [Header("스텟")]
-    public float player_Speed = 5.0f;
-    public float CoolDown;
-    public float Damage;
-    public int player_MaxHp = 10;
-    public int player_MaxMp = 10;
-    public int player_Hp;
-    public int PATH_player_Hp;
-    public int player_Mp;
+    private float playerSpeed = 5.0f;
+    private float CoolDown;
+    private float Damage;
+    private int playerMaxHp = 10;
+    private int playerMaxMp = 10;
+    private int playerHp;
+    private int previous_playerHp;
+    private int playerMp;
+    private int previous_playerMp;
 
-    public int playerHp_Pro
+    public int p_playerHp
     {
-        get { return player_Hp; }
-        set { player_Hp += value; }
+        get { return playerHp; }
+        set { playerHp += value; }
+    }
+
+    public float p_playerMaxHp 
+    { 
+        get { return playerMaxHp; }
+        set { playerMaxHp = (int)value; }
+    }
+
+    public int p_playerMp
+    {
+        get { return playerMp; }
+        set 
+        { 
+            playerMp += value;
+            if(playerMp < playerMaxMp && manaRecovering != true)
+            {
+                manaRecovering = true;
+                StartCoroutine(RecoveryMana());
+            }
+        }
     }
 
     [Header("HP 연출")]
-    [SerializeField] public PlayerHp playerHp;
+    [SerializeField] private PlayerHp playerHp_SC;
 
     [Space]
     [Header("MP 연출")]
-    [SerializeField] public PlayerMp playerMp;
+    [SerializeField] private PlayerMp playerMp_SC;
 
     [Space]
     [Header(" -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - ")]
-    public bool isJump = false;
-    public bool dubleJump = false;
+    private bool isJump = false;
+    private bool dubleJump = false;
     public bool isGround = false;
-    public bool basicObj = false;
-    public bool enemyObj = false;
-    public bool damageOn = false;
+    private bool damageOn = false;
+    private bool manaRecovering = false;
+    private bool isInterObj = false;
 
     [Space]
     public float gravity = 30.0f;
     public float jumpForce = 12.0f;
     public float groundRatio = 0.02f;
-    public int fallingLimit = -15;
     public float verticalVelocity = 0f;
     public float routineF = 0f;
+    public int fallingLimit = -15;
 
     private float EPVecX;
 
-    public float PlayerVecX_Pro
+    public float p_playerVecX
     {
         get { return EPVecX; }
         set 
@@ -75,9 +95,25 @@ public class Player : MonoBehaviour
         } 
     }
 
-    public string skillLayer = string.Empty;
-    public string skillTag = string.Empty;
-    public string groundTag = string.Empty;
+    private string skillLayer = string.Empty;
+    private string skillTag = string.Empty;
+    private string groundTag = string.Empty;
+
+    IEnumerator RecoveryMana()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
+            playerMp += 1;
+            Debug.Log("마나 지속 회복중");
+            if (playerMp == playerMaxMp)
+            {
+                manaRecovering = false;
+                Debug.Log("마나 지속 회복 끝");
+                break;
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -93,10 +129,10 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        player_Hp = player_MaxHp;
-        playerHp.SetPlayerHp(player_Hp, player_MaxHp); //시작시 최대 HP로 초기화
-        player_Mp = player_MaxMp;
-        playerMp.SetPlayerMp(player_Mp, player_MaxMp); //시작시 최대 MP로 초기화
+        playerHp = playerMaxHp;
+        playerHp_SC.SetPlayerHp(playerHp, playerMaxHp); //시작시 최대 HP로 초기화
+        playerMp = playerMaxMp;
+        playerMp_SC.SetPlayerMp(playerMp, playerMaxMp); //시작시 최대 MP로 초기화
     }
 
     void Update()
@@ -111,11 +147,15 @@ public class Player : MonoBehaviour
         InteractionObj();
         DeadPlayer();
 
-        if (player_Hp != PATH_player_Hp)
+        if (playerHp != previous_playerHp)
         {
-            playerHp.SetPlayerHp(player_Hp, player_MaxHp);
-            PATH_player_Hp = player_Hp;
-            Debug.Log("체력에 변화가 생김");
+            playerHp_SC.SetPlayerHp(playerHp, playerMaxHp);
+            previous_playerHp = playerHp;
+        }
+        if (playerMp != previous_playerMp)
+        {
+            playerMp_SC.SetPlayerMp(playerMp, playerMaxMp);
+            previous_playerMp = playerMp;
         }
     }
 
@@ -127,21 +167,15 @@ public class Player : MonoBehaviour
             GameObject obj = _collision.gameObject; ;// obj는 접촉한 오브젝트
             interObj = obj.GetComponent<InteractionObject>(); // stratObject는 접촉한 오브젝트의 startobj를 참조함.(이렇게 한 이유는 startobj를 가진 오브젝트가 2개인데 트리거된 오브젝트로 부터 뭔가 액션을 취하기위해 구분한 것)
 
-            eObjectType eOType = interObj.GetComponent<ObjectType>().GetObjectType(); // 오브젝트 타입은 인스펙터에서 설정한 오브젝트 타입을 따라감.
-            switch (eOType) 
-            {
-                case eObjectType.Basic:
-                    basicObj = true; break;
-                case eObjectType.Enemy:
-                    enemyObj = true; break;
-            }
+            isInterObj = true;
 
             interObj.myAnimator.SetBool("Interection Player", true);
         }
         else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Spawn") // 땅에 떨어졌을 때 사용 할 스폰 트리거
         {
             Debug.Log("스폰 트리거");
-            gameObject.transform.position = spawnTri.spawnVec;
+            gameObject.transform.position = spawnTri.p_spawnVec;
+            playerHp -= 3;
             verticalVelocity = 0f;
         }
         else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Enemy Spawn")
@@ -153,9 +187,8 @@ public class Player : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        basicObj = false;
-        enemyObj = false;
-        if(interObj != null)
+        isInterObj = false;
+        if (interObj != null)
         {
             interObj.myAnimator.SetBool("Interection Player", false);
         }
@@ -164,7 +197,7 @@ public class Player : MonoBehaviour
     private void Moving()
     {
         moveDir.x = Input.GetAxisRaw("Horizontal"); // 가로로 움직이는 키 입력을 받아옴(좌우 에로우키, A, D)
-        myRigid.velocity = new Vector2(moveDir.x * player_Speed, moveDir.y);// addforce는 질량에 의한 움직임으로 관성이 작용한다. velocity는 질량을 무시하고 직접적으로 속도를 변화하여 즉각적인 움직임이 가능하다.
+        myRigid.velocity = new Vector2(moveDir.x * playerSpeed, moveDir.y);// addforce는 질량에 의한 움직임으로 관성이 작용한다. velocity는 질량을 무시하고 직접적으로 속도를 변화하여 즉각적인 움직임이 가능하다.
 
         if (moveDir.x > 0)
         {
@@ -234,28 +267,17 @@ public class Player : MonoBehaviour
 
     private void InteractionObj() // 상호작용한 오브젝트가 갖고 있는 아이템 및 스킬 획득 함수
     {
-        if (basicObj == true)
+        if (isInterObj && Input.GetKeyDown(KeyCode.G))
         {
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                interObj.trigger = true;
-            }
-        }
-        else if (enemyObj == true)
-        {
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                Debug.Log("enemy");
-                interObj.trigger = true;
-            }
+            interObj.p_trigger = true;
         }
     }
 
     private void DeadPlayer()
     {
-        if(player_Hp <= 0)
+        if(playerHp <= 0)
         {
-            transform.GetChild(0).SetParent(default);
+            transform.GetChild(0).SetParent(default); // 카메라 밖으로 뺌
             Destroy(gameObject);
         }
     }
@@ -264,11 +286,11 @@ public class Player : MonoBehaviour
     {
         if (damageOn == true)
         {
-            if (EPVecX > 0 && EPVecX < 0.5)
+            if (EPVecX > 0 && EPVecX < 0.5) // 값 보정
             {
                 EPVecX = 0.5f;
             }
-            else if (EPVecX < 0 && EPVecX > -0.5)
+            else if (EPVecX < 0 && EPVecX > -0.5) // 값 보정
             {
                 EPVecX = -0.5f;
             }

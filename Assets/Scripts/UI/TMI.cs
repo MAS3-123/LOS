@@ -9,14 +9,4 @@ public class TMI : MonoBehaviour
     [SerializeField] public Image image;
     [SerializeField] public TextMeshProUGUI slimName;
     [SerializeField] public TextMeshProUGUI tmi;
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

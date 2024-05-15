@@ -12,7 +12,14 @@ public class InteractionObject : MonoBehaviour // 모든 상호작용 오브젝트에 들어�
 
     public GameObject[] included_Skill; // 상호작용 오브젝트는 각각 스킬 오브젝트를 갖고있음 
 
-    public bool trigger = false;
+    private bool trigger = false;
+
+    public bool p_trigger
+    {
+        get { return trigger; }
+        set { trigger = value; }
+    }
+
     public bool destroy = false;
     public bool isGround = false;
 
@@ -21,7 +28,7 @@ public class InteractionObject : MonoBehaviour // 모든 상호작용 오브젝트에 들어�
     private float gravity = 10f;
     protected int fallingLimit = -15;
 
-    private string skill_Info;
+    public string skill_Info;
     public string skillTmi
     {
         get { return skill_Info; }

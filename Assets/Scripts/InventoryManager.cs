@@ -124,15 +124,6 @@ public class InventoryManager : MonoBehaviour
         obj.name = _objName;
         UIItem objItem = null;
         obj.AddComponent(_componentType);
-        //switch (_sType)
-        //{
-        //    case eSkillType.ActiveSkill:
-        //        obj.AddComponent(_componentType);
-        //        break;
-        //    case eSkillType.PassiveSkill:
-        //        obj.AddComponent(_componentType);
-        //        break;
-        //}
 
         objItem = obj.GetComponent<UIItem>();
         objItem.tmi = _tmi;

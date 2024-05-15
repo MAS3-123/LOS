@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class SpawnTrigger : MonoBehaviour
 {
-    public Vector3 spawnVec;
+    private Vector3 spawnVec;
+
+    public Vector3 p_spawnVec
+    {
+        get { return spawnVec; }
+        set { spawnVec = value; }
+    }
+
 
     private void Awake()
     {
-        spawnVec = gameObject.transform.localPosition;
+        p_spawnVec = gameObject.transform.localPosition;
     }
 }

@@ -14,8 +14,8 @@ public class Enemy : MonoBehaviour
 
     protected eSkillType mySkillType;
 
-    protected Player playerSc;
-    EnemyHp sc;
+    protected Player playerSC;
+    protected EnemyHp enemySC;
 
     private GameObject hpBarSpawnObj;
     private GameObject myHpBar;
@@ -40,8 +40,32 @@ public class Enemy : MonoBehaviour
     protected int fallingLimit = -15;
 
     protected int count = 0;
-    public int enemy_Hp;
-    public int enemy_MaxHp = 1;
+    public int enemyHp; // private로 바꾸기
+    private int previous_enemyHp;
+    private int enemy_MaxHp = 10;
+
+    public int p_enemeyHp
+    {
+        get { return enemyHp; }
+        set
+        {
+            enemyHp += value;
+
+            if(enemyHp != previous_enemyHp) // 체력 변화가 생기면
+            {
+                Debug.Log("체력 변화가 생김");
+                if(enemyHp < previous_enemyHp)
+                {
+                    EnemyHit();
+                }
+                previous_enemyHp = enemyHp;
+                if(enemySC != null)
+                {
+                    enemySC.SetEnemyHp(p_enemeyHp, enemy_MaxHp);
+                }
+            }
+        }
+    }
 
     IEnumerator HitAnimation()
     {
@@ -54,8 +78,8 @@ public class Enemy : MonoBehaviour
         trigger = true;
         Debug.Log($"trigger On objectName = {gameObject.name}");
 
-        playerSc = GameManager.Instance.playerObj.GetComponent<Player>();
-        player = playerSc.gameObject;
+        playerSC = GameManager.Instance.playerObj.GetComponent<Player>();
+        player = playerSC.gameObject;
 
         time = 0f;
         count++;
@@ -65,24 +89,19 @@ public class Enemy : MonoBehaviour
     private void OnBecameInvisible()
     {
         trigger = false;
-        //Debug.Log($"trigger Off objectName = {gameObject.name}");
-
-        //if (player == null) return;
-
-        //Vector3 vec = player.transform.position;
-        //distanceGap = enemyVec.x - vec.x;
     }
     private void Start()
     {
         hpBarSpawnObj = GameManager.Instance.enemyHpBarObj;
-        enemy_Hp = enemy_MaxHp;
+        p_enemeyHp = enemy_MaxHp;
+        previous_enemyHp = p_enemeyHp;
         if (myHpBar == null)
         {
             GameObject obj = Resources.Load<GameObject>("Prefebs/EnemyHpBar");
             myHpBar = Instantiate(obj, gameObject.transform.position, Quaternion.identity, hpBarSpawnObj.transform);
             myHpBar.gameObject.name = $"{gameObject.name} HpBar";
-            sc = myHpBar.GetComponent<EnemyHp>();
-            sc.SetEnemyHp(enemy_Hp, enemy_MaxHp);
+            enemySC = myHpBar.GetComponent<EnemyHp>();
+            enemySC.SetEnemyHp(p_enemeyHp, enemy_MaxHp);
 
             EnemyHpBarPos();
         }
@@ -108,21 +127,16 @@ public class Enemy : MonoBehaviour
 
         EnemyDead();
 
-        if (sc != null)
+        if (enemySC != null)
         {
             EnemyHpBarPos();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void EnemyHit()
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Active Skill"))
-        {
-            enemy_Hp--;
-            sc.SetEnemyHp(enemy_Hp, enemy_MaxHp);
-            myAnimator.SetBool("Hit", true);
-            StartCoroutine(HitAnimation());
-        }
+        myAnimator.SetBool("Hit", true);
+        StartCoroutine(HitAnimation());
     }
 
     private void EnemyHpBarPos()
@@ -132,19 +146,19 @@ public class Enemy : MonoBehaviour
 
         fixedPos = Camera.main.WorldToScreenPoint(fixedPos);
         fixedPos.y -= 50f;
-        sc.transform.position = fixedPos;
+        enemySC.transform.position = fixedPos;
     }
 
     private void EnemyDead()
     {
-        if(enemy_Hp <= 0)
+        if(p_enemeyHp <= 0)
         {
             GameObject obj = Instantiate(GameManager.Instance.interactionObj, transform.position + new Vector3(0, 1, 0),
-                                         Quaternion.identity, GameManager.Instance.dynamicObj.transform);
+                                         Quaternion.identity, GameManager.Instance.dynamicObj.transform); // 플레이어가 상호작용 할 수 있는 오브젝트 소환
             InteractionObject interObj = obj.GetComponent<InteractionObject>();
             SpriteRenderer spr = obj.GetComponent<SpriteRenderer>();
-            PlayerSkillType(obj, interObj);
-            string skillName = obj.name.Substring(obj.name.IndexOf('_') + 1) + "_Skill";
+            PlayerSkillType(obj, interObj); // 넘겨줄 정보
+            string skillName = obj.name.Substring(obj.name.IndexOf('_') + 1) + "_Skill"; // 플레이어가 얻게 될 스킬 프리팹 이름
             interObj.included_Skill[0] = Resources.Load<GameObject>($"Prefebs/GetEnemySkill/{skillName}");
             spr.sprite = deadSprite.sprite;
 

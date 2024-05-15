@@ -13,7 +13,7 @@ public class StonePassiveSkill : PassiveSkill
     public override void Awake()
     {
         base.Awake();
-        coolTime = 2f;
+        coolTime = 5f;
     }
 
     IEnumerator RecoveryHp()
@@ -23,21 +23,21 @@ public class StonePassiveSkill : PassiveSkill
             yield return new WaitForSeconds(0.1f);
             playerAnim.SetBool("Heal", false);
 
-            yield return new WaitForSeconds(finalCoolTime); // coolTime 마다
+            yield return new WaitForSeconds(coolTime); // coolTime 마다
 
             eQWERPSlot slot = gameObject.transform.parent.GetComponent<UISlot>().slot; // 아이템 슬롯 확인
             if (slot == eQWERPSlot.None) // P > None 됐을경우를 확인하기 위해
             {
-                StopAllCoroutines();
                 passiveCount--;
                 Debug.Log("회복 종료");
+                break;
             }
 
-            player.playerHp_Pro = 1;
+            player.p_playerHp = 1;
             playerAnim.SetBool("Heal", true);
             text.text = "+1";
             Debug.Log("체력이 회복됩니다");
-            if (player.playerHp_Pro >= 10)
+            if (player.p_playerHp >= player.p_playerMaxHp * 0.7)
             {
                 passiveCount--;
                 break;
@@ -47,8 +47,7 @@ public class StonePassiveSkill : PassiveSkill
      
     public override void UseSkill(Vector3 _vec)
     {
-        finalCoolTime = (coolTime - subCoolTime) * multiCoolTime;
-        if(passiveCount == 0 && player.playerHp_Pro < 10)
+        if(passiveCount == 0 && player.p_playerHp < player.p_playerMaxHp * 0.7)
         {
             playerAnim = player.GetComponent<Animator>();
             text = player.transform.GetChild(2).GetComponent<TextMeshPro>();

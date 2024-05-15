@@ -1,45 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PassiveSkill : UIItem
 {
     protected GameObject obj2;
     protected Player player;
+    protected Image CoolAmount;
     public int passiveCount;
     protected float coolTime;
-    protected float subCoolTime = 0f;
-    protected float multiCoolTime = 1f;
-    protected float finalCoolTime = 0f;
-
-    public float coolTimeProperty
-    {
-        get { return  coolTime; }
-        set { coolTime = value; }
-    }
-
-    public float subCoolTimeProperty
-    {
-        get { return subCoolTime; }
-        set { subCoolTime = value; }
-    }
-
-    public float multiCoolTimeProperty
-    {
-        get { return multiCoolTime; }
-        set { multiCoolTime = value; }
-    }
-
-    public float finalCoolTimeProperty
-    {
-        get { return finalCoolTime; }
-        set { finalCoolTime = value; }
-    }
 
     public virtual void Awake()
     {
         obj2 = GameManager.Instance.playerObj;
         player = obj2.GetComponent<Player>();
+        CoolAmount = gameObject.transform.GetChild(0).GetComponent<Image>();
+        CoolAmount.fillAmount = 0f;
     }
 
 }

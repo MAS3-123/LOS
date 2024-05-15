@@ -6,7 +6,7 @@ using static UnityEditor.Progress;
 
 public class FireSkill : Enemy
 {
-    [SerializeField] ParticleSystem ps;
+    [SerializeField] private ParticleSystem ps;
     [SerializeField] private GameObject skillObj;
     [SerializeField] private Transform myAim;
 
@@ -21,8 +21,9 @@ public class FireSkill : Enemy
         {
             if (curTime <= 0)
             {
-                Instantiate(skillObj, myAim.position, Quaternion.identity, gameObject.transform);
-                curTime = coolTime;
+               GameObject obj = Instantiate(skillObj, myAim.position, Quaternion.identity, GameManager.Instance.dynamicObj.transform);
+               obj.AddComponent<FireBall_Enemy>();
+               curTime = coolTime;
             }
             else
             {
@@ -42,6 +43,6 @@ public class FireSkill : Enemy
         _interObj.myType = Type.GetType("FireActiveSkill");
         _interObj.GetComponent<itemType>().skillType = eSkillType.ActiveSkill;
         _interObj.GetComponent<ObjectType>().objectType = eObjectType.Enemy;
-        _interObj.skillTmi = "???";
+        _interObj.skillTmi = "직선으로 파이어볼을 발사하여 <color=#FF5733>1</color>의 피해를 입힙니다.";
     }
 }
