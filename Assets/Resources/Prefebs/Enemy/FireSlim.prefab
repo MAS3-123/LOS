@@ -4884,8 +4884,7 @@ MonoBehaviour:
   colliLeg: {fileID: 2974500799656220498}
   myAnimator: {fileID: 6825686677671691491}
   deadSprite: {fileID: 2821316708953563870}
-  enemy_Hp: 0
-  enemy_MaxHp: 1
+  enemyHp: 0
   ps: {fileID: 0}
   skillObj: {fileID: 4804631165652253352, guid: 724c4f5478569784f838cd1d849f502c, type: 3}
   myAim: {fileID: 5857592409037013253}

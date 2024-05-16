@@ -87,11 +87,8 @@ MonoBehaviour:
   colliLeg: {fileID: 4152542781531817591}
   myAnimator: {fileID: 19410671489341033}
   deadSprite: {fileID: 8266419332831699991, guid: 7b3df8bce45ec4a4c9be8f2777a8cbf5, type: 3}
-  enemy_Hp: 0
-  enemy_MaxHp: 1
+  enemyHp: 0
   ps: {fileID: 6467719843436368583}
-  stemp: 0
-  curTime: 0
 --- !u!114 &1906009261571412034
 MonoBehaviour:
   m_ObjectHideFlags: 0
