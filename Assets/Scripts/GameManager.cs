@@ -5,6 +5,22 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class PlayerVectorData
+{
+    public float x;
+    public float y;
+    public float z;
+}
+
+public class InventorySlotData
+{
+    public string p_Inven;
+    public string a_Inven;
+    public string p_SkillSlot;
+    public string a_SkillSlot;
+}
+
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
