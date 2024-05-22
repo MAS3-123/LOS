@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEditor.Progress;
 
 public class Player : MonoBehaviour
@@ -35,7 +37,24 @@ public class Player : MonoBehaviour
     public int p_playerHp
     {
         get { return playerHp; }
-        set { playerHp += value; }
+        set 
+        {
+            if(value < 0) // 데미지 입었을 때
+            {
+                if (immunity == true) 
+                {
+                    value = 0;
+                }
+                else
+                {
+                    immunity = true;
+                    StartCoroutine(ImmunityDamage());
+                    Debug.Log("면역 활성화");
+                    
+                }
+            }
+            playerHp += value;
+        }
     }
 
     public float p_playerMaxHp 
@@ -73,6 +92,7 @@ public class Player : MonoBehaviour
     private bool damageOn = false;
     private bool manaRecovering = false;
     private bool isInterObj = false;
+    private bool immunity = false;
 
     [Space]
     public float gravity = 30.0f;
@@ -85,7 +105,7 @@ public class Player : MonoBehaviour
     private float EPVecX;
 
     public float p_playerVecX
-    {
+    { // 넉백 당할 때 사용될 함수
         get { return EPVecX; }
         set 
         { 
@@ -113,6 +133,14 @@ public class Player : MonoBehaviour
                 break;
             }
         }
+    }
+
+    IEnumerator ImmunityDamage()
+    {
+        yield return new WaitForSeconds(2f);
+        immunity = false;
+        Debug.Log("면역 비활성화");
+        yield break;
     }
 
     private void Awake()
@@ -226,10 +254,15 @@ public class Player : MonoBehaviour
             if (hit)
             {
                 isGround = true;
-                if (hit.transform.tag == "Move Object") // 움직이는 발판에 올라갔을 때 발판 이동방향과 속도에 맞춰 플레이어도 움직임
+                if (hit.transform.tag == "Move Object_Horizotal") // 움직이는 발판에 올라갔을 때 발판 이동방향과 속도에 맞춰 플레이어도 움직임
                 {
                     routineF = movingTri.routineF;
                     myRigid.velocity = new Vector2(myRigid.velocity.x + routineF, verticalVelocity);
+                }
+                else if(hit.transform.tag == "Move Object_Vertical")
+                {
+                    routineF = movingTri.routineF;
+                    myRigid.velocity = new Vector2(myRigid.velocity.x, verticalVelocity + routineF);
                 }
             }
         }

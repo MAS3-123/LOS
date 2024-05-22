@@ -8,7 +8,7 @@ public class MovingStoneTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D _collision)
     {
-        if (_collision.gameObject.layer == LayerMask.NameToLayer("Ground") && _collision.gameObject.tag == "Move Object")
+        if (_collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             routineF = -routineF;
         }

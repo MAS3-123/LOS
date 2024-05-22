@@ -8,9 +8,10 @@ TagManager:
   - Slot
   - MoveTri
   - ChangeVecTri
-  - Move Object
   - Spawn
   - Enemy Spawn
+  - Move Object_Vertical
+  - Move Object_Horizontal
   layers:
   - Default
   - TransparentFX

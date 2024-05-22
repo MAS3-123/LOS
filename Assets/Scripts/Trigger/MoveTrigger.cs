@@ -13,4 +13,9 @@ public class MoveTrigger : MonoBehaviour
             moveOn = true;
         }
     }
+
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        moveOn = false;
+    }
 }
