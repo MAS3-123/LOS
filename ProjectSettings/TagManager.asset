@@ -12,6 +12,8 @@ TagManager:
   - Enemy Spawn
   - Move Object_Vertical
   - Move Object_Horizontal
+  - NextStage
+  - Jump Pad
   layers:
   - Default
   - TransparentFX

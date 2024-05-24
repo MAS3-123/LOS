@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerVectorData
@@ -26,9 +27,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [SerializeField] public GameObject enemyHpBarObj;
-    [SerializeField] public GameObject dynamicObj;
     [SerializeField] public GameObject interactionObj;
     [SerializeField] public GameObject playerObj;
+
+    public GameObject dynamicObj;
 
     private Sprite spr;
 
@@ -37,11 +39,23 @@ public class GameManager : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(this);
         }
-        else
-        {
-            Destroy(this);
-        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += onSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= onSceneLoaded;
+    }
+
+    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        dynamicObj = GameObject.Find("DynamicObject");
     }
 
     public void GetSkill(eSkillType _skillType, Type _componentType, string _infoSkill)

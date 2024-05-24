@@ -11,11 +11,12 @@ public class MovingStone_Horizontal : MonoBehaviour
     private bool moveOn = false;
 
     private float moveX = 0f;
-    private float routineF = 0f;
+    private float routineF = 4f;
 
-    private void Start()
+    public float p_routineF
     {
-        
+        get { return routineF; }
+        set { routineF = value; }
     }
 
     private void Update()
@@ -26,11 +27,10 @@ public class MovingStone_Horizontal : MonoBehaviour
     private void MovingOn()
     {
         moveOn = moveTri.moveOn;
-        routineF = movingTri.routineF;
 
         if (moveOn == true)
         {
-            moveX = routineF;
+            moveX = p_routineF;
         }
 
         myRigid.velocity = new Vector2(moveX, myRigid.velocity.y);

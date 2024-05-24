@@ -33,10 +33,7 @@ public class InventoryManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-        }
-        else
-        {
-            Destroy(this);
+            DontDestroyOnLoad(this);
         }
     }
 

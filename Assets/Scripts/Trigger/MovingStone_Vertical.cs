@@ -1,21 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MovingStone_Vertical : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D myRigid;
-    [SerializeField] private MoveTrigger moveTri;
-    [SerializeField] private MovingStoneTrigger movingTri;
 
     private bool moveOn = false;
+    private bool startSpeed = false;
 
     private float moveY = 0f;
     private float routineF = 0f;
+    private float time = 0f;
 
-    private void Start()
+    public float p_routineF
     {
-
+        get { return routineF; }
+        set { routineF = value; }
     }
 
     private void Update()
@@ -25,18 +27,44 @@ public class MovingStone_Vertical : MonoBehaviour
 
     private void MovingOn()
     {
-        moveOn = moveTri.moveOn;
-        routineF = movingTri.routineF;
-
         if (moveOn == true)
         {
-            moveY = routineF;
+            if(startSpeed == false)
+            {
+                p_routineF = 4;
+                startSpeed = true;
+            }
+            time = 0;
         }
         else
         {
-
+            if (startSpeed == true)
+            {
+                if (time > 2f)
+                {
+                    p_routineF = -4f;
+                    startSpeed = false;
+                }
+            }
+            time += Time.deltaTime;
         }
-
+        moveY = p_routineF;
         myRigid.velocity = new Vector2(myRigid.velocity.x, moveY);
+    }
+
+    private void OnTriggerEnter2D(Collider2D _collision)
+    {
+        if(_collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            moveOn = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D _collision)
+    {
+        if (_collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            moveOn = false;
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using static UnityEditor.Progress;
 
@@ -11,8 +12,6 @@ public class Player : MonoBehaviour
     public static Player Instance;
 
     [SerializeField] private ParticleSystem ps;
-    [SerializeField] private MovingStoneTrigger movingTri;
-    [SerializeField] private SpawnTrigger spawnTri;
     [Space]
     [SerializeField] private SpriteRenderer spr;
     [SerializeField] private Animator myAnimator;
@@ -20,6 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField] private BoxCollider2D colliLeg;
 
     public InteractionObject interObj;
+    private MovingStone_Horizontal mvStoneH;
+    private MovingStone_Vertical mvStoneV;
 
     private Vector2 moveDir = Vector2.zero;
 
@@ -87,7 +88,7 @@ public class Player : MonoBehaviour
     [Space]
     [Header(" -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - ")]
     private bool isJump = false;
-    private bool dubleJump = false;
+    private bool jumpPad = false;
     public bool isGround = false;
     private bool damageOn = false;
     private bool manaRecovering = false;
@@ -148,11 +149,13 @@ public class Player : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(this);
         }
-        else
-        {
-            Destroy(this);
-        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += onSceneLoaded;
     }
 
     private void Start()
@@ -187,22 +190,39 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= onSceneLoaded;
+    }
+
+    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        gameObject.transform.position = new Vector3(0, 0.6f, 0);
+    }
+
     private void OnTriggerEnter2D(Collider2D _collision) // 어떤 콜라이더와 접촉했을 때 발동되는 트리거(함수)
     {
         if (_collision.gameObject.layer == LayerMask.NameToLayer("Interaction Object")) // 접촉한 콜라이더의 레이어가 interaction object(상호작용 오브젝트)일 경우
         {
             Debug.Log("상호작용 오브젝트 접촉");
             GameObject obj = _collision.gameObject; ;// obj는 접촉한 오브젝트
-            interObj = obj.GetComponent<InteractionObject>(); // stratObject는 접촉한 오브젝트의 startobj를 참조함.(이렇게 한 이유는 startobj를 가진 오브젝트가 2개인데 트리거된 오브젝트로 부터 뭔가 액션을 취하기위해 구분한 것)
-
-            isInterObj = true;
-
-            interObj.myAnimator.SetBool("Interection Player", true);
+            if (obj.GetComponent<InteractionObject>() != null)
+            {
+                interObj = obj.GetComponent<InteractionObject>(); // stratObject는 접촉한 오브젝트의 startobj를 참조함.(이렇게 한 이유는 startobj를 가진 오브젝트가 2개인데 트리거된 오브젝트로 부터 뭔가 액션을 취하기위해 구분한 것)
+                interObj.myAnimator.SetBool("Interection Player", true);
+                isInterObj = true;
+            }
+            if (_collision.gameObject.tag == "NextStage")
+            {
+                Scene currentScene = SceneManager.GetActiveScene();
+                int sceneIndex = currentScene.buildIndex;
+                SceneManager.LoadScene(sceneIndex + 1);
+            }
         }
         else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Spawn") // 땅에 떨어졌을 때 사용 할 스폰 트리거
         {
-            Debug.Log("스폰 트리거");
-            gameObject.transform.position = spawnTri.p_spawnVec;
+            SpawnTrigger sc = _collision.gameObject.GetComponent<SpawnTrigger>();
+            gameObject.transform.position = sc.p_spawnVec;
             playerHp -= 3;
             verticalVelocity = 0f;
         }
@@ -210,6 +230,10 @@ public class Player : MonoBehaviour
         {
             EnemySpawnTrigger eSpawnTri = _collision.gameObject.GetComponent<EnemySpawnTrigger>();
             eSpawnTri.SpwanEnemy();
+        }
+        else if(_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "JumpPad")
+        {
+            verticalVelocity = 30f;
         }
     }
 
@@ -221,6 +245,8 @@ public class Player : MonoBehaviour
             interObj.myAnimator.SetBool("Interection Player", false);
         }
     }
+
+
 
     private void Moving()
     {
@@ -254,15 +280,25 @@ public class Player : MonoBehaviour
             if (hit)
             {
                 isGround = true;
-                if (hit.transform.tag == "Move Object_Horizotal") // 움직이는 발판에 올라갔을 때 발판 이동방향과 속도에 맞춰 플레이어도 움직임
+                if (hit.transform.tag == "Move Object_Horizontal") // 움직이는 발판에 올라갔을 때 발판 이동방향과 속도에 맞춰 플레이어도 움직임
                 {
-                    routineF = movingTri.routineF;
+                    mvStoneH = hit.transform.GetComponent<MovingStone_Horizontal>();
+                    routineF = mvStoneH.p_routineF;
                     myRigid.velocity = new Vector2(myRigid.velocity.x + routineF, verticalVelocity);
                 }
                 else if(hit.transform.tag == "Move Object_Vertical")
                 {
-                    routineF = movingTri.routineF;
+                    mvStoneV = hit.transform.GetComponent<MovingStone_Vertical>();
+                    routineF = mvStoneV.p_routineF;
                     myRigid.velocity = new Vector2(myRigid.velocity.x, verticalVelocity + routineF);
+                }
+                else if(hit.transform.tag == "Jump Pad")
+                {
+                    if(jumpPad == false)
+                    {
+                        jumpPad = true;
+                        isJump = true;
+                    }
                 }
             }
         }
@@ -284,13 +320,18 @@ public class Player : MonoBehaviour
             if (isJump == true)
             {
                 isJump = false;
-                verticalVelocity = jumpForce; // 스페이스바를 눌렀을 때 y축 방향으로 힘을 가함.
+                verticalVelocity = jumpForce;
                 myAnimator.SetBool("Jump", true);
+                if(jumpPad == true)
+                {
+                    verticalVelocity = 22f;
+                }
             }
-            else
+            else if (isJump == false)
             {
                 verticalVelocity = 0;
                 damageOn = false;
+                jumpPad = false;
                 myAnimator.SetBool("Jump", false);
                 myAnimator.SetBool("StandByJump", true);
             }

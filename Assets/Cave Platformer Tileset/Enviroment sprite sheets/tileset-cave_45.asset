@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: tileset-cave_45
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300090, guid: 894640e3f9d838a4499398609b715c7f, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9, g: 0.531, b: 0.162, a: 1}
   m_Transform:
     e00: 1
     e01: 0

@@ -1,6 +1,7 @@
 using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using System;
 using System.Collections;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEditor.Build;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -90,6 +91,12 @@ public class Enemy : MonoBehaviour
     {
         trigger = false;
     }
+
+    public virtual void Awake()
+    {
+
+    }
+
     private void Start()
     {
         hpBarSpawnObj = GameManager.Instance.enemyHpBarObj;
@@ -178,6 +185,15 @@ public class Enemy : MonoBehaviour
         else if (EPVecX < -5)
         {
             EPVecX = -5;
+        }
+
+        if(EPVecX < 2 && EPVecX > 0)
+        {
+            EPVecX = 2;
+        }
+        else if(EPVecX > -2 && EPVecX < 0)
+        {
+            EPVecX = -2;
         }
 
         if (time > 2f)
