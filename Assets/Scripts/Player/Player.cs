@@ -197,7 +197,7 @@ public class Player : MonoBehaviour
 
     private void onSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        gameObject.transform.position = new Vector3(0, 0.6f, 0);
+        //gameObject.transform.position = new Vector3(0, 0.6f, 0);
     }
 
     private void OnTriggerEnter2D(Collider2D _collision) // 어떤 콜라이더와 접촉했을 때 발동되는 트리거(함수)
