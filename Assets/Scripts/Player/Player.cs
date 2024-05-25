@@ -18,6 +18,12 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D myRigid;
     [SerializeField] private BoxCollider2D colliLeg;
 
+    public Rigidbody2D p_myRigid
+    {
+        get { return myRigid; }
+        set { myRigid = value; }
+    }
+
     public InteractionObject interObj;
     private MovingStone_Horizontal mvStoneH;
     private MovingStone_Vertical mvStoneV;
@@ -38,11 +44,11 @@ public class Player : MonoBehaviour
     public int p_playerHp
     {
         get { return playerHp; }
-        set 
+        set
         {
-            if(value < 0) // 데미지 입었을 때
+            if (value < 0) // 데미지 입었을 때
             {
-                if (immunity == true) 
+                if (immunity == true)
                 {
                     value = 0;
                 }
@@ -51,15 +57,15 @@ public class Player : MonoBehaviour
                     immunity = true;
                     StartCoroutine(ImmunityDamage());
                     Debug.Log("면역 활성화");
-                    
+
                 }
             }
             playerHp += value;
         }
     }
 
-    public float p_playerMaxHp 
-    { 
+    public float p_playerMaxHp
+    {
         get { return playerMaxHp; }
         set { playerMaxHp = (int)value; }
     }
@@ -67,15 +73,21 @@ public class Player : MonoBehaviour
     public int p_playerMp
     {
         get { return playerMp; }
-        set 
-        { 
+        set
+        {
             playerMp += value;
-            if(playerMp < playerMaxMp && manaRecovering != true)
+            if (playerMp < playerMaxMp && manaRecovering != true)
             {
                 manaRecovering = true;
                 StartCoroutine(RecoveryMana());
             }
         }
+    }
+
+    public int p_playerMaxMp
+    {
+        get { return playerMaxMp; }
+        set { playerMaxMp = value; }
     }
 
     [Header("HP 연출")]
@@ -91,10 +103,16 @@ public class Player : MonoBehaviour
     private bool jumpPad = false;
     public bool isGround = false;
     private bool damageOn = false;
+    private bool superJumpOn = false;
     private bool manaRecovering = false;
     private bool isInterObj = false;
     private bool immunity = false;
 
+    public bool p_superJumpOn
+    {
+        get { return superJumpOn; }
+        set { superJumpOn = value; }
+    }
     [Space]
     public float gravity = 30.0f;
     public float jumpForce = 12.0f;
@@ -108,12 +126,12 @@ public class Player : MonoBehaviour
     public float p_playerVecX
     { // 넉백 당할 때 사용될 함수
         get { return EPVecX; }
-        set 
-        { 
-            EPVecX = gameObject.transform.position.x - value; 
+        set
+        {
+            EPVecX = gameObject.transform.position.x - value;
             damageOn = true;
             PlayerKnockBack();
-        } 
+        }
     }
 
     private string skillLayer = string.Empty;
@@ -168,13 +186,16 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (damageOn != true)
+        if (damageOn != true && superJumpOn != true)
         {
             Moving();
         }
         CheckGround();
-        CheckGravity();
+        if (superJumpOn != true)
+        {
+            CheckGravity();
 
+        }
         InteractionObj();
         DeadPlayer();
 
@@ -209,10 +230,10 @@ public class Player : MonoBehaviour
             if (obj.GetComponent<InteractionObject>() != null)
             {
                 interObj = obj.GetComponent<InteractionObject>(); // stratObject는 접촉한 오브젝트의 startobj를 참조함.(이렇게 한 이유는 startobj를 가진 오브젝트가 2개인데 트리거된 오브젝트로 부터 뭔가 액션을 취하기위해 구분한 것)
-                interObj.myAnimator.SetBool("Interection Player", true);
+                //interObj.myAnimator.SetBool("Interection Player", true);
                 isInterObj = true;
             }
-            if (_collision.gameObject.tag == "NextStage")
+            else if (_collision.gameObject.tag == "NextStage")
             {
                 Scene currentScene = SceneManager.GetActiveScene();
                 int sceneIndex = currentScene.buildIndex;
@@ -231,7 +252,7 @@ public class Player : MonoBehaviour
             EnemySpawnTrigger eSpawnTri = _collision.gameObject.GetComponent<EnemySpawnTrigger>();
             eSpawnTri.SpwanEnemy();
         }
-        else if(_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "JumpPad")
+        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "JumpPad")
         {
             verticalVelocity = 30f;
         }
@@ -242,7 +263,7 @@ public class Player : MonoBehaviour
         isInterObj = false;
         if (interObj != null)
         {
-            interObj.myAnimator.SetBool("Interection Player", false);
+            //interObj.myAnimator.SetBool("Interection Player", false);
         }
     }
 
@@ -286,15 +307,15 @@ public class Player : MonoBehaviour
                     routineF = mvStoneH.p_routineF;
                     myRigid.velocity = new Vector2(myRigid.velocity.x + routineF, verticalVelocity);
                 }
-                else if(hit.transform.tag == "Move Object_Vertical")
+                else if (hit.transform.tag == "Move Object_Vertical")
                 {
                     mvStoneV = hit.transform.GetComponent<MovingStone_Vertical>();
                     routineF = mvStoneV.p_routineF;
                     myRigid.velocity = new Vector2(myRigid.velocity.x, verticalVelocity + routineF);
                 }
-                else if(hit.transform.tag == "Jump Pad")
+                else if (hit.transform.tag == "Jump Pad")
                 {
-                    if(jumpPad == false)
+                    if (jumpPad == false)
                     {
                         jumpPad = true;
                         isJump = true;
@@ -302,7 +323,6 @@ public class Player : MonoBehaviour
                 }
             }
         }
-
     }
 
     private void CheckGravity()
@@ -322,7 +342,7 @@ public class Player : MonoBehaviour
                 isJump = false;
                 verticalVelocity = jumpForce;
                 myAnimator.SetBool("Jump", true);
-                if(jumpPad == true)
+                if (jumpPad == true)
                 {
                     verticalVelocity = 22f;
                 }
@@ -331,6 +351,7 @@ public class Player : MonoBehaviour
             {
                 verticalVelocity = 0;
                 damageOn = false;
+                superJumpOn = false;
                 jumpPad = false;
                 myAnimator.SetBool("Jump", false);
                 myAnimator.SetBool("StandByJump", true);
@@ -349,7 +370,7 @@ public class Player : MonoBehaviour
 
     private void DeadPlayer()
     {
-        if(playerHp <= 0)
+        if (playerHp <= 0)
         {
             transform.GetChild(0).SetParent(default); // 카메라 밖으로 뺌
             Destroy(gameObject);

@@ -5,6 +5,7 @@ using UnityEngine;
 public enum eObjectType
 {
     Basic,
+    Stage2,
     Enemy,
 }
 

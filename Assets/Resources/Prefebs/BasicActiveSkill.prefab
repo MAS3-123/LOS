@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4080667360935506735}
-  - component: {fileID: 6071066418631640238}
+  - component: {fileID: 1809250442256333761}
   - component: {fileID: 4399596727419308766}
   - component: {fileID: 4975156711525851691}
   m_Layer: 9
-  m_Name: ActiveBlueSkill
+  m_Name: BasicActiveSkill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,9 +33,9 @@ Transform:
   m_Children:
   - {fileID: 3221767449823143321}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6071066418631640238
+--- !u!114 &1809250442256333761
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,10 +44,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4804631165652253352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5ba8868b369287408d6dae27d03fdd0, type: 3}
+  m_Script: {fileID: 11500000, guid: e05d20b674bd1624ab9f6619c1ff7d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colli: {fileID: 4399596727419308766}
 --- !u!58 &4399596727419308766
 CircleCollider2D:
   m_ObjectHideFlags: 0

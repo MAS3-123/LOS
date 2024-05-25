@@ -226,10 +226,9 @@ MonoBehaviour:
   myAnimator: {fileID: 7764320447913339820}
   included_Skill:
   - {fileID: 0}
-  trigger: 0
   destroy: 1
   isGround: 0
-  skillTmi: 
+  skill_Info: 
 --- !u!212 &1292373051590826441
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -353,7 +352,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &4387653639660929844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e37c6b8c60a165428c07fcdf383c2ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillType: 1
+  skillType: 0
 --- !u!114 &305726645139708035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 634706a91b1b9ad4f8e7fcc9895127d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 1
+  objectType: 0
 --- !u!95 &7764320447913339820
 Animator:
   serializedVersion: 5

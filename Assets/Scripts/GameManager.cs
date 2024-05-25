@@ -31,6 +31,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject playerObj;
 
     public GameObject dynamicObj;
+    public Transform[] dynamicObjChild;
+    public GameObject p_dynamicObj
+    {
+        get 
+        { 
+            return dynamicObj; 
+        }
+        set 
+        {
+            Enemy sc = dynamicObj.transform.GetComponentInChildren<Enemy>(); // 적이 dynamicobj로 들어올 때 카운트 할 부분 작성해야함.
+            dynamicObjChild = value.GetComponentsInChildren<Transform>();
+        }
+    }
 
     private Sprite spr;
 

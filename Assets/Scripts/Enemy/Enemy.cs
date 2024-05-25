@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
     protected int count = 0;
     public int enemyHp; // private로 바꾸기
     private int previous_enemyHp;
-    private int enemy_MaxHp = 10;
+    public int enemy_MaxHp = 10;
 
     public int p_enemeyHp
     {
@@ -187,14 +187,14 @@ public class Enemy : MonoBehaviour
             EPVecX = -5;
         }
 
-        if(EPVecX < 2 && EPVecX > 0)
-        {
-            EPVecX = 2;
-        }
-        else if(EPVecX > -2 && EPVecX < 0)
-        {
-            EPVecX = -2;
-        }
+        //if(EPVecX < 2 && EPVecX > 0)
+        //{
+        //    EPVecX = 2;
+        //}
+        //else if(EPVecX > -2 && EPVecX < 0)
+        //{
+        //    EPVecX = -2;
+        //}
 
         if (time > 2f)
         {
