@@ -39,7 +39,7 @@ public class BasicSkill : MonoBehaviour
             if (transformCheck == false)
             {
                 transformCheck = true;
-                GameManager.Instance.p_dynamicObj = gameObject;
+                //GameManager.Instance.p_dynamicObj = gameObject;
                 transform.SetParent(GameManager.Instance.dynamicObj.transform);
             }
         }
@@ -53,6 +53,10 @@ public class BasicSkill : MonoBehaviour
             enemyCheck = true;
             Enemy sc = _collision.gameObject.GetComponent<Enemy>();
             sc.p_enemeyHp = -damage;
+            if(sc.p_enemeyHp <= 0)
+            {
+                GameManager.Instance.p_enemyKillScore = 1;
+            }
             Debug.Log("FireBall : ÀûÀÌ¶û Á¢ÃË");
         }
     }

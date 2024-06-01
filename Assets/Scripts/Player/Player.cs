@@ -218,6 +218,10 @@ public class Player : MonoBehaviour
 
     private void onSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            Destroy(gameObject);
+        }
         //gameObject.transform.position = new Vector3(0, 0.6f, 0);
     }
 
@@ -373,6 +377,7 @@ public class Player : MonoBehaviour
         if (playerHp <= 0)
         {
             transform.GetChild(0).SetParent(default); // 카메라 밖으로 뺌
+            transform.GetChild(1).SetParent(default);
             Destroy(gameObject);
         }
     }

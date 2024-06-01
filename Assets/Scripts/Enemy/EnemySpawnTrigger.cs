@@ -18,7 +18,8 @@ public class EnemySpawnTrigger : MonoBehaviour
         {
             trigger = true;
             GameObject obj = Resources.Load<GameObject>($"Prefebs/Enemy/{gameObject.name}");
-            Instantiate(obj, spawnVec, Quaternion.identity, GameManager.Instance.dynamicObj.transform);
+            GameObject obj1 = Instantiate(obj, spawnVec, Quaternion.identity, GameManager.Instance.dynamicObj.transform);
+            Debug.Log(GameManager.Instance.p_fieldInEnmey);
         }
     }
 }

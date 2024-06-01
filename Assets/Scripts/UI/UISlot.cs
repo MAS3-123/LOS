@@ -109,6 +109,10 @@ public class UISlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointe
                 }
                 skip = false;
             }
+            if(TMIobj != null)
+            {
+                Destroy(TMIobj);
+            }
         }
     }
 

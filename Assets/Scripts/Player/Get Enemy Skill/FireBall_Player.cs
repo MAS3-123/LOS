@@ -18,6 +18,7 @@ public class FireBall_Player : FireBall // 플레이어가 이 파이어볼을 사용 할 경우
     {
         base.Start();
         //myScaleX = transform.parent.localScale.x;
+        gameObject.tag = "Player";
         fireBallDamage = 1;
     }
 
@@ -41,6 +42,10 @@ public class FireBall_Player : FireBall // 플레이어가 이 파이어볼을 사용 할 경우
             enemyCheck = true;
             Enemy sc = _collision.gameObject.GetComponent<Enemy>();
             sc.p_enemeyHp = -fireBallDamage_Property;
+            if(sc.p_enemeyHp <= 0f)
+            {
+                GameManager.Instance.p_enemyKillScore = 1;
+            }
             Debug.Log("FireBall : 적이랑 접촉");
         }
     }

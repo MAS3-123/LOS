@@ -5,6 +5,7 @@ using Unity.IO.LowLevel.Unsafe;
 using UnityEditor.Build;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class Enemy : MonoBehaviour
     protected float EPVecX = 0f;
     protected float EPVecY = 0f;
     private float time = 0f;
-    
+
     private float gravity = 30.0f;
     private float groundRatio = 0.02f;
     protected float jumpForce = 12.0f;
@@ -43,7 +44,7 @@ public class Enemy : MonoBehaviour
     protected int count = 0;
     public int enemyHp; // private로 바꾸기
     private int previous_enemyHp;
-    public int enemy_MaxHp = 10;
+    public int enemy_MaxHp = 10; // private로 바꾸기
 
     public int p_enemeyHp
     {
@@ -52,15 +53,15 @@ public class Enemy : MonoBehaviour
         {
             enemyHp += value;
 
-            if(enemyHp != previous_enemyHp) // 체력 변화가 생기면
+            if (enemyHp != previous_enemyHp) // 체력 변화가 생기면
             {
-                Debug.Log("체력 변화가 생김");
-                if(enemyHp < previous_enemyHp)
+                Debug.Log("적의 체력에 변화가 생김");
+                if (enemyHp < previous_enemyHp)
                 {
                     EnemyHit();
                 }
                 previous_enemyHp = enemyHp;
-                if(enemySC != null)
+                if (enemySC != null)
                 {
                     enemySC.SetEnemyHp(p_enemeyHp, enemy_MaxHp);
                 }
@@ -76,6 +77,11 @@ public class Enemy : MonoBehaviour
 
     private void OnBecameVisible()//이벤트함수
     {
+    }
+
+    private void OnBecameMainCamera()
+    {
+        Debug.Log("Visible");
         trigger = true;
         Debug.Log($"trigger On objectName = {gameObject.name}");
 
@@ -84,11 +90,19 @@ public class Enemy : MonoBehaviour
 
         time = 0f;
         count++;
+    }
 
+    private void OnWillRenderObject()
+    {
+        if (Camera.current.name == "Main Camera" && trigger == false)
+        {
+            gameObject.SendMessage("OnBecameMainCamera");
+        }
     }
 
     private void OnBecameInvisible()
     {
+        Debug.Log("화면 밖");
         trigger = false;
     }
 
@@ -117,9 +131,18 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         enemyVec = gameObject.transform.position;
-        if (player != null) 
+
+        if (player != null)
         {
             playerVec = player.transform.position;
+        }
+
+        EPVecX = playerVec.x - enemyVec.x;
+        EPVecY = playerVec.y - enemyVec.y;
+
+        if(Mathf.Abs(EPVecX) > 5f)
+        {
+            Debug.Log("플레이어와의 거리가 멉니다");
         }
 
         if (count > 0 && trigger == false)
@@ -158,7 +181,7 @@ public class Enemy : MonoBehaviour
 
     private void EnemyDead()
     {
-        if(p_enemeyHp <= 0)
+        if (p_enemeyHp <= 0)
         {
             GameObject obj = Instantiate(GameManager.Instance.interactionObj, transform.position + new Vector3(0, 1, 0),
                                          Quaternion.identity, GameManager.Instance.dynamicObj.transform); // 플레이어가 상호작용 할 수 있는 오브젝트 소환
@@ -176,8 +199,6 @@ public class Enemy : MonoBehaviour
 
     private void EnemyMoving()
     {
-        EPVecX = playerVec.x - enemyVec.x;
-        EPVecY = playerVec.y - enemyVec.y;
         if (EPVecX > 5)
         {
             EPVecX = 5;
@@ -186,15 +207,6 @@ public class Enemy : MonoBehaviour
         {
             EPVecX = -5;
         }
-
-        //if(EPVecX < 2 && EPVecX > 0)
-        //{
-        //    EPVecX = 2;
-        //}
-        //else if(EPVecX > -2 && EPVecX < 0)
-        //{
-        //    EPVecX = -2;
-        //}
 
         if (time > 2f)
         {

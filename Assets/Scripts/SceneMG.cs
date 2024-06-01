@@ -13,11 +13,19 @@ public class SceneMG : MonoBehaviour
     [SerializeField] private Button newGameButton;
     [SerializeField] private Button endGameButton;
 
+    private void OnEnable()
+    {
+        Time.timeScale = 1;
+    }
 
     void Start()
     {
         ClickButton();
         loadGameButton.gameObject.SetActive(false);
+        if(PlayerPrefs.GetString("PlayerVec", string.Empty) != string.Empty)
+        {
+            loadGameButton.gameObject.SetActive(true);
+        }
     }
 
     void Update()
@@ -37,7 +45,8 @@ public class SceneMG : MonoBehaviour
 
     private void LoadGame()
     {
-
+        SaveData.Instance.p_saveOn = true;
+        SceneManager.LoadScene(1);
     }
 
     private void NewGame()

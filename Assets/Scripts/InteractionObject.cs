@@ -62,7 +62,7 @@ public class InteractionObject : MonoBehaviour // 모든 상호작용 오브젝트에 들어�
                 }
                 else if (type.objectType == eObjectType.Stage2)
                 {
-                    skillTmi = "불꽃의 힘을 두르고 날아오릅니다. 지속 시간은 10초 이며 바닥에 닿을시 종료되고, 방향 조종이 가능하고 적에게 적중시 큰 데미지를 줍니다.";
+                    skillTmi = "불꽃의 힘을 두르고 날아오릅니다. 방향 조종이 가능하고 적에게 적중시 큰 데미지를 줍니다.";
                     myType = Type.GetType("SuperJumpActiveSkill");
                 }
             }
