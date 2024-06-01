@@ -49,6 +49,10 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject objUIItem;
     [SerializeField] public GameObject TMI_Object;
     [SerializeField] private GameObject settingMenu;
+    [Space]
+    [SerializeField] private GameObject ActiveSkillillust;
+    [SerializeField] private GameObject PassiveSkillillust;
+    [SerializeField] private GameObject Slimillust;
 
     private List<Transform> listActiveInventory = new List<Transform>();
     private List<Transform> listPassiveInventory = new List<Transform>();
@@ -93,19 +97,6 @@ public class InventoryManager : MonoBehaviour
         SceneManager.sceneLoaded += onSceneLoaded;
     }
 
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= onSceneLoaded;
-    }
-
-    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-
     private void Start()
     {
         settingMenu.SetActive(false);
@@ -123,12 +114,17 @@ public class InventoryManager : MonoBehaviour
 
         if (p_saveOn)
         {
-            //for (int i = 0; i < obj.Length; i++)
-            //{
-            //    LoadSlotData(keyName_Slot[i].name);
-            //    LoadItemData(keyName_Item[i]);
-            //}
             LoadData();
+        }
+
+        string itemInfo = PlayerPrefs.GetString("Item_Infomation", string.Empty);
+        if (itemInfo != string.Empty)
+        {
+            List<ItemData> itemDatas = JsonConvert.DeserializeObject<List<ItemData>>(itemInfo);
+            for (int i = 0; i < itemDatas.Count; i++)
+            {
+                
+            }
         }
     }
 
@@ -136,6 +132,19 @@ public class InventoryManager : MonoBehaviour
     {
         callInventory();
         InventoryPos();
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= onSceneLoaded;
+    }
+
+    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void LoadData()
@@ -213,7 +222,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void SaveSlotData() // 슬롯 정보를 저장
+    public void SaveSlotData() // 슬롯 정보를 저장
     {
         for (int iNum = 0; iNum < keyName_Slot.Length; iNum++)
         {
@@ -288,7 +297,36 @@ public class InventoryManager : MonoBehaviour
 
         string itemData = JsonConvert.SerializeObject(listItemInfo);
         PlayerPrefs.SetString("Item_Infomation", itemData);
-        //Debug.Log(PlayerPrefs.GetString("Item_Infomation"));
+        //List<ItemData> itemInfomation = JsonConvert.DeserializeObject<List<ItemData>>(itemData);
+        LoadIlluste(data);
+    }
+
+    private void LoadIlluste(ItemData data)
+    {
+        switch (data.eSkillType)
+        {
+            case "ActiveSkill":
+                Debug.Log("엑티브 스킬 도감");
+                RectTransform myTrs = ActiveSkillillust.GetComponent<RectTransform>();
+                RectTransform[] rect = ActiveSkillillust.GetComponentsInChildren<RectTransform>().Where(t => t != myTrs).ToArray();
+                GameObject obj1 = Instantiate(objUIItem, rect[0]);
+                GameObject tmiObj = TMI_Object;
+                TMI tmi = tmiObj.GetComponent<TMI>();
+                Sprite spr = Resources.Load<Sprite>($"Sprite/{data.spriteName}");
+
+                Destroy(obj1.transform.GetChild(0).gameObject);
+
+                obj1.GetComponent<Image>().sprite = spr;
+                tmi.slimName.text = data.objName;
+                tmi.image.sprite = spr;
+                tmi.tmi.text = data.objTmi;
+
+                break;
+            case "PassiveSkill":
+                Debug.Log("패시브 스킬 도감");
+                GameObject obj2 = Instantiate(objUIItem, PassiveSkillillust.transform);
+                break;
+        }
     }
 
     private void InitActiveInventory()  // 인벤토리 초기화 함수
@@ -372,7 +410,6 @@ public class InventoryManager : MonoBehaviour
         SaveSlotData();
 
         return true;
-
     }
 
     private void InstantiateItem(GameObject obj, Sprite _spr, eSkillType _sType, string _objName, string _tmi, Type _componentType)

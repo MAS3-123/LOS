@@ -5,7 +5,6 @@ using Unity.IO.LowLevel.Unsafe;
 using UnityEditor.Build;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -34,6 +33,7 @@ public class Enemy : MonoBehaviour
     protected float EPVecX = 0f;
     protected float EPVecY = 0f;
     private float time = 0f;
+    private float invisiblTime = 0f;
 
     private float gravity = 30.0f;
     private float groundRatio = 0.02f;
@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour
 
             if (enemyHp != previous_enemyHp) // 체력 변화가 생기면
             {
-                Debug.Log("적의 체력에 변화가 생김");
+                Debug.Log($"{gameObject.name}의 체력에 변화가 생김");
                 if (enemyHp < previous_enemyHp)
                 {
                     EnemyHit();
@@ -75,37 +75,6 @@ public class Enemy : MonoBehaviour
         myAnimator.SetBool("Hit", false);
     }
 
-    private void OnBecameVisible()//이벤트함수
-    {
-    }
-
-    private void OnBecameMainCamera()
-    {
-        Debug.Log("Visible");
-        trigger = true;
-        Debug.Log($"trigger On objectName = {gameObject.name}");
-
-        playerSC = GameManager.Instance.playerObj.GetComponent<Player>();
-        player = playerSC.gameObject;
-
-        time = 0f;
-        count++;
-    }
-
-    private void OnWillRenderObject()
-    {
-        if (Camera.current.name == "Main Camera" && trigger == false)
-        {
-            gameObject.SendMessage("OnBecameMainCamera");
-        }
-    }
-
-    private void OnBecameInvisible()
-    {
-        Debug.Log("화면 밖");
-        trigger = false;
-    }
-
     public virtual void Awake()
     {
 
@@ -113,6 +82,9 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        playerSC = GameManager.Instance.playerObj.GetComponent<Player>();
+        player = playerSC.gameObject;
+
         hpBarSpawnObj = GameManager.Instance.enemyHpBarObj;
         p_enemeyHp = enemy_MaxHp;
         previous_enemyHp = p_enemeyHp;
@@ -130,6 +102,45 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        EPVector();
+        PlayerVisible();
+
+        CheckGround();
+        CheckGravity();
+
+        if (trigger == true)
+        {
+            EnemyMoving();
+            SkillOn();
+
+            EnemyDead();
+        }
+
+        if (enemySC != null)
+        {
+            EnemyHpBarPos();
+        }
+    }
+
+    private void PlayerVisible()
+    {
+        if (Mathf.Abs(EPVecX) > 9f && trigger == true)
+        {
+            invisiblTime += Time.deltaTime;
+            if (invisiblTime > 5)
+            {
+                Debug.Log("플레이어와의 거리가 멈");
+                trigger = false;
+            }
+        }
+        else if (Mathf.Abs(EPVecX) <= 9f && trigger != true)
+        {
+            OnBecameMainCamera();
+        }
+    }
+
+    private void EPVector()
+    {
         enemyVec = gameObject.transform.position;
 
         if (player != null)
@@ -139,28 +150,15 @@ public class Enemy : MonoBehaviour
 
         EPVecX = playerVec.x - enemyVec.x;
         EPVecY = playerVec.y - enemyVec.y;
+    }
 
-        if(Mathf.Abs(EPVecX) > 5f)
-        {
-            Debug.Log("플레이어와의 거리가 멉니다");
-        }
+    private void OnBecameMainCamera()
+    {
+        Debug.Log($"trigger On objectName = {gameObject.name}");
+        trigger = true;
 
-        if (count > 0 && trigger == false)
-        {
-            time += Time.deltaTime;
-        }
-
-        EnemyMoving();
-        CheckGround();
-        CheckGravity();
-        SkillOn();
-
-        EnemyDead();
-
-        if (enemySC != null)
-        {
-            EnemyHpBarPos();
-        }
+        time = 0f;
+        invisiblTime = 0f;
     }
 
     private void EnemyHit()
@@ -206,12 +204,6 @@ public class Enemy : MonoBehaviour
         else if (EPVecX < -5)
         {
             EPVecX = -5;
-        }
-
-        if (time > 2f)
-        {
-            count = 0;
-            Debug.Log("추적 취소");
         }
 
         if (EPVecX > 0)
@@ -269,8 +261,4 @@ public class Enemy : MonoBehaviour
     {
 
     }
-    // 첫 조우 후 플레이어가 멀어지면 화면 내 범위까지 접근 하지만 특정 시간 내에 접근하지 못하면 이동 정지
-    // 조우시 갖고있는 스킬 쿨타임마다 사용
-    // 체력이 0 됐을 때 그 위치에 상호작용 가능한 오브젝트 생성
-    // 생성된 오브젝트는 호출한 Enemy의 스킬 및 특성 보유
 }

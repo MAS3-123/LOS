@@ -51,6 +51,7 @@ public class Player : MonoBehaviour
                 if (immunity == true)
                 {
                     value = 0;
+                    Debug.Log("데미지 면역");
                 }
                 else
                 {
@@ -162,6 +163,17 @@ public class Player : MonoBehaviour
         yield break;
     }
 
+    IEnumerator Stage_2()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(10f);
+            //10초 게이지 차는거 애니메이션으로 시각화
+            p_playerHp = -1;
+            Debug.Log("지속 데미지 받는중");
+        }
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -222,6 +234,14 @@ public class Player : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        else if(SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            StartCoroutine(Stage_2());
+        }
+        else if(SceneManager.GetActiveScene().buildIndex != 2)
+        {
+            StopCoroutine(Stage_2());
+        }
         //gameObject.transform.position = new Vector3(0, 0.6f, 0);
     }
 
@@ -251,14 +271,27 @@ public class Player : MonoBehaviour
             playerHp -= 3;
             verticalVelocity = 0f;
         }
-        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "Enemy Spawn")
+        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger"))
         {
-            EnemySpawnTrigger eSpawnTri = _collision.gameObject.GetComponent<EnemySpawnTrigger>();
-            eSpawnTri.SpwanEnemy();
-        }
-        else if (_collision.gameObject.layer == LayerMask.NameToLayer("Trigger") && _collision.gameObject.tag == "JumpPad")
-        {
-            verticalVelocity = 30f;
+            if(_collision.gameObject.tag == "Enemy Spawn")
+            {
+                EnemySpawnTrigger eSpawnTri = _collision.gameObject.GetComponent<EnemySpawnTrigger>();
+                eSpawnTri.SpwanEnemy();
+            }
+            else if (_collision.gameObject.tag == "JumpPad")
+            {
+                verticalVelocity = 30f;
+            }
+            else if (_collision.gameObject.tag == "Save")
+            {
+                InventoryManager.Instance.SaveSlotData();
+                GameManager.Instance.GetPlayerVector();
+                //우측하단 저장중 텍스트 표시
+            }
+            else if (_collision.gameObject.tag == "ImmunityObject")
+            {
+                immunity = true;
+            }
         }
     }
 

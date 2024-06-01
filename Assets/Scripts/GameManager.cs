@@ -83,7 +83,6 @@ public class GameManager : MonoBehaviour
         {
             LoadPlayerVector();
         }
-        GetPlayerVector();
     }
 
     private void OnEnable()
@@ -99,39 +98,19 @@ public class GameManager : MonoBehaviour
     private void onSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         dynamicObj = GameObject.Find("DynamicObject");
-        if (SceneManager.GetActiveScene().buildIndex == 4) // 보스 씬 일때
-        {
-            if (enemyKillScore == 0)
-            {
-                // 천사
-            }
-            else if (enemyKillScore == 4)
-            {
-                // 악마
-            }
-            else
-            {
-                // 그냥 진행
-            }
-        }
-        //else if (SceneManager.GetActiveScene().buildIndex == 0)
-        //{
-        //    Destroy(gameObject);
-        //}
     }
 
-    private void GetPlayerVector() // 플레이어 현재 위치
+    public void GetPlayerVector() // 플레이어 현재 위치
     {
         PlayerPrefs.DeleteKey("PlayerVec"); // 접근시 초기화 과정
-        string playerVecData = PlayerPrefs.GetString("PlayerVec", string.Empty);
         listPlayerData.Clear(); // 리스트 초기화
 
-        PlayerVectorData data1 = new PlayerVectorData();
-        data1.x = playerObj.transform.position.x;
-        data1.y = playerObj.transform.position.y;
-        data1.z = playerObj.transform.position.z;
-        listPlayerData.Add(data1);
-        playerVecData = JsonConvert.SerializeObject(listPlayerData);
+        PlayerVectorData data = new PlayerVectorData();
+        data.x = playerObj.transform.position.x;
+        data.y = playerObj.transform.position.y;
+        data.z = playerObj.transform.position.z;
+        listPlayerData.Add(data);
+        string playerVecData = JsonConvert.SerializeObject(listPlayerData);
         PlayerPrefs.SetString("PlayerVec", playerVecData);
     }
 
@@ -139,6 +118,10 @@ public class GameManager : MonoBehaviour
     {
         string playerVecData = PlayerPrefs.GetString("PlayerVec", string.Empty);
         listPlayerData = JsonConvert.DeserializeObject<List<PlayerVectorData>>(playerVecData);
+        float x = listPlayerData[0].x;
+        float y = listPlayerData[0].y;
+        float z = listPlayerData[0].z;
+        playerObj.transform.position = new Vector3(x, y, z);
     }
 
     public void GetSkill(eSkillType _skillType, Type _componentType, string _infoSkill)

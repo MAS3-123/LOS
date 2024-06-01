@@ -1,17 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneMG : MonoBehaviour
 {
+    public static SceneMG Instance;
 
     [SerializeField] private Button loadGameButton;
     [SerializeField] private Button newGameButton;
     [SerializeField] private Button endGameButton;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     private void OnEnable()
     {
@@ -26,14 +34,6 @@ public class SceneMG : MonoBehaviour
         {
             loadGameButton.gameObject.SetActive(true);
         }
-    }
-
-    void Update()
-    {
-        //    if () 저장된 데이터가 있다면
-        //    {
-        //        loadGameButton.gameObject.SetActive (true);
-        //    }
     }
 
     private void ClickButton()
@@ -56,6 +56,36 @@ public class SceneMG : MonoBehaviour
 
     private void EndGame()
     {
-        EditorApplication.isPlaying = false;
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= onSceneLoaded;
+    }
+
+    private void onSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if(SceneManager.GetActiveScene().buildIndex == 2)
+        {
+
+        }
+        else if(SceneManager.GetActiveScene().buildIndex == 4)
+        {
+            if (GameManager.Instance.p_enemyKillScore == 0)
+            {
+                // 천사
+            }
+            else if (GameManager.Instance.p_enemyKillScore == 4)
+            {
+                // 악마
+            }
+            else
+            {
+                // 그냥 진행
+            }
+        }
     }
 }

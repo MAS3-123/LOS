@@ -10,11 +10,13 @@ public class SettingMenu : MonoBehaviour
     [SerializeField] Button mainBtn;
     [SerializeField] Button illustBtn;
     [SerializeField] Button exitBtn;
+    [SerializeField] GameObject illustObj;
     void Start()
     {
         illustBtn.onClick.AddListener(() => { illustButton(); });
         mainBtn.onClick.AddListener(() => { MainButton(); });
         exitBtn.onClick.AddListener(() => { ExitButton(); });
+        illustObj.SetActive(false);
     }
 
     private void MainButton()
@@ -24,7 +26,10 @@ public class SettingMenu : MonoBehaviour
 
     private void illustButton()
     {
-        Debug.Log("저장합니다.");
+        mainBtn.gameObject.SetActive(false);
+        illustBtn.gameObject.SetActive(false);
+        exitBtn.gameObject.SetActive(false);
+        illustObj.SetActive(true);
     }
 
     private void ExitButton()

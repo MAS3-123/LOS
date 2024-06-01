@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7335031623366163211}
   - component: {fileID: 121046507015191639}
   m_Layer: 12
-  m_Name: MiniMapSprite
+  m_Name: MiniMapSprite_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 20
   m_Sprite: {fileID: 21300000, guid: f7eee00e439f92e4bb5dcfbdce66dc11, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.07371521, a: 1}
+  m_Color: {r: 0.504717, g: 0.6994287, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

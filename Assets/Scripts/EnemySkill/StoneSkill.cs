@@ -56,39 +56,36 @@ public class StoneSkill : Enemy
             }
         }
 
-        if (trigger) // 화면 내로 접근 했을 때
+        if (curTime <= 0)
         {
-            if (curTime <= 0)
+            verticalVelocity = jumpForce;
+            isJump = true;
+            stemp = true;
+            if (p_enemeyHp <= 5)
             {
-                verticalVelocity = jumpForce;
-                isJump = true;
-                stemp = true;
-                if(p_enemeyHp <= 5)
-                {
-                    curTime = coolTime * 0.35f;
-                }
-                else
-                {
-                    curTime = coolTime;
-                }
-                myAnimator.SetBool("Jump", true);
+                curTime = coolTime * 0.35f;
             }
             else
             {
-                curTime -= Time.deltaTime;
-                if(curTime <= 0.5f)
-                {
-                    myAnimator.SetBool("StandByJump", true);
-                }
+                curTime = coolTime;
             }
-
-            if(p_enemeyHp < 5)
+            myAnimator.SetBool("Jump", true);
+        }
+        else
+        {
+            curTime -= Time.deltaTime;
+            if (curTime <= 0.5f)
             {
-                if (passiveOn == false)
-                {
-                    passiveOn = true;
-                    StartCoroutine(RecoveryHp());
-                }
+                myAnimator.SetBool("StandByJump", true);
+            }
+        }
+
+        if (p_enemeyHp < 5)
+        {
+            if (passiveOn == false)
+            {
+                passiveOn = true;
+                StartCoroutine(RecoveryHp());
             }
         }
     }
