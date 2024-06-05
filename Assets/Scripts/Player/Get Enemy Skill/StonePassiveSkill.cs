@@ -25,7 +25,7 @@ public class StonePassiveSkill : PassiveSkill
 
             yield return new WaitForSeconds(coolTime); // coolTime 마다
 
-            eQWERPSlot slot = gameObject.transform.parent.GetComponent<UISlot>().slot; // 아이템 슬롯 확인
+            eQWERPSlot slot = gameObject.transform.parent.GetComponent<UiSlot_Inven>().slot; // 아이템 슬롯 확인
             if (slot == eQWERPSlot.None) // P > None 됐을경우를 확인하기 위해
             {
                 passiveCount--;

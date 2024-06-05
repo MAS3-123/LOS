@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UISlot_P : UISlot
+public class UISlot_P : UiSlot_Inven
 {
     private PassiveSkillSlot passiveSkillSlot;
 
@@ -27,7 +27,7 @@ public class UISlot_P : UISlot
     public override void ReturnObj(Transform _temTrs, UIItem _item)
     {
         ActiveSkillSlot aSlot = _temTrs.GetComponentInParent<ActiveSkillSlot>();
-        eQWERPSlot beforeSlot = _temTrs.GetComponent<UISlot>().slot;
+        eQWERPSlot beforeSlot = _temTrs.GetComponent<UiSlot_Inven>().slot;
         aSlot.SetUiItem(beforeSlot, _item);
     }
 }

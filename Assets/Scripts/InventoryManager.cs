@@ -297,7 +297,6 @@ public class InventoryManager : MonoBehaviour
 
         string itemData = JsonConvert.SerializeObject(listItemInfo);
         PlayerPrefs.SetString("Item_Infomation", itemData);
-        //List<ItemData> itemInfomation = JsonConvert.DeserializeObject<List<ItemData>>(itemData);
         LoadIlluste(data);
     }
 
@@ -307,20 +306,24 @@ public class InventoryManager : MonoBehaviour
         {
             case "ActiveSkill":
                 Debug.Log("엑티브 스킬 도감");
-                RectTransform myTrs = ActiveSkillillust.GetComponent<RectTransform>();
-                RectTransform[] rect = ActiveSkillillust.GetComponentsInChildren<RectTransform>().Where(t => t != myTrs).ToArray();
-                GameObject obj1 = Instantiate(objUIItem, rect[0]);
+                GameObject obj1;
+                illustSlot[] slot = ActiveSkillillust.GetComponentsInChildren<illustSlot>();
+                Sprite spr = Resources.Load<Sprite>($"Sprite/{data.spriteName}");
                 GameObject tmiObj = TMI_Object;
                 TMI tmi = tmiObj.GetComponent<TMI>();
-                Sprite spr = Resources.Load<Sprite>($"Sprite/{data.spriteName}");
-
-                Destroy(obj1.transform.GetChild(0).gameObject);
-
-                obj1.GetComponent<Image>().sprite = spr;
-                tmi.slimName.text = data.objName;
-                tmi.image.sprite = spr;
-                tmi.tmi.text = data.objTmi;
-
+                for (int i = 0; i < slot.Length; i++)
+                {
+                    if (slot[i].transform.childCount == 0)
+                    {
+                        obj1 = Instantiate(objUIItem, slot[i].transform);
+                        Destroy(obj1.transform.GetChild(0).gameObject);
+                        obj1.GetComponent<Image>().sprite = spr;
+                        tmi.slimName.text = data.objName;
+                        tmi.image.sprite = spr;
+                        tmi.tmi.text = data.objTmi;
+                        break;
+                    }
+                }
                 break;
             case "PassiveSkill":
                 Debug.Log("패시브 스킬 도감");

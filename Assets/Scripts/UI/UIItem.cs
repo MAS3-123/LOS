@@ -32,7 +32,7 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public void OnBeginDrag(PointerEventData eventData) // 드래그 시작 했을 때
     {
         trsBeforeParent = transform.parent ;// 이전으로 돌아갈 transform 값을 이 오브젝트의 부모 transform으로 설정.
-        UISlot beforeSlot = trsBeforeParent.GetComponent<UISlot>();
+        UiSlot_Inven beforeSlot = trsBeforeParent.GetComponent<UiSlot_Inven>();
         Destroy(beforeSlot.TMIobj);
         if (trsBeforeParent.GetComponent<UISlot_A>() != null)
         {
@@ -63,13 +63,13 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         {
             transform.SetParent(trsBeforeParent); // OnBeginDrag 에서 설정했던 슬롯의 transform으로 되돌아감.
             rect.position = trsBeforeParent.GetComponentInParent<RectTransform>().position; // 슬롯의 중앙에 위치해야 하니 그 슬롯의 rectTrasform 을 가져와서 사용.
-            if (trsBeforeParent.GetComponent<UISlot>().slotType != eSlotType.Inven) // 스킬 슬롯에서 밖에 두었을 때
+            if (trsBeforeParent.GetComponent<UiSlot_Inven>().slotType != eSlotType.Inven) // 스킬 슬롯에서 밖에 두었을 때
             {
                 Debug.Log("스킬 슬롯에서 밖으로 두었습니다.");
                 Transform tsr = InventoryManager.Instance.ReturnItem(gameObject);
                 rect.position = tsr.position;
                 //인벤토리 슬롯으로 이동
-                if(trsBeforeParent.GetComponent<UISlot>().slotType == eSlotType.Passive)
+                if(trsBeforeParent.GetComponent<UiSlot_Inven>().slotType == eSlotType.Passive)
                 {
                     Debug.Log("패시브 슬롯에서 뺐습니다.");
                 }
@@ -79,9 +79,9 @@ public class UIItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                 Debug.Log("슬롯 밖에 두거나 맞는 스킬슬롯에 두지 않았습니다.");
             }
         }
-        else if(trs.GetComponent<UISlot>().slotType != eSlotType.Inven)
+        else if(trs.GetComponent<UiSlot_Inven>().slotType != eSlotType.Inven)
         {
-            if(trs.GetComponent<UISlot>().slotType.ToString() != gameObject.GetComponent<UIItem>().itemSkillType.ToString())
+            if(trs.GetComponent<UiSlot_Inven>().slotType.ToString() != gameObject.GetComponent<UIItem>().itemSkillType.ToString())
             {
                 transform.SetParent(trsBeforeParent); // OnBeginDrag 에서 설정했던 슬롯의 transform으로 되돌아감.
                 rect.position = trsBeforeParent.GetComponentInParent<RectTransform>().position; // 슬롯의 중앙에 위치해야 하니 그 슬롯의 rectTrasform 을 가져와서 사용.

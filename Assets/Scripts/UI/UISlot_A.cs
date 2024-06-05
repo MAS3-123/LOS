@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Progress;
 
-public class UISlot_A : UISlot
+public class UISlot_A : UiSlot_Inven
 {
     private ActiveSkillSlot activeSkillSlot;
 
@@ -32,7 +32,7 @@ public class UISlot_A : UISlot
     public override void ReturnObj(Transform _temTrs, UIItem _item)
     {
         PassiveSkillSlot pSlot = _temTrs.GetComponentInParent<PassiveSkillSlot>();
-        eQWERPSlot beforeSlot = _temTrs.GetComponent<UISlot>().slot;
+        eQWERPSlot beforeSlot = _temTrs.GetComponent<UiSlot_Inven>().slot;
         pSlot.SetUiItem(beforeSlot, _item);
     }
 }
